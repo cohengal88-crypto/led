@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; object-src 'none'; base-uri 'self';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="referrer" content="no-referrer">
 <title>פורטל לקוחות – LED IT BE</title>
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -295,7 +298,39 @@ const BASE_DB = {
     ]
   }
 };
-const BASE_PASS = { '200430825': '1234' };
+// סיסמאות מאוחסנות כ-SHA-256. הערך כאן = sha256('1234')
+const BASE_PASS = { '200430825': '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4' };
+
+// ═══ SECURITY UTILITIES ═══
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function genToken() {
+  return Array.from(crypto.getRandomValues(new Uint8Array(16))).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+const SESSION_TTL = 8 * 60 * 60 * 1000;
+const RL_KEY = 'led_rl', RL_MAX = 5, RL_MS = 5 * 60 * 1000;
+function rlCheck(id) {
+  const d = JSON.parse(localStorage.getItem(RL_KEY)||'{}'), e = d[id]||{};
+  if (e.until && Date.now() < e.until) return {locked:true, sec:Math.ceil((e.until-Date.now())/1000)};
+  return {locked:false};
+}
+function rlFail(id) {
+  const d = JSON.parse(localStorage.getItem(RL_KEY)||'{}'), e = d[id]||{n:0};
+  e.n = (e.n||0)+1;
+  if (e.n >= RL_MAX) { e.until = Date.now()+RL_MS; e.n=0; }
+  d[id]=e; localStorage.setItem(RL_KEY, JSON.stringify(d));
+}
+function rlClear(id) {
+  const d = JSON.parse(localStorage.getItem(RL_KEY)||'{}');
+  delete d[id]; localStorage.setItem(RL_KEY, JSON.stringify(d));
+}
 
 // מיזוג עם לקוחות שנוספו דרך לוח הניהול
 function getFullDB()   { return Object.assign({}, BASE_DB, JSON.parse(localStorage.getItem('led_clients')||'{}')); }
@@ -316,9 +351,10 @@ function clearErr() {
   ['err-hp','err-pw'].forEach(id => document.getElementById(id).classList.remove('show'));
 }
 
-function tryLogin() {
+async function tryLogin() {
   const hp = document.getElementById('inp-hp').value.trim().replace(/\D/g,'');
   const pw = document.getElementById('inp-pw').value;
+  const alertEl = document.getElementById('login-alert');
   let ok = true;
   if (!hp || hp.length !== 9) {
     document.getElementById('inp-hp').classList.add('err');
@@ -331,23 +367,46 @@ function tryLogin() {
     ok = false;
   }
   if (!ok) return;
+
+  // בדיקת נעילה
+  const rl = rlCheck(hp);
+  if (rl.locked) {
+    alertEl.textContent = `חשבון נעול לאחר ניסיונות כושלים. נסה שוב בעוד ${Math.ceil(rl.sec/60)} דקות.`;
+    alertEl.classList.add('show'); return;
+  }
+  alertEl.textContent = 'מספר ח.פ או סיסמה שגויים. נסה שנית.';
+
   const btn = document.getElementById('btn-login');
   btn.disabled = true;
   btn.innerHTML = '<span class="loading-dots">מתחבר</span>';
-  setTimeout(() => {
-    btn.disabled = false;
-    btn.textContent = 'כניסה לאזור הלקוח';
-    const DB = getFullDB(), PASS = getFullPass();
-    if (DB[hp] && PASS[hp] === pw) {
-      me = JSON.parse(JSON.stringify(DB[hp])); // עותק כדי לא לשנות את ה-base
+
+  await new Promise(r => setTimeout(r, 600));
+  const pwHash = await sha256(pw);
+
+  btn.disabled = false;
+  btn.textContent = 'כניסה לאזור הלקוח';
+
+  const DB = getFullDB(), PASS = getFullPass();
+  if (DB[hp]) {
+    const stored = PASS[hp];
+    const valid = stored === pwHash || stored === pw; // stored===pw: מעבר אוטומטי לגיבוב
+    if (valid) {
+      if (stored === pw) {
+        const extraP = JSON.parse(localStorage.getItem('led_pass')||'{}');
+        if (hp in extraP) { extraP[hp] = pwHash; localStorage.setItem('led_pass', JSON.stringify(extraP)); }
+      }
+      rlClear(hp);
+      me = JSON.parse(JSON.stringify(DB[hp]));
       myHP = hp;
       doLogin();
-    } else {
-      document.getElementById('login-alert').classList.add('show');
-      document.getElementById('inp-hp').classList.add('err');
-      document.getElementById('inp-pw').classList.add('err');
+      return;
     }
-  }, 800);
+  }
+
+  rlFail(hp);
+  alertEl.classList.add('show');
+  document.getElementById('inp-hp').classList.add('err');
+  document.getElementById('inp-pw').classList.add('err');
 }
 
 function renderOrdersList() {
@@ -362,10 +421,10 @@ function renderOrdersList() {
   oEl.innerHTML = all.length
     ? all.map(o => `
         <div class="order-row">
-          <div class="or-num">${o.num}</div>
-          <div class="or-desc">${o.desc}</div>
-          <div class="or-date">${o.date}</div>
-          <div class="or-status ${statusClass[o.status]||'st-new'}">${statusLabel[o.status]||o.status}</div>
+          <div class="or-num">${esc(o.num)}</div>
+          <div class="or-desc">${esc(o.desc)}</div>
+          <div class="or-date">${esc(o.date)}</div>
+          <div class="or-status ${statusClass[o.status]||'st-new'}">${statusLabel[o.status]||esc(o.status)}</div>
         </div>`).join('')
     : '<div class="empty-state">אין הזמנות עדיין<br><small>ההזמנה הראשונה שלך תופיע כאן</small></div>';
   const open = all.filter(o => o.status !== 'sent').length;
@@ -374,7 +433,7 @@ function renderOrdersList() {
 }
 
 function doLogin(silent) {
-  sessionStorage.setItem('led_session', JSON.stringify({hp: myHP, name: me.name, role: me.role}));
+  sessionStorage.setItem('led_session', JSON.stringify({hp:myHP, name:me.name, role:me.role, token:genToken(), exp:Date.now()+SESSION_TTL}));
 
   document.getElementById('nav-guest').style.display = 'none';
   document.getElementById('nav-user').style.display  = 'flex';
@@ -393,8 +452,8 @@ function doLogin(silent) {
 
   document.getElementById('p-prices').innerHTML = (me.prices||[]).map(p => `
     <div class="price-row">
-      <div><div class="pr-name">${p.name}</div><div class="pr-model">${p.model}</div></div>
-      <div>${p.badge ? `<span class="pr-badge">${p.badge}</span>` : ''}<span class="pr-price">${p.price}</span></div>
+      <div><div class="pr-name">${esc(p.name)}</div><div class="pr-model">${esc(p.model)}</div></div>
+      <div>${p.badge ? `<span class="pr-badge">${esc(p.badge)}</span>` : ''}<span class="pr-price">${esc(p.price)}</span></div>
     </div>`).join('') || '<div class="empty-state">אין מחירון אישי</div>';
 
   showPage('portal');
@@ -404,7 +463,9 @@ function doLogin(silent) {
 function restoreSession() {
   try {
     const sess = JSON.parse(sessionStorage.getItem('led_session') || 'null');
-    if (!sess || !sess.hp) return false;
+    if (!sess || !sess.hp || !sess.exp || Date.now() > sess.exp) {
+      sessionStorage.removeItem('led_session'); return false;
+    }
     const DB = getFullDB();
     const user = DB[sess.hp];
     if (!user) return false;

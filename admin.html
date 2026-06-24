@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; object-src 'none'; base-uri 'self';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="referrer" content="no-referrer">
 <title>לוח ניהול – LED IT BE</title>
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -462,7 +465,39 @@ const BASE_DB = {
     ]
   }
 };
-const BASE_PASS = { '200430825': '1234' };
+// סיסמאות מאוחסנות כ-SHA-256. הערך כאן = sha256('1234')
+const BASE_PASS = { '200430825': '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4' };
+
+// ═══ SECURITY UTILITIES ═══
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function genToken() {
+  return Array.from(crypto.getRandomValues(new Uint8Array(16))).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+const SESSION_TTL = 8 * 60 * 60 * 1000; // 8 שעות
+const RL_KEY = 'led_rl', RL_MAX = 5, RL_MS = 5 * 60 * 1000;
+function rlCheck(id) {
+  const d = JSON.parse(localStorage.getItem(RL_KEY)||'{}'), e = d[id]||{};
+  if (e.until && Date.now() < e.until) return {locked:true, sec:Math.ceil((e.until-Date.now())/1000)};
+  return {locked:false};
+}
+function rlFail(id) {
+  const d = JSON.parse(localStorage.getItem(RL_KEY)||'{}'), e = d[id]||{n:0};
+  e.n = (e.n||0)+1;
+  if (e.n >= RL_MAX) { e.until = Date.now()+RL_MS; e.n=0; }
+  d[id]=e; localStorage.setItem(RL_KEY, JSON.stringify(d));
+}
+function rlClear(id) {
+  const d = JSON.parse(localStorage.getItem(RL_KEY)||'{}');
+  delete d[id]; localStorage.setItem(RL_KEY, JSON.stringify(d));
+}
 
 // ═══ STATE ═══
 let adminSession = null;
@@ -491,37 +526,58 @@ const ADMIN_PW = BASE_PASS[ADMIN_HP]; // סיסמה קשיחה, לא מ-localSto
 function init() {
   try {
     const sess = JSON.parse(sessionStorage.getItem('led_session') || 'null');
-    if (sess && sess.role === 'admin') {
+    if (sess && sess.role === 'admin' && sess.exp && Date.now() < sess.exp) {
       const isValid = sess.hp === ADMIN_HP || getDB()[sess.hp]?.role === 'admin';
       if (isValid) { adminSession = sess; showApp(); return; }
     }
   } catch(e) {}
+  sessionStorage.removeItem('led_session');
   document.getElementById('gate-wrap').style.display = '';
 }
 
-function gateLogin() {
+async function gateLogin() {
   const hp = document.getElementById('gate-hp').value.trim().replace(/\D/g,'');
   const pw = document.getElementById('gate-pw').value;
   const errEl = document.getElementById('gate-err');
   errEl.classList.remove('show');
 
+  if (!hp) { errEl.textContent = 'נא להזין ח.פ'; errEl.classList.add('show'); return; }
+
+  // בדיקת נעילה לאחר ניסיונות כושלים
+  const rl = rlCheck(hp);
+  if (rl.locked) {
+    errEl.textContent = `יותר מדי ניסיונות כניסה. נסה שוב בעוד ${Math.ceil(rl.sec/60)} דקות`;
+    errEl.classList.add('show'); return;
+  }
+
+  const pwHash = await sha256(pw);
+
   // מנהל ראשי
   if (hp === ADMIN_HP) {
-    if (pw !== ADMIN_PW) { errEl.textContent = 'סיסמה שגויה'; errEl.classList.add('show'); return; }
-    adminSession = { hp: ADMIN_HP, name: BASE_DB[ADMIN_HP].name, role: 'admin', isSuper: true };
+    if (pwHash !== ADMIN_PW) {
+      rlFail(hp); errEl.textContent = 'סיסמה שגויה'; errEl.classList.add('show'); return;
+    }
+    rlClear(hp);
+    adminSession = {hp:ADMIN_HP, name:BASE_DB[ADMIN_HP].name, role:'admin', isSuper:true, token:genToken(), exp:Date.now()+SESSION_TTL};
     sessionStorage.setItem('led_session', JSON.stringify(adminSession));
     showApp(); return;
   }
 
-  // מנהלים נוספים שנשמרו ב-localStorage
-  const DB = getDB(), PASS = getPass();
-  const user = DB[hp];
-  if (user && user.role === 'admin' && PASS[hp] === pw) {
-    adminSession = { hp, name: user.name, role: 'admin', isSuper: false };
-    sessionStorage.setItem('led_session', JSON.stringify(adminSession));
-    showApp(); return;
+  // מנהלים נוספים
+  const DB = getDB(), PASS = getPass(), user = DB[hp];
+  if (user && user.role === 'admin') {
+    const stored = PASS[hp];
+    const ok = stored === pwHash || stored === pw; // stored===pw: העברה לסיסמה מגובבת
+    if (ok) {
+      if (stored === pw) { const x=JSON.parse(localStorage.getItem('led_pass')||'{}'); x[hp]=pwHash; localStorage.setItem('led_pass',JSON.stringify(x)); }
+      rlClear(hp);
+      adminSession = {hp, name:user.name, role:'admin', isSuper:false, token:genToken(), exp:Date.now()+SESSION_TTL};
+      sessionStorage.setItem('led_session', JSON.stringify(adminSession));
+      showApp(); return;
+    }
   }
 
+  rlFail(hp);
   errEl.textContent = 'ח.פ או סיסמה שגויים, או אין הרשאת מנהל';
   errEl.classList.add('show');
 }
@@ -610,8 +666,8 @@ function renderDashboard() {
     <div class="activity-item">
       <div class="a-dot ${o.status==='sent'?'a-dot-green':o.status==='process'?'a-dot-gold':'a-dot-blue'}"></div>
       <div class="a-text">
-        <strong>${o.clientName}</strong> — ${o.product}
-        <div style="font-size:0.67rem;color:var(--muted);margin-top:1px">${o.num} · ${o.date}</div>
+        <strong>${esc(o.clientName)}</strong> — ${esc(o.product)}
+        <div style="font-size:0.67rem;color:var(--muted);margin-top:1px">${esc(o.num)} · ${esc(o.date)}</div>
       </div>
       <span class="badge ${sBadge(o.status)}">${sLabel(o.status)}</span>
     </div>`) .join('') :
@@ -623,12 +679,12 @@ function renderDashboard() {
   pEl.innerHTML = pendList.length ? pendList.map(o => `
     <div class="pending-row">
       <div>
-        <div style="font-size:0.8rem;font-weight:700">${o.clientName}</div>
-        <div style="font-size:0.68rem;color:var(--muted)">${o.product} · ×${o.qty} · ${o.num}</div>
+        <div style="font-size:0.8rem;font-weight:700">${esc(o.clientName)}</div>
+        <div style="font-size:0.68rem;color:var(--muted)">${esc(o.product)} · ×${o.qty} · ${esc(o.num)}</div>
       </div>
       <div style="display:flex;align-items:center;gap:0.45rem;flex-shrink:0">
         <span class="badge ${sBadge(o.status)}">${sLabel(o.status)}</span>
-        <button class="btn-ghost" onclick="quickApprove('${o.id}')">✓ אשר</button>
+        <button class="btn-ghost" onclick="quickApprove('${esc(o.id)}')">✓ אשר</button>
       </div>
     </div>`).join('') :
     '<div style="text-align:center;padding:1.5rem;color:var(--green);font-size:0.82rem">🎉 אין הזמנות ממתינות!</div>';
@@ -658,7 +714,7 @@ function renderClients() {
     const cOrders = orders.filter(o => o.clientHp === hp);
     const openN = cOrders.filter(o => o.status !== 'sent').length;
     return `<tr>
-      <td><strong>${c.name}</strong></td>
+      <td><strong>${esc(c.name)}</strong></td>
       <td style="font-family:monospace;font-size:0.72rem;direction:ltr;text-align:right">${hp}</td>
       <td><span class="badge b-blue">לקוח</span></td>
       <td style="color:var(--green);font-weight:600">${c.discount ? c.discount+'%' : '—'}</td>
@@ -693,14 +749,14 @@ function showClientModal(hp) {
     <div style="background:var(--surface);border-radius:8px;padding:0.7rem;margin-bottom:1rem">
       ${c.prices.map(p=>`
         <div style="display:flex;justify-content:space-between;padding:0.28rem 0;border-bottom:1px solid var(--border);font-size:0.77rem">
-          <span>${p.name} <span style="color:var(--muted);font-size:0.67rem">${p.model}</span></span>
-          <strong style="color:var(--blue)">${p.price}</strong>
+          <span>${esc(p.name)} <span style="color:var(--muted);font-size:0.67rem">${esc(p.model)}</span></span>
+          <strong style="color:var(--blue)">${esc(p.price)}</strong>
         </div>`).join('')}
     </div>` : ''}
     <div style="font-size:0.78rem;font-weight:700;margin-bottom:0.45rem;color:var(--muted)">הזמנות (${cOrders.length})</div>
     ${cOrders.length ? cOrders.map(o=>`
       <div style="display:flex;justify-content:space-between;align-items:center;padding:0.42rem;background:var(--surface);border-radius:6px;margin-bottom:0.3rem;font-size:0.75rem">
-        <div><strong>${o.num}</strong> · ${o.product}<div style="color:var(--muted);font-size:0.67rem">${o.date} · ×${o.qty}</div></div>
+        <div><strong>${esc(o.num)}</strong> · ${esc(o.product)}<div style="color:var(--muted);font-size:0.67rem">${esc(o.date)} · ×${o.qty}</div></div>
         <span class="badge ${sBadge(o.status)}">${sLabel(o.status)}</span>
       </div>`).join('') : '<div style="color:var(--muted);font-size:0.8rem;padding:0.5rem 0">אין הזמנות עדיין</div>'}`;
 
@@ -736,10 +792,10 @@ function renderOrders() {
     const idx = orders.findIndex(x => x.id === o.id);
     return `<tr>
       <td style="font-family:monospace;font-size:0.7rem">${o.num}</td>
-      <td style="font-size:0.71rem">${o.date}</td>
-      <td><strong>${o.clientName}</strong></td>
-      <td style="font-size:0.77rem">${o.product}</td>
-      <td style="font-size:0.7rem;color:var(--muted)">${o.color||'—'}</td>
+      <td style="font-size:0.71rem">${esc(o.date)}</td>
+      <td><strong>${esc(o.clientName)}</strong></td>
+      <td style="font-size:0.77rem">${esc(o.product)}</td>
+      <td style="font-size:0.7rem;color:var(--muted)">${esc(o.color||'—')}</td>
       <td style="font-weight:700">${o.qty}</td>
       <td>
         <select class="status-sel" onchange="setOrderStatus(${idx},this.value)">
@@ -766,14 +822,14 @@ function showOrderModal(id) {
   document.getElementById('mo-title').textContent = 'הזמנה ' + o.num;
   document.getElementById('mo-body').innerHTML = `
     <div class="info-grid">
-      <div class="info-cell"><div class="info-cell-label">לקוח</div><div class="info-cell-val">${o.clientName}</div><div style="font-size:0.68rem;color:var(--muted)">${o.clientHp}</div></div>
-      <div class="info-cell"><div class="info-cell-label">תאריך</div><div class="info-cell-val">${o.date}</div></div>
-      <div class="info-cell"><div class="info-cell-label">מוצר</div><div class="info-cell-val">${o.product}</div></div>
-      <div class="info-cell"><div class="info-cell-label">גוון</div><div class="info-cell-val">${o.color||'—'}</div></div>
+      <div class="info-cell"><div class="info-cell-label">לקוח</div><div class="info-cell-val">${esc(o.clientName)}</div><div style="font-size:0.68rem;color:var(--muted)">${esc(o.clientHp)}</div></div>
+      <div class="info-cell"><div class="info-cell-label">תאריך</div><div class="info-cell-val">${esc(o.date)}</div></div>
+      <div class="info-cell"><div class="info-cell-label">מוצר</div><div class="info-cell-val">${esc(o.product)}</div></div>
+      <div class="info-cell"><div class="info-cell-label">גוון</div><div class="info-cell-val">${esc(o.color||'—')}</div></div>
       <div class="info-cell"><div class="info-cell-label">כמות</div><div class="info-cell-val" style="font-size:1.25rem;color:var(--blue)">${o.qty}</div></div>
       <div class="info-cell"><div class="info-cell-label">סטטוס</div><div class="info-cell-val"><span class="badge ${sBadge(o.status)}">${sLabel(o.status)}</span></div></div>
     </div>
-    ${o.note?`<div style="background:var(--surface);border-radius:8px;padding:0.75rem;margin-bottom:1rem"><div style="font-size:0.62rem;color:var(--muted);font-weight:700;margin-bottom:0.25rem">הערות</div><div style="font-size:0.82rem;line-height:1.6">${o.note}</div></div>`:''}
+    ${o.note?`<div style="background:var(--surface);border-radius:8px;padding:0.75rem;margin-bottom:1rem"><div style="font-size:0.62rem;color:var(--muted);font-weight:700;margin-bottom:0.25rem">הערות</div><div style="font-size:0.82rem;line-height:1.6">${esc(o.note)}</div></div>`:''}
     <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
       <button class="btn btn-sm btn-green" onclick="setOrderStatus(${idx},'sent');closeModal('modal-order');renderDashboard()">✓ סמן כנשלחה</button>
       <button class="btn btn-sm btn-navy" onclick="setOrderStatus(${idx},'process');closeModal('modal-order');renderDashboard()">⚙ בטיפול</button>
@@ -812,7 +868,7 @@ function clearAllOrders() {
 }
 
 // ═══ ADD CLIENT ═══
-function addClient() {
+async function addClient() {
   const name = document.getElementById('nc-name').value.trim();
   const hp   = document.getElementById('nc-hp').value.trim().replace(/\D/g,'');
   const pw   = document.getElementById('nc-pw').value.trim();
@@ -830,16 +886,18 @@ function addClient() {
   if (hp === ADMIN_HP)      return showMsg('לא ניתן להוסיף את חשבון המנהל הראשי', false);
   if (getDB()[hp])          return showMsg('לקוח עם ח.פ ' + hp + ' כבר קיים במערכת', false);
 
-  // כל לקוח חדש הוא תמיד בתפקיד 'customer' — רק 200430825 הוא מנהל
+  const pwHash = await sha256(pw);
+
   const extra = JSON.parse(localStorage.getItem('led_clients')||'{}');
   extra[hp] = { name, role: 'customer', discount: disc, orders: [], prices: [] };
   localStorage.setItem('led_clients', JSON.stringify(extra));
 
   const extraP = JSON.parse(localStorage.getItem('led_pass')||'{}');
-  extraP[hp] = pw;
+  extraP[hp] = pwHash;
   localStorage.setItem('led_pass', JSON.stringify(extraP));
 
-  showMsg(`✓ לקוח <strong>${name}</strong> נוסף! יכול להתחבר בפורטל עם ח.פ <strong>${hp}</strong> וסיסמה <strong>${pw}</strong>`, true);
+  // הסיסמה מוצגת פעם אחת בלבד למנהל — לאחר מכן לא ניתן לשחזר
+  showMsg(`✓ לקוח <strong>${esc(name)}</strong> נוסף! ח.פ: <strong>${esc(hp)}</strong> · סיסמה (שמור אותה): <code style="background:#f3f4f6;padding:0.1rem 0.35rem;border-radius:3px">${esc(pw)}</code>`, true);
   clearClientForm();
   renderAllClients();
   showToast('לקוח חדש נוסף: ' + name);
@@ -850,19 +908,33 @@ function clearClientForm() {
 }
 
 function renderAllClients() {
-  const DB = getDB(), PASS = getPass();
+  const DB = getDB();
   document.getElementById('all-clients-tbody').innerHTML = Object.keys(DB).map(hp => {
     const c = DB[hp];
     const isAdmin = hp === ADMIN_HP;
+    const isAdminRole = c.role === 'admin';
     return `<tr>
-      <td><strong>${c.name}</strong>${isAdmin?' <span class="badge b-accent" style="margin-right:4px">מנהל ראשי</span>':''}</td>
+      <td><strong>${esc(c.name)}</strong>${isAdmin?' <span class="badge b-accent" style="margin-right:4px">מנהל ראשי</span>':''}</td>
       <td style="font-family:monospace;font-size:0.72rem;direction:ltr;text-align:right">${hp}</td>
-      <td style="font-family:monospace;font-size:0.78rem">${isAdmin?'••••':PASS[hp]||'—'}</td>
-      <td style="color:var(--green);font-weight:600">${isAdmin?'—':(c.discount+'%')}</td>
-      <td>${isAdmin?'<span class="badge b-navy">מנהל</span>':'<span class="badge b-blue">לקוח</span>'}</td>
+      <td><span style="color:var(--muted);font-size:0.72rem">🔒 מוגן</span>${isAdmin?'':` <button class="btn-ghost" style="font-size:0.65rem;padding:0.15rem 0.4rem" onclick="changeClientPassword('${hp}')">שנה</button>`}</td>
+      <td style="color:var(--green);font-weight:600">${isAdmin||isAdminRole?'—':(c.discount+'%')}</td>
+      <td>${isAdmin||isAdminRole?'<span class="badge b-navy">מנהל</span>':'<span class="badge b-blue">לקוח</span>'}</td>
       <td>${isAdmin?'<span style="font-size:0.68rem;color:var(--muted)">מוגן</span>':`<button class="btn-ghost-danger" onclick="deleteClient('${hp}')">🗑 מחק</button>`}</td>
     </tr>`;
   }).join('') || '<tr><td colspan="6" class="tbl-empty">אין לקוחות</td></tr>';
+}
+
+async function changeClientPassword(hp) {
+  if (hp === ADMIN_HP) { showToast('לא ניתן לשנות סיסמת המנהל הראשי מכאן'); return; }
+  const c = getDB()[hp];
+  const newPw = prompt('סיסמה חדשה עבור ' + (c?.name || hp) + ' (לפחות 4 תווים):');
+  if (newPw === null) return;
+  if (!newPw || newPw.length < 4) { showToast('סיסמה חייבת להכיל לפחות 4 תווים'); return; }
+  const hash = await sha256(newPw);
+  const extraP = JSON.parse(localStorage.getItem('led_pass')||'{}');
+  extraP[hp] = hash;
+  localStorage.setItem('led_pass', JSON.stringify(extraP));
+  showToast('סיסמה עודכנה בהצלחה ✓');
 }
 
 // ═══ ADMINS ═══
@@ -874,7 +946,7 @@ function renderAdminsList() {
       const c = DB[hp];
       const isSuper = hp === ADMIN_HP;
       return `<tr>
-        <td><strong>${c.name}</strong></td>
+        <td><strong>${esc(c.name)}</strong></td>
         <td style="font-family:monospace;font-size:0.72rem;direction:ltr;text-align:right">${hp}</td>
         <td>${isSuper?'<span class="badge b-accent">מנהל ראשי</span>':'<span class="badge b-navy">מנהל</span>'}</td>
         <td>${isSuper?'<span style="font-size:0.68rem;color:var(--muted)">מוגן</span>':`<button class="btn-ghost-danger" onclick="deleteAdmin('${hp}')">🗑 מחק</button>`}</td>
@@ -884,7 +956,7 @@ function renderAdminsList() {
     '<tr><td colspan="4" class="tbl-empty">אין מנהלים נוספים</td></tr>';
 }
 
-function addAdmin() {
+async function addAdmin() {
   const name = document.getElementById('na-name').value.trim();
   const hp   = document.getElementById('na-hp').value.trim().replace(/\D/g,'');
   const pw   = document.getElementById('na-pw').value.trim();
@@ -901,15 +973,17 @@ function addAdmin() {
   if (hp === ADMIN_HP)      return showMsg('לא ניתן לשנות את חשבון המנהל הראשי', false);
   if (getDB()[hp])          return showMsg('כבר קיים חשבון עם ח.פ ' + hp + ' במערכת', false);
 
+  const pwHash = await sha256(pw);
+
   const extra = JSON.parse(localStorage.getItem('led_clients')||'{}');
   extra[hp] = { name, role: 'admin', discount: 0, orders: [], prices: [] };
   localStorage.setItem('led_clients', JSON.stringify(extra));
 
   const extraP = JSON.parse(localStorage.getItem('led_pass')||'{}');
-  extraP[hp] = pw;
+  extraP[hp] = pwHash;
   localStorage.setItem('led_pass', JSON.stringify(extraP));
 
-  showMsg(`✓ מנהל <strong>${name}</strong> נוסף בהצלחה! יכול להתחבר עם ח.פ <strong>${hp}</strong> וסיסמה <strong>${pw}</strong>`, true);
+  showMsg(`✓ מנהל <strong>${esc(name)}</strong> נוסף בהצלחה! ח.פ: <strong>${esc(hp)}</strong> · סיסמה (שמור אותה): <code style="background:#f3f4f6;padding:0.1rem 0.35rem;border-radius:3px">${esc(pw)}</code>`, true);
   clearAdminForm();
   renderAdminsList();
   showToast('מנהל חדש נוסף: ' + name);
