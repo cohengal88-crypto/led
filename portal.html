@@ -445,9 +445,11 @@ async function tryLogin() {
   btn.textContent = 'כניסה לאזור הלקוח';
 
   const DB = getFullDB(), PASS = getFullPass();
+  console.log('[portal login] hp:', hp, '| found in DB:', !!DB[hp], '| role:', DB[hp]?.role, '| hash in PASS:', !!PASS[hp]);
   if (DB[hp]) {
     const stored = PASS[hp];
     const valid = stored === pwHash || stored === pw; // stored===pw: מעבר אוטומטי לגיבוב
+    console.log('[portal login] storedHash:', stored?.slice(0,12), '| computedHash:', pwHash.slice(0,12), '| match:', valid);
     if (valid) {
       if (stored === pw) {
         const extraP = JSON.parse(localStorage.getItem('led_pass')||'{}');

@@ -989,7 +989,13 @@ function renderAdminsList() {
         <td><strong>${esc(c.name)}</strong></td>
         <td style="font-family:monospace;font-size:0.72rem;direction:ltr;text-align:right">${hp}</td>
         <td>${isSuper?'<span class="badge b-accent">מנהל ראשי</span>':'<span class="badge b-navy">מנהל</span>'}</td>
-        <td>${isSuper?'<span style="font-size:0.68rem;color:var(--muted)">מוגן</span>':`<button class="btn-ghost-danger" onclick="deleteAdmin('${hp}')">🗑 מחק</button>`}</td>
+        <td style="display:flex;gap:0.4rem;flex-wrap:wrap">
+          ${isSuper
+            ? '<span style="font-size:0.68rem;color:var(--muted)">מוגן</span>'
+            : `<button class="btn-ghost-danger" onclick="deleteAdmin('${hp}')">🗑 מחק</button>
+               <button class="btn-ghost" style="font-size:0.72rem;padding:0.25rem 0.55rem" onclick="resetAdminPw('${hp}','${esc(c.name)}')">🔑 איפוס סיסמה</button>`
+          }
+        </td>
       </tr>`;
     });
   document.getElementById('admins-tbody').innerHTML = rows.join('') ||
@@ -1044,6 +1050,17 @@ function deleteAdmin(hp) {
   localStorage.setItem('led_pass', JSON.stringify(extraP));
   renderAdminsList();
   showToast('מנהל נמחק: ' + c.name);
+}
+
+async function resetAdminPw(hp, name) {
+  const newPw = prompt('סיסמה חדשה עבור ' + name + ' (לפחות 4 תווים):');
+  if (!newPw || newPw.trim().length < 4) { if (newPw !== null) showToast('סיסמה חייבת להכיל לפחות 4 תווים'); return; }
+  const pw = newPw.trim();
+  const pwHash = await sha256(pw);
+  const extraP = JSON.parse(localStorage.getItem('led_pass')||'{}');
+  extraP[hp] = pwHash;
+  localStorage.setItem('led_pass', JSON.stringify(extraP));
+  showToast('סיסמה עודכנה עבור ' + name + ' — הסיסמה החדשה: ' + pw);
 }
 
 // ═══ HELPERS ═══
