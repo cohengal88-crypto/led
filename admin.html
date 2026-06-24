@@ -810,7 +810,9 @@ function showClientModal(hp) {
 function deleteClient(hp) {
   if (hp === ADMIN_HP) { showToast('לא ניתן למחוק את חשבון המנהל הראשי'); return; }
   const c = getDB()[hp];
-  if (!c || !confirm('למחוק את ' + c.name + '? פעולה זו אינה הפיכה.')) return;
+  if (!c) return;
+  if (c.role === 'admin') { showToast('לא ניתן למחוק מנהל מכאן — השתמש בסעיף "מנהלים"'); return; }
+  if (!confirm('למחוק את ' + c.name + '? פעולה זו אינה הפיכה.')) return;
   const extra = JSON.parse(localStorage.getItem('led_clients')||'{}');
   const extraP = JSON.parse(localStorage.getItem('led_pass')||'{}');
   delete extra[hp]; delete extraP[hp];
@@ -963,7 +965,7 @@ function renderAllClients() {
       <td><span style="color:var(--muted);font-size:0.72rem">🔒 מוגן</span>${isAdmin?'':` <button class="btn-ghost" style="font-size:0.65rem;padding:0.15rem 0.4rem" onclick="changeClientPassword('${hp}')">שנה</button>`}</td>
       <td style="color:var(--green);font-weight:600">${isAdmin||isAdminRole?'—':(c.discount+'%')}</td>
       <td>${isAdmin||isAdminRole?'<span class="badge b-navy">מנהל</span>':'<span class="badge b-blue">לקוח</span>'}</td>
-      <td>${isAdmin?'<span style="font-size:0.68rem;color:var(--muted)">מוגן</span>':`<button class="btn-ghost-danger" onclick="deleteClient('${hp}')">🗑 מחק</button>`}</td>
+      <td>${isAdminRole?'<span style="font-size:0.68rem;color:var(--muted)">מנהל — מוגן</span>':`<button class="btn-ghost-danger" onclick="deleteClient('${hp}')">🗑 מחק</button>`}</td>
     </tr>`;
   }).join('') || '<tr><td colspan="6" class="tbl-empty">אין לקוחות</td></tr>';
 }
