@@ -182,6 +182,36 @@ body{font-family:'Assistant',system-ui,sans-serif;background:var(--surface);colo
   table{min-width:500px}
   .stat-row{grid-template-columns:1fr 1fr}
 }
+
+/* ── ADMIN UX ENHANCEMENTS ── */
+@keyframes adm-shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+.shake{animation:adm-shake 0.35s ease}
+
+/* password toggle */
+.pw-wrap{position:relative;display:block}
+.pw-eye{position:absolute;left:0;top:0;bottom:0;width:2.6rem;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.4);font-size:0.65rem;font-weight:700;letter-spacing:0.2px;font-family:inherit;transition:color 0.15s;padding:0;user-select:none}
+.pw-eye:hover{color:rgba(255,255,255,0.8)}
+/* pw-eye inside white card (login form) */
+.card-pw .pw-eye,.f-input-wrap .pw-eye{color:var(--muted)}
+.card-pw .pw-eye:hover,.f-input-wrap .pw-eye:hover{color:var(--navy)}
+
+/* stat cards hover */
+.stat-card{transition:box-shadow 0.2s,transform 0.2s;cursor:default}
+.stat-card:hover{box-shadow:0 6px 24px rgba(0,0,0,0.09);transform:translateY(-2px)}
+
+/* table row hover */
+.tbl tbody tr{transition:background 0.1s}
+
+/* better gate card */
+.gate-card{box-shadow:0 24px 64px rgba(0,0,0,0.35),0 0 0 1px rgba(255,255,255,0.04)}
+
+/* search filter */
+.tbl-search{width:100%;padding:0.42rem 0.75rem;border:1.5px solid var(--border);border-radius:7px;font-size:0.8rem;font-family:inherit;outline:none;transition:border-color 0.2s}
+.tbl-search:focus{border-color:var(--accent)}
+
+/* better toast */
+.toast{border-radius:10px;padding:0.6rem 1.25rem;bottom:1.5rem;transition:transform 0.3s cubic-bezier(0.16,1,0.3,1),opacity 0.3s}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 </style>
 </head>
 <body>
@@ -204,7 +234,10 @@ body{font-family:'Assistant',system-ui,sans-serif;background:var(--surface);colo
       </div>
       <div class="f-group" style="margin-bottom:1rem">
         <label class="f-label">סיסמה</label>
-        <input class="f-input" type="password" id="gate-pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')gateLogin()">
+        <div class="pw-wrap">
+          <input class="f-input" type="password" id="gate-pw" placeholder="••••••••" style="padding-left:2.7rem" onkeydown="if(event.key==='Enter')gateLogin()">
+          <button class="pw-eye" type="button" id="gate-pw-btn" onclick="togglePw('gate-pw','gate-pw-btn')" tabindex="-1">הצג</button>
+        </div>
       </div>
       <button class="btn btn-md btn-navy" style="width:100%;justify-content:center" onclick="gateLogin()">כניסה כמנהל</button>
       <div style="margin-top:1rem;text-align:center;font-size:0.72rem;color:var(--muted)">
@@ -307,7 +340,10 @@ body{font-family:'Assistant',system-ui,sans-serif;background:var(--surface);colo
       <div class="section" id="sec-clients">
         <div class="sec-hd">
           <div class="sec-title">לקוחות <span class="sec-count" id="clients-count"></span></div>
-          <button class="btn btn-sm btn-accent" onclick="showSec('add-client')">➕ לקוח חדש</button>
+          <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap">
+            <input class="tbl-search" type="text" id="clients-search" placeholder="חיפוש לקוח..." style="max-width:180px" oninput="filterClients(this.value)">
+            <button class="btn btn-sm btn-accent" onclick="showSec('add-client')">➕ לקוח חדש</button>
+          </div>
         </div>
         <div class="tbl-wrap">
           <table class="tbl">
@@ -359,7 +395,10 @@ body{font-family:'Assistant',system-ui,sans-serif;background:var(--surface);colo
             </div>
             <div class="f-group">
               <label class="f-label">סיסמה *</label>
-              <input class="f-input" type="text" id="nc-pw" placeholder="לפחות 4 תווים">
+              <div class="pw-wrap f-input-wrap">
+                <input class="f-input" type="password" id="nc-pw" placeholder="לפחות 4 תווים" style="padding-left:2.7rem">
+                <button class="pw-eye" type="button" id="nc-pw-btn" onclick="togglePw('nc-pw','nc-pw-btn')" tabindex="-1">הצג</button>
+              </div>
             </div>
             <div class="f-group">
               <label class="f-label">הנחה (%)</label>
@@ -399,7 +438,10 @@ body{font-family:'Assistant',system-ui,sans-serif;background:var(--surface);colo
             </div>
             <div class="f-group" style="grid-column:1/-1">
               <label class="f-label">סיסמה *</label>
-              <input class="f-input" type="text" id="na-pw" placeholder="לפחות 4 תווים">
+              <div class="pw-wrap f-input-wrap">
+                <input class="f-input" type="password" id="na-pw" placeholder="לפחות 4 תווים" style="padding-left:2.7rem">
+                <button class="pw-eye" type="button" id="na-pw-btn" onclick="togglePw('na-pw','na-pw-btn')" tabindex="-1">הצג</button>
+              </div>
             </div>
           </div>
           <div style="margin-top:1.1rem;display:flex;gap:0.65rem">
@@ -580,6 +622,8 @@ async function gateLogin() {
   rlFail(hp);
   errEl.textContent = 'ח.פ או סיסמה שגויים, או אין הרשאת מנהל';
   errEl.classList.add('show');
+  const gc = document.querySelector('.gate-card');
+  if (gc) { gc.classList.remove('shake'); void gc.offsetWidth; gc.classList.add('shake'); }
 }
 
 function showApp() {
@@ -1015,6 +1059,24 @@ function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ═══ UX HELPERS ═══
+function togglePw(inputId, btnId) {
+  const inp = document.getElementById(inputId);
+  const btn = document.getElementById(btnId);
+  if (!inp || !btn) return;
+  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = 'הסתר'; }
+  else { inp.type = 'password'; btn.textContent = 'הצג'; }
+}
+
+function filterClients(q) {
+  const rows = document.querySelectorAll('#clients-tbody tr');
+  const term = q.trim().toLowerCase();
+  rows.forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = (!term || text.includes(term)) ? '' : 'none';
+  });
 }
 
 init();

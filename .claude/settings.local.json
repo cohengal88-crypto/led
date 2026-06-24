@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git config *)"
+      "Bash(git config *)",
+      "Bash(git -C \"c:/Users/cohen/Desktop/led\" remote add origin https://github.com/cohengal88-crypto/led.git)",
+      "Bash(git -C \"c:/Users/cohen/Desktop/led\" remote set-url origin https://github.com/cohengal88-crypto/led.git)",
+      "Bash(git -C \"c:/Users/cohen/Desktop/led\" push -u origin main)",
+      "Bash(git -C \"c:/Users/cohen/Desktop/led\" push --force-with-lease origin main)",
+      "Bash(git -C \"c:/Users/cohen/Desktop/led\" push --force origin main)"
     ]
   }
 }

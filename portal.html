@@ -123,6 +123,56 @@ nav{background:var(--navy);padding:0 1.5rem;height:64px;display:flex;align-items
 
 .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(80px);background:#111d2e;color:#fff;padding:0.65rem 1.4rem;border-radius:40px;font-size:0.82rem;font-weight:600;z-index:999;transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);white-space:nowrap;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.08)}
 .toast.show{transform:translateX(-50%) translateY(0) scale(1)}
+
+/* ── UX / VISUAL ENHANCEMENTS ── */
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+.shake{animation:shake 0.35s ease}
+@keyframes fadePageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.page.active{animation:fadePageIn 0.22s ease}
+
+/* password toggle */
+.pw-wrap{position:relative;display:block}
+.pw-eye{position:absolute;left:0;top:0;bottom:0;width:2.7rem;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;color:var(--muted);font-size:0.7rem;font-weight:700;letter-spacing:0.2px;font-family:inherit;transition:color 0.15s;padding:0;user-select:none}
+.pw-eye:hover{color:var(--navy)}
+
+/* order status dots */
+.or-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.or-dot-sent{background:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,0.14)}
+.or-dot-process{background:#f59e0b;box-shadow:0 0 0 3px rgba(245,158,11,0.14)}
+.or-dot-new{background:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,0.14)}
+
+/* scrollable orders */
+.orders-list{max-height:290px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.orders-list::-webkit-scrollbar{width:4px}
+.orders-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+/* portal header greeting */
+.pw-greeting{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-bottom:0.15rem;font-weight:600;letter-spacing:0.3px}
+
+/* input micro-interactions */
+.field input{transition:border-color 0.2s,box-shadow 0.2s,transform 0.15s}
+.field input:focus{transform:translateY(-1px)}
+
+/* stat cards hover */
+.pstat{transition:all 0.2s;cursor:default}
+.pstat:hover{background:rgba(255,255,255,0.13);transform:translateY(-2px)}
+
+/* success animation */
+@keyframes successPop{0%{transform:scale(0.5);opacity:0}80%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.success-icon{animation:successPop 0.5s cubic-bezier(0.16,1,0.3,1) both 0.1s}
+
+/* card corners */
+.portal-card{border-radius:14px}
+.price-row{transition:background 0.15s,border-color 0.15s}
+.price-row:hover{background:#f0f7ff;border-color:rgba(0,102,204,0.18)}
+
+/* better login alert */
+.login-alert{display:none;align-items:center;gap:0.5rem;border-radius:9px;background:#fff5f5;border:1px solid #fca5a5;padding:0.65rem 0.9rem;font-size:0.78rem;color:#991b1b;margin-bottom:1rem}
+.login-alert.show{display:flex}
+.login-alert::before{content:'!';display:flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#fca5a5;color:#7f1d1d;font-weight:800;font-size:0.7rem;flex-shrink:0}
+
+/* order count badge */
+.ord-count{background:rgba(0,200,224,0.12);color:var(--accent);font-size:0.6rem;font-weight:700;padding:0.08rem 0.4rem;border-radius:10px;margin-right:0.3rem;display:inline-flex;align-items:center}
 </style>
 </head>
 <body>
@@ -150,7 +200,7 @@ nav{background:var(--navy);padding:0 1.5rem;height:64px;display:flex;align-items
 <div id="page-login" class="page active">
   <div class="login-wrap">
     <div class="login-grid"></div>
-    <div class="login-card">
+    <div class="login-card" id="login-card">
       <div class="login-logo">
         jacob <span>group</span>
         <div class="login-logo-sub">LED IT BE</div>
@@ -166,7 +216,10 @@ nav{background:var(--navy);padding:0 1.5rem;height:64px;display:flex;align-items
       </div>
       <div class="field">
         <label>סיסמה</label>
-        <input type="password" id="inp-pw" placeholder="••••••••" oninput="clearErr()" onkeydown="if(event.key==='Enter')tryLogin()">
+        <div class="pw-wrap">
+          <input type="password" id="inp-pw" placeholder="••••••••" style="padding-left:2.7rem" oninput="clearErr()" onkeydown="if(event.key==='Enter')tryLogin()">
+          <button class="pw-eye" type="button" id="inp-pw-btn" onclick="togglePw('inp-pw','inp-pw-btn')" tabindex="-1" aria-label="הצג/הסתר סיסמה">הצג</button>
+        </div>
         <div class="err-msg" id="err-pw">נא להזין סיסמה</div>
       </div>
       <button class="btn-login" id="btn-login" onclick="tryLogin()">כניסה לאזור הלקוח</button>
@@ -187,7 +240,7 @@ nav{background:var(--navy);padding:0 1.5rem;height:64px;display:flex;align-items
   <div class="portal-wrap">
     <div class="portal-header">
       <div>
-        <div class="pw-label">אזור לקוח אישי</div>
+        <div class="pw-greeting" id="p-greeting">שלום</div>
         <div class="pw-name" id="p-name"></div>
         <div class="pw-hp" id="p-hp"></div>
       </div>
@@ -211,7 +264,7 @@ nav{background:var(--navy);padding:0 1.5rem;height:64px;display:flex;align-items
 
     <div class="portal-grid">
       <div class="portal-card">
-        <div class="pc-hd">הזמנות אחרונות</div>
+        <div class="pc-hd" id="orders-hd">הזמנות אחרונות</div>
         <div class="orders-list" id="p-orders"></div>
       </div>
 
@@ -349,6 +402,8 @@ function clearErr() {
   document.getElementById('login-alert').classList.remove('show');
   ['inp-hp','inp-pw'].forEach(id => document.getElementById(id).classList.remove('err'));
   ['err-hp','err-pw'].forEach(id => document.getElementById(id).classList.remove('show'));
+  const card = document.getElementById('login-card');
+  if (card) card.classList.remove('shake');
 }
 
 async function tryLogin() {
@@ -407,26 +462,43 @@ async function tryLogin() {
   alertEl.classList.add('show');
   document.getElementById('inp-hp').classList.add('err');
   document.getElementById('inp-pw').classList.add('err');
+  const card = document.getElementById('login-card');
+  if (card) { card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake'); }
 }
 
 function renderOrdersList() {
   const statusLabel = {sent:'נשלחה', process:'בטיפול', new:'חדשה'};
   const statusClass  = {sent:'st-sent', process:'st-process', new:'st-new'};
-  // משלב הזמנות בזמן-ריצה עם הזמנות ששמורות ב-localStorage
+  const dotClass    = {sent:'or-dot-sent', process:'or-dot-process', new:'or-dot-new'};
+  const statusMark  = {sent:'✓ ', process:'', new:''};
   const saved = JSON.parse(localStorage.getItem('led_orders')||'[]')
     .filter(o => o.clientHp === myHP)
     .map(o => ({num:o.num, desc:o.product + (o.color?' · '+o.color:''), date:o.date, status:o.status}));
   const all = [...me.orders, ...saved.filter(s => !me.orders.find(r => r.num === s.num))];
   const oEl = document.getElementById('p-orders');
+
+  // update order count in header
+  const hd = document.getElementById('orders-hd');
+  if (hd) hd.innerHTML = `הזמנות אחרונות${all.length?' <span class="ord-count">'+all.length+'</span>':''}`;
+
   oEl.innerHTML = all.length
-    ? all.map(o => `
-        <div class="order-row">
-          <div class="or-num">${esc(o.num)}</div>
-          <div class="or-desc">${esc(o.desc)}</div>
-          <div class="or-date">${esc(o.date)}</div>
-          <div class="or-status ${statusClass[o.status]||'st-new'}">${statusLabel[o.status]||esc(o.status)}</div>
+    ? all.slice().reverse().map(o => `
+        <div class="order-row" style="align-items:flex-start">
+          <div class="or-dot ${dotClass[o.status]||'or-dot-new'}"></div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;flex-wrap:wrap;margin-bottom:2px">
+              <span class="or-num">${esc(o.num)}</span>
+              <span class="or-status ${statusClass[o.status]||'st-new'}">${statusMark[o.status]||''}${statusLabel[o.status]||esc(o.status)}</span>
+            </div>
+            <div class="or-desc">${esc(o.desc)}</div>
+            <div class="or-date" style="margin-top:2px">${esc(o.date)}</div>
+          </div>
         </div>`).join('')
-    : '<div class="empty-state">אין הזמנות עדיין<br><small>ההזמנה הראשונה שלך תופיע כאן</small></div>';
+    : `<div style="text-align:center;padding:2rem 1rem;color:var(--muted)">
+        <div style="font-size:1.8rem;margin-bottom:0.5rem;opacity:0.25">&#8212;</div>
+        <div style="font-size:0.85rem;font-weight:600">אין הזמנות עדיין</div>
+        <div style="font-size:0.74rem;margin-top:0.2rem">הזמנה שתגיש תופיע כאן</div>
+       </div>`;
   const open = all.filter(o => o.status !== 'sent').length;
   document.getElementById('s-orders').textContent = all.length || '—';
   document.getElementById('s-open').textContent   = open || '—';
@@ -440,7 +512,9 @@ function doLogin(silent) {
   document.getElementById('nav-avatar').textContent  = me.name.charAt(0);
   document.getElementById('nav-uname').textContent   = me.name.split(' ')[0];
   document.getElementById('p-name').textContent      = me.name;
-  document.getElementById('p-hp').textContent        = 'ח.פ / ע.מ: ' + myHP;
+  document.getElementById('p-hp').textContent        = 'ח.פ: ' + myHP;
+  const grEl = document.getElementById('p-greeting');
+  if (grEl) grEl.textContent = getGreeting();
 
   document.getElementById('s-disc').textContent     = me.role === 'admin' ? 'מנהל' : (me.discount + '%');
   document.getElementById('p-disc-val').textContent = me.role === 'admin'
@@ -545,6 +619,22 @@ function showToast(msg) {
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function togglePw(inputId, btnId) {
+  const inp = document.getElementById(inputId);
+  const btn = document.getElementById(btnId);
+  if (!inp || !btn) return;
+  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = 'הסתר'; }
+  else { inp.type = 'password'; btn.textContent = 'הצג'; }
+}
+
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h < 6)  return 'לילה טוב,';
+  if (h < 12) return 'בוקר טוב,';
+  if (h < 17) return 'צהריים טובים,';
+  return 'ערב טוב,';
 }
 </script>
 </body>
