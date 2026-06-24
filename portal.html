@@ -176,8 +176,9 @@ nav{background:var(--navy);padding:0 1.5rem;height:64px;display:flex;align-items
 </style>
 </head>
 <body>
+<a href="#main-content" class="skip-link" style="position:absolute;top:-40px;right:0;background:var(--navy);color:#fff;padding:0.5rem 1rem;border-radius:0 0 6px 6px;font-size:0.82rem;font-weight:700;transition:top 0.2s;z-index:9999" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">דלג לתוכן הראשי</a>
 
-<nav>
+<nav role="navigation" aria-label="ניווט ראשי">
   <a href="ledtech.html" class="logo">
     <span class="logo-name">jacob <span>group</span></span>
     <span class="logo-brand">LED IT BE</span>
@@ -197,7 +198,7 @@ nav{background:var(--navy);padding:0 1.5rem;height:64px;display:flex;align-items
 </nav>
 
 <!-- LOGIN -->
-<div id="page-login" class="page active">
+<div id="page-login" class="page active" id="main-content">
   <div class="login-wrap">
     <div class="login-grid"></div>
     <div class="login-card" id="login-card">
@@ -207,20 +208,20 @@ nav{background:var(--navy);padding:0 1.5rem;height:64px;display:flex;align-items
       </div>
       <div class="login-sub">פורטל לקוחות מורשים בלבד</div>
       <div style="text-align:center"><div class="login-badge">🔐 כניסה מאובטחת</div></div>
-      <div class="login-alert" id="login-alert">מספר ח.פ או סיסמה שגויים. נסה שנית.</div>
+      <div class="login-alert" id="login-alert" role="alert" aria-live="polite">מספר ח.פ או סיסמה שגויים. נסה שנית.</div>
       <div class="field">
-        <label>מספר ח.פ / ע.מ</label>
-        <input type="text" id="inp-hp" placeholder="000000000" maxlength="9" oninput="clearErr()" onkeydown="if(event.key==='Enter')tryLogin()">
+        <label for="inp-hp">מספר ח.פ / ע.מ</label>
+        <input type="text" id="inp-hp" placeholder="000000000" maxlength="9" inputmode="numeric" pattern="[0-9]*" autocomplete="username" oninput="clearErr()" onkeydown="if(event.key==='Enter')tryLogin()">
         <div class="hint">מספר ח.פ בן 9 ספרות</div>
-        <div class="err-msg" id="err-hp">נא להזין מספר ח.פ תקין (9 ספרות)</div>
+        <div class="err-msg" id="err-hp" role="alert">נא להזין מספר ח.פ תקין (9 ספרות)</div>
       </div>
       <div class="field">
-        <label>סיסמה</label>
+        <label for="inp-pw">סיסמה</label>
         <div class="pw-wrap">
-          <input type="password" id="inp-pw" placeholder="••••••••" style="padding-left:2.7rem" oninput="clearErr()" onkeydown="if(event.key==='Enter')tryLogin()">
+          <input type="password" id="inp-pw" placeholder="••••••••" style="padding-left:2.7rem" autocomplete="current-password" oninput="clearErr()" onkeydown="if(event.key==='Enter')tryLogin()">
           <button class="pw-eye" type="button" id="inp-pw-btn" onclick="togglePw('inp-pw','inp-pw-btn')" tabindex="-1" aria-label="הצג/הסתר סיסמה">הצג</button>
         </div>
-        <div class="err-msg" id="err-pw">נא להזין סיסמה</div>
+        <div class="err-msg" id="err-pw" role="alert">נא להזין סיסמה</div>
       </div>
       <button class="btn-login" id="btn-login" onclick="tryLogin()">כניסה לאזור הלקוח</button>
       <div class="login-footer">
@@ -276,8 +277,8 @@ nav{background:var(--navy);padding:0 1.5rem;height:64px;display:flex;align-items
 
       <div class="portal-card">
         <div class="pc-hd">הגש הזמנה חדשה</div>
-        <label class="nof-label">מוצר</label>
-        <select class="nof-select" id="o-prod">
+        <label class="nof-label" for="o-prod">מוצר</label>
+        <select class="nof-select" id="o-prod" onchange="updateOrderSummary()">
           <option value="">בחר מוצר...</option>
           <option>JDS 6616B — DC12/24V · 1.08W</option>
           <option>JDS 4116B — DC12/24V · 0.72W</option>
@@ -286,18 +287,20 @@ nav{background:var(--navy);padding:0 1.5rem;height:64px;display:flex;align-items
           <option>MFW8G5D — AC220V · 4W Lightbox</option>
           <option>LDW0B6C2-1 — DC24V · 20W Edge</option>
         </select>
-        <label class="nof-label">גוון צבע</label>
+        <label class="nof-label" for="o-color">גוון צבע</label>
         <select class="nof-select" id="o-color">
           <option>Pure White 6500K</option>
           <option>White 4000K</option>
           <option>Warm White 3000K</option>
           <option>Cool White 10000K</option>
         </select>
-        <label class="nof-label">כמות (מינימום 100)</label>
-        <input class="nof-input" type="number" id="o-qty" min="100" step="100" placeholder="100">
-        <label class="nof-label">הערות</label>
-        <textarea class="nof-textarea" id="o-note" placeholder="מועד אספקה נדרש, פרטים נוספים..."></textarea>
-        <button class="btn-full btn-navy" onclick="submitOrder()">📨 שלח הזמנה</button>
+        <label class="nof-label" for="o-qty">כמות <span style="font-weight:400;color:var(--muted)">(מינימום 100 יחידות)</span></label>
+        <input class="nof-input" type="number" id="o-qty" min="100" step="100" placeholder="100" inputmode="numeric" oninput="validateQty(this);updateOrderSummary()">
+        <div id="qty-err" style="display:none;font-size:0.7rem;color:var(--red);margin:-0.4rem 0 0.5rem" role="alert">כמות מינימלית היא 100 יחידות</div>
+        <label class="nof-label" for="o-note">הערות <span id="note-count" style="font-weight:400;color:var(--muted);float:left">0/300</span></label>
+        <textarea class="nof-textarea" id="o-note" maxlength="300" placeholder="מועד אספקה נדרש, פרטים נוספים..." oninput="autoResize(this);updateNoteCount(this)"></textarea>
+        <div id="order-summary" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.85rem;margin-bottom:0.65rem;font-size:0.76rem;color:var(--navy);line-height:1.6"></div>
+        <button class="btn-full btn-navy" id="btn-submit-order" onclick="submitOrder()">שלח הזמנה</button>
       </div>
 
       <div class="portal-card">
@@ -571,7 +574,7 @@ function backToPortal() {
   showPage('portal');
 }
 
-function submitOrder() {
+async function submitOrder() {
   const prod  = document.getElementById('o-prod').value;
   const color = document.getElementById('o-color').value;
   const qty   = parseInt(document.getElementById('o-qty').value);
@@ -579,6 +582,11 @@ function submitOrder() {
 
   if (!prod)      { showToast('נא לבחור מוצר'); return; }
   if (!qty || qty < 100) { showToast('כמות מינימלית: 100 יחידות'); return; }
+
+  const btn = document.getElementById('btn-submit-order');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-dots">שולח</span>';
+  await new Promise(r => setTimeout(r, 700));
 
   const order = {
     id:         Date.now().toString(36).toUpperCase(),
@@ -605,6 +613,13 @@ function submitOrder() {
   document.getElementById('o-prod').value  = '';
   document.getElementById('o-qty').value   = '';
   document.getElementById('o-note').value  = '';
+  document.getElementById('order-summary').style.display = 'none';
+  document.getElementById('qty-err').style.display = 'none';
+  const noteEl = document.getElementById('o-note');
+  noteEl.style.height = '';
+  updateNoteCount(noteEl);
+  btn.disabled = false;
+  btn.textContent = 'שלח הזמנה';
 
   showPage('success');
 }
@@ -619,6 +634,37 @@ function showToast(msg) {
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function validateQty(inp) {
+  const v = parseInt(inp.value);
+  const errEl = document.getElementById('qty-err');
+  if (inp.value && v < 100) errEl.style.display = 'block';
+  else errEl.style.display = 'none';
+}
+
+function autoResize(ta) {
+  ta.style.height = 'auto';
+  ta.style.height = Math.min(ta.scrollHeight, 160) + 'px';
+}
+
+function updateNoteCount(ta) {
+  const el = document.getElementById('note-count');
+  if (el) el.textContent = ta.value.length + '/300';
+}
+
+function updateOrderSummary() {
+  const prod  = document.getElementById('o-prod').value;
+  const qty   = parseInt(document.getElementById('o-qty').value) || 0;
+  const el    = document.getElementById('order-summary');
+  if (!el) return;
+  if (prod && qty >= 100) {
+    const prodShort = prod.split('—')[0].trim();
+    el.style.display = 'block';
+    el.innerHTML = `<strong>סיכום:</strong> ${esc(prodShort)} &nbsp;·&nbsp; ${qty.toLocaleString('he-IL')} יח'`;
+  } else {
+    el.style.display = 'none';
+  }
 }
 
 function togglePw(inputId, btnId) {

@@ -505,14 +505,14 @@
     </ul>
     <a href="portal.html" class="portal-nav-btn">🔐 כניסה ללקוחות</a>
     <button class="lang-btn" onclick="toggleLang()" id="lang-toggle">EN</button>
-    <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="תפריט">
+    <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="פתח/סגור תפריט" aria-expanded="false" aria-controls="mobile-menu">
       <span></span><span></span><span></span>
     </button>
   </div>
 </nav>
 
 <!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobile-menu">
+<div class="mobile-menu" id="mobile-menu" role="navigation" aria-label="תפריט מובייל">
   <a href="#products" onclick="closeMobileMenu()">📦 מוצרים</a>
   <a href="#process" onclick="closeMobileMenu()">🔄 תהליך העבודה</a>
   <a href="#industries" onclick="closeMobileMenu()">🏭 תעשיות</a>
@@ -954,12 +954,18 @@ function toggleLang() {
   }
 }
 function toggleMobileMenu() {
-  document.getElementById('mobile-menu').classList.toggle('open');
-  document.getElementById('hamburger').classList.toggle('open');
+  const menu = document.getElementById('mobile-menu');
+  const btn  = document.getElementById('hamburger');
+  menu.classList.toggle('open');
+  btn.classList.toggle('open');
+  btn.setAttribute('aria-expanded', menu.classList.contains('open'));
 }
 function closeMobileMenu() {
-  document.getElementById('mobile-menu').classList.remove('open');
-  document.getElementById('hamburger').classList.remove('open');
+  const menu = document.getElementById('mobile-menu');
+  const btn  = document.getElementById('hamburger');
+  menu.classList.remove('open');
+  btn.classList.remove('open');
+  btn.setAttribute('aria-expanded', 'false');
 }
 
 // ── SESSION AWARENESS ──
