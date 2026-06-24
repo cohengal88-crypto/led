@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>קטלוג מוצרים – LED IT BE | JDS & Talent LED Modules</title>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0a1628;--accent:#00c8e0;--blue:#0066cc;--surface:#f5f7fa;--border:#dde3ec;--text:#0a1628;--muted:#5a6780;--white:#fff;--gold:#f59e0b;--green:#10b981}
+html{scroll-behavior:smooth}
+body{font-family:'Inter','Assistant',sans-serif;color:var(--text);background:var(--surface);direction:rtl}
+a{text-decoration:none;color:inherit}
+
+/* NAV */
+nav{background:rgba(10,22,40,0.97);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,200,224,0.15)}
+.nav-inner{max-width:1400px;margin:0 auto;padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.logo{display:flex;flex-direction:column;line-height:1;gap:3px;text-decoration:none}
+.logo-name{font-size:1.15rem;font-weight:700;color:#fff;letter-spacing:-0.2px}.logo-name span{color:var(--accent)}
+.logo-brand{font-size:0.52rem;color:rgba(0,200,224,0.6);letter-spacing:2.5px;text-transform:uppercase;font-weight:600}
+.cart-btn{background:var(--accent);color:var(--navy);border:none;padding:0.45rem 1.1rem;border-radius:6px;font-weight:700;font-size:0.85rem;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:0.5rem;white-space:nowrap}
+.cart-count{background:var(--navy);color:var(--accent);border-radius:50%;width:18px;height:18px;font-size:0.68rem;display:inline-flex;align-items:center;justify-content:center;font-weight:700}
+.nav-center{display:flex;align-items:center;gap:0.75rem}
+.filter-pill{padding:0.3rem 0.85rem;border-radius:20px;border:1px solid rgba(255,255,255,0.18);color:rgba(255,255,255,0.65);font-size:0.75rem;cursor:pointer;font-family:inherit;background:transparent;transition:all 0.18s;letter-spacing:0.1px}
+.filter-pill:hover,.filter-pill.active{background:var(--accent);color:var(--navy);border-color:var(--accent);font-weight:700}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#0d2a4a 100%);padding:2.5rem 1.5rem 2rem;text-align:center}
+.hero h1{font-size:clamp(1.5rem,3vw,2.2rem);color:#fff;font-weight:700;margin-bottom:0.5rem}
+.hero h1 span{color:var(--accent)}
+.hero p{color:rgba(255,255,255,0.55);font-size:0.88rem;max-width:550px;margin:0 auto}
+.hero-badges{display:flex;justify-content:center;gap:0.75rem;margin-top:1rem;flex-wrap:wrap}
+.hb{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);padding:0.3rem 0.8rem;border-radius:20px;font-size:0.72rem;font-weight:600}
+
+/* SEARCH */
+.search-bar{background:var(--white);border-bottom:1px solid var(--border);padding:0.75rem 1.5rem;position:sticky;top:64px;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.search-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.search-input{flex:1;padding:0.4rem 0.9rem;border:1.5px solid var(--border);border-radius:20px;font-size:0.82rem;font-family:inherit;outline:none;min-width:180px;max-width:300px}
+.search-input:focus{border-color:var(--accent)}
+.results{font-size:0.75rem;color:var(--muted)}
+
+/* CATALOG GRID */
+.catalog{max-width:1400px;margin:0 auto;padding:1.5rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:1.5rem}
+@media(max-width:860px){.catalog{grid-template-columns:1fr}}
+
+/* PRODUCT SHEET — JDS style */
+.sheet{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow 0.25s,transform 0.25s}
+.sheet:hover{box-shadow:0 12px 36px rgba(0,0,0,0.1);transform:translateY(-2px)}
+.sheet.hidden{display:none}
+
+/* SHEET HEADER */
+.sh-header{padding:0.9rem 1rem 0.7rem;border-bottom:2px solid var(--navy);display:flex;flex-direction:column;gap:0.55rem}
+.sh-certs{display:flex;align-items:center;gap:0.55rem;flex-wrap:wrap}
+.cert-icon{height:22px;display:flex;align-items:center;justify-content:center;background:#f0f2f5;border:1px solid #dde3ec;border-radius:4px;padding:0 6px;font-size:0.6rem;font-weight:800;letter-spacing:0.3px;color:#333;white-space:nowrap}
+.cert-icon.ul{background:#e8f4fd;color:#0055aa;border-color:#b3d4f5}
+.cert-icon.ce{background:#e8f4fd;color:#0055aa;border-color:#b3d4f5}
+.cert-icon.rohs{background:#e8fce8;color:#1a6b1a;border-color:#a8dfa8}
+.cert-icon.pwm{background:#fff8e8;color:#8a6200;border-color:#f5d87a}
+.cert-icon.dc{background:#f0e8ff;color:#5a00c8;border-color:#c8a8f5}
+.cert-icon.ip67{background:#e8f4fd;color:#004488;border-color:#99ccee}
+.cert-icon.ip68{background:#e0f0ff;color:#003366;border-color:#88aadd}
+.cert-icon.ip65{background:#e8f0f8;color:#334466;border-color:#aabbcc}
+.cert-icon.ip20{background:#f5f5f5;color:#555;border-color:#ccc}
+.cert-icon.yr5{background:#fff3e8;color:#8a3a00;border-color:#f5b87a}
+.cert-icon.yr3{background:#fff8f0;color:#9a5000;border-color:#f5cc99}
+.cert-icon.patented{background:#fdf0e8;color:#8a4200;border-color:#f5c090}
+.cert-icon.angle{background:#f8f8f8;color:#333;border-color:#ddd;font-size:0.65rem}
+.sh-brand{font-size:0.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
+.sh-model{font-size:1.3rem;font-weight:800;color:var(--navy);letter-spacing:-0.5px;line-height:1.1}
+.sh-tagline{font-size:0.72rem;color:var(--muted);font-weight:500;margin-top:1px}
+
+/* SHEET BODY — 2 col */
+.sh-body{padding:0.85rem 1rem;display:grid;grid-template-columns:1fr 1fr;gap:0.85rem;align-items:start}
+
+/* LEFT: spec table */
+.spec-block{}
+.spec-title{font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;color:var(--navy);margin-bottom:0.45rem;display:flex;align-items:center;gap:0.35rem}
+.spec-title::before{content:'';width:3px;height:11px;background:var(--accent);border-radius:2px;display:inline-block}
+.spec-table{width:100%;border-collapse:collapse;font-size:0.75rem}
+.spec-table tr{border-bottom:1px solid #f0f2f5}
+.spec-table td:first-child{color:var(--muted);padding:0.28rem 0.4rem 0.28rem 0;white-space:nowrap;width:42%}
+.spec-table td:last-child{font-weight:600;color:var(--navy);padding:0.28rem 0}
+
+/* RIGHT: product image + features */
+.right-block{display:flex;flex-direction:column;gap:0.6rem}
+.prod-img-box{background:#f8f9fb;border:1px solid #eaecf0;border-radius:8px;padding:0.75rem;display:flex;align-items:center;justify-content:center;min-height:80px}
+.prod-img-svg{width:100%;max-width:160px}
+.features-list{list-style:none;display:flex;flex-direction:column;gap:0.25rem}
+.features-list li{font-size:0.7rem;color:var(--muted);line-height:1.45;display:flex;gap:0.35rem}
+.features-list li::before{content:'—';color:var(--accent);flex-shrink:0;font-weight:700}
+
+/* ORDERING TABLE */
+.sh-ordering{padding:0 1rem 0.75rem;border-top:1px solid var(--border);margin-top:0.25rem}
+.ordering-table{width:100%;border-collapse:collapse;font-size:0.7rem;margin-top:0.5rem}
+.ordering-table thead tr{background:var(--navy)}
+.ordering-table th{padding:0.35rem 0.45rem;color:rgba(255,255,255,0.9);font-weight:700;font-size:0.64rem;text-align:right;white-space:nowrap}
+.ordering-table td{padding:0.3rem 0.45rem;border-bottom:1px solid #f0f2f5;text-align:right}
+.ordering-table tr:nth-child(even) td{background:#f8f9fb}
+.ordering-table td:first-child{font-weight:600}
+.lm-val{color:var(--blue);font-weight:700}
+.ip-badge{display:inline-block;background:#e8f4fd;color:#0044aa;font-size:0.6rem;font-weight:700;padding:0.1rem 0.35rem;border-radius:3px}
+
+/* BOTTOM ROW: optical + dimensions + shipping */
+.sh-bottom{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;padding:0.75rem 1rem;border-top:1px solid var(--border);background:#fcfcfd}
+.bottom-block{display:flex;flex-direction:column;gap:0.3rem}
+.bottom-title{font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted)}
+.optical-svg{width:100%;max-width:130px;margin:0 auto;display:block}
+.dim-svg{width:100%;max-width:180px;margin:0 auto;display:block}
+.angle-label{font-size:0.68rem;color:var(--muted);text-align:center;margin-top:0.2rem}
+
+/* SHIPPING ROW */
+.sh-shipping{padding:0.55rem 1rem;background:#f5f7fa;border-top:1px solid var(--border);display:flex;gap:0;font-size:0.68rem}
+.ship-cell{flex:1;text-align:center;border-left:1px solid var(--border);padding:0 0.5rem}
+.ship-cell:last-child{border-left:none}
+.ship-label{color:var(--muted);margin-bottom:0.15rem}
+.ship-val{font-weight:700;color:var(--navy)}
+
+/* FOOTER: add to cart */
+.sh-footer{padding:0.7rem 1rem;border-top:2px solid var(--navy);display:flex;gap:0.6rem;align-items:center}
+.btn-datasheet{background:transparent;border:1.5px solid var(--border);color:var(--muted);padding:0.5rem 0.75rem;border-radius:6px;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s;flex-shrink:0}
+.btn-datasheet:hover{border-color:var(--navy);color:var(--navy)}
+.btn-order{flex:1;background:var(--navy);color:#fff;border:none;padding:0.55rem 0.75rem;border-radius:6px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit;transition:background 0.2s}
+.btn-order:hover{background:#1a3a5c}
+.btn-quote{background:var(--accent);color:var(--navy);border:none;padding:0.55rem 0.9rem;border-radius:6px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity 0.2s;flex-shrink:0}
+.btn-quote:hover{opacity:0.88}
+
+/* CART SIDEBAR */
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:199;display:none}
+.cart-overlay.open{display:block}
+.cart-sidebar{position:fixed;top:0;right:0;width:380px;height:100vh;background:#fff;box-shadow:-8px 0 40px rgba(0,0,0,0.15);z-index:200;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);display:flex;flex-direction:column}
+.cart-sidebar.open{transform:translateX(0)}
+.cart-hdr{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.cart-hdr h3{font-size:0.95rem;font-weight:700}
+.cart-x{background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--muted)}
+.cart-list{flex:1;overflow-y:auto;padding:1rem 1.25rem;display:flex;flex-direction:column;gap:0.6rem}
+.cart-empty{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:0.85rem}
+.ci{display:flex;gap:0.6rem;align-items:flex-start;padding:0.65rem;background:var(--surface);border-radius:8px;border:1px solid var(--border)}
+.ci-body{flex:1}
+.ci-name{font-size:0.8rem;font-weight:700;margin-bottom:0.15rem}
+.ci-spec{font-size:0.68rem;color:var(--muted)}
+.ci-qty{display:flex;align-items:center;gap:0.35rem;margin-top:0.35rem}
+.qb{background:#fff;border:1px solid var(--border);width:20px;height:20px;border-radius:3px;cursor:pointer;font-size:0.8rem;display:flex;align-items:center;justify-content:center}
+.qv{font-size:0.78rem;font-weight:700;min-width:18px;text-align:center}
+.ci-rm{background:none;border:none;cursor:pointer;color:var(--muted);font-size:0.75rem;margin-top:2px;transition:color 0.15s}
+.ci-rm:hover{color:#ef4444}
+.cart-ftr{padding:1rem 1.25rem;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:0.5rem}
+.cart-total{display:flex;justify-content:space-between;font-size:0.85rem;font-weight:700}
+.btn-send{width:100%;background:var(--accent);color:var(--navy);border:none;padding:0.7rem;border-radius:7px;font-weight:700;cursor:pointer;font-family:inherit;font-size:0.85rem}
+.btn-checkout{width:100%;background:var(--navy);color:#fff;border:none;padding:0.65rem;border-radius:7px;font-weight:700;cursor:pointer;font-family:inherit;font-size:0.82rem;margin-top:0.25rem}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(80px);background:#111d2e;color:#fff;padding:0.65rem 1.4rem;border-radius:40px;font-size:0.8rem;font-weight:600;z-index:999;transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.08)}
+.toast.show{transform:translateX(-50%) translateY(0) scale(1)}
+.toast span{color:var(--accent)}
+
+.no-results{grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--muted)}
+.nav-user-chip{display:none;align-items:center;gap:0.5rem;color:rgba(255,255,255,0.85);font-size:0.82rem;text-decoration:none;padding:0.3rem 0.7rem;border-radius:20px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);transition:background 0.2s;white-space:nowrap}
+.nav-user-chip:hover{background:rgba(255,255,255,0.14)}
+.nav-user-chip.visible{display:flex}
+.nav-portal-link{color:rgba(255,255,255,0.6);font-size:0.8rem;text-decoration:none;white-space:nowrap;transition:color 0.2s}
+.nav-portal-link:hover{color:var(--accent)}
+@media(max-width:640px){
+  .nav-inner{padding:0 0.85rem;height:64px;gap:0.5rem}
+  .nav-center{display:none}
+  .cart-sidebar{width:100%;right:0}
+  .cart-btn{padding:0.4rem 0.75rem;font-size:0.78rem}
+  .catalog{padding:1rem 0.85rem;grid-template-columns:1fr;gap:1rem}
+  .search-bar{padding:0.6rem 0.85rem;top:64px}
+  .hero{padding:1.5rem 1rem 1.5rem}
+  .hero h1{font-size:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="ledtech.html" class="logo">
+      <span class="logo-name">jacob <span>group</span></span>
+      <span class="logo-brand">LED IT BE</span>
+    </a>
+    <div class="nav-center">
+      <button class="filter-pill active" onclick="setFilter('all',this)">הכל</button>
+      <button class="filter-pill" onclick="setFilter('signage',this)">Signage</button>
+      <button class="filter-pill" onclick="setFilter('lightbox',this)">Lightbox</button>
+      <button class="filter-pill" onclick="setFilter('edge',this)">Edge</button>
+      <button class="filter-pill" onclick="setFilter('jds',this)">JDS</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.6rem">
+      <a href="portal.html" id="nav-user-chip" class="nav-user-chip">
+        <span id="chip-avatar" style="width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--navy);font-weight:700;font-size:0.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0">?</span>
+        <span id="chip-name"></span>
+      </a>
+      <a href="portal.html" id="nav-portal-link" class="nav-portal-link">🔐 כניסה</a>
+      <button class="cart-btn" onclick="toggleCart()">🛒 סל <span class="cart-count" id="cart-count">0</span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>קטלוג מוצרים <span>LED IT BE</span></h1>
+  <p>JDS Bezel-Free Series · Talent Electronics 2024 — מפרטים טכניים מלאים לכל מוצר</p>
+  <div class="hero-badges">
+    <span class="hb">✓ UL / CE / RoHS</span>
+    <span class="hb">✓ IP65–IP68</span>
+    <span class="hb">✓ אחריות 3–5 שנים</span>
+    <span class="hb">✓ DC 12/24V · AC 110/220V</span>
+    <span class="hb">✓ 16 דגמי מוצרים</span>
+  </div>
+</div>
+
+<!-- SEARCH -->
+<div class="search-bar">
+  <div class="search-inner">
+    <input class="search-input" type="text" placeholder="חיפוש דגם (לדוגמה: 6616B, MFW8A3D...)" oninput="doSearch(this.value)" dir="ltr">
+    <span class="results" id="results-lbl">16 מוצרים</span>
+  </div>
+</div>
+
+<!-- CATALOG GRID -->
+<div class="catalog" id="catalog">
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- JDS 6616B -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="sheet" data-tags="jds signage dc 6616b bezel-free">
+    <div class="sh-header">
+      <div class="sh-certs">
+        <span class="cert-icon ul">cULus E475700</span>
+        <span class="cert-icon ce">CE</span>
+        <span class="cert-icon rohs">RoHS</span>
+        <span class="cert-icon patented">PATENTED</span>
+        <span class="cert-icon pwm">PWM</span>
+        <span class="cert-icon dc">DC 12/24V</span>
+        <span class="cert-icon yr5">5yr WARRANTY</span>
+        <span class="cert-icon ip67">IP67</span>
+        <span class="cert-icon angle">175°</span>
+      </div>
+      <div class="sh-brand">JDS Bezel-Free Series · Signage Lighting</div>
+      <div class="sh-model">6616B</div>
+      <div class="sh-tagline">SPECIALLY DESIGNED FOR MEDIUM-SIZED SIGNS WITH SHALLOW DEPTH (80–120mm)</div>
+    </div>
+    <div class="sh-body">
+      <div class="spec-block">
+        <div class="spec-title">Specifications</div>
+        <table class="spec-table">
+          <tr><td>Input Voltage</td><td>DC12V / 24V</td></tr>
+          <tr><td>Power</td><td>1.08 W/PCS</td></tr>
+          <tr><td>Luminous</td><td>174 lm/W</td></tr>
+          <tr><td>Beam Angle</td><td>175°</td></tr>
+          <tr><td>Waterproof</td><td>IP67</td></tr>
+          <tr><td>Size</td><td>66 × 16 × 9 mm</td></tr>
+          <tr><td>Operating Temp.</td><td>−20°C ~ +50°C</td></tr>
+          <tr><td>Storage Temp.</td><td>−30°C ~ +80°C</td></tr>
+          <tr><td>Cascade QTY</td><td>20 mods single / 50 mods double</td></tr>
+          <tr><td>Warranty</td><td>5 Years</td></tr>
+        </table>
+      </div>
+      <div class="right-block">
+        <div class="prod-img-box">
+          <svg class="prod-img-svg" viewBox="0 0 200 60" fill="none">
+            <rect x="2" y="18" width="196" height="24" rx="5" fill="#f0f2f5" stroke="#ccd0d8" stroke-width="1.2"/>
+            <circle cx="35" cy="30" r="9" fill="#e8f0ff" stroke="#6699cc" stroke-width="1.2"/>
+            <circle cx="35" cy="30" r="5" fill="#4477cc" opacity="0.7"/>
+            <circle cx="80" cy="30" r="9" fill="#e8f0ff" stroke="#6699cc" stroke-width="1.2"/>
+            <circle cx="80" cy="30" r="5" fill="#4477cc" opacity="0.7"/>
+            <circle cx="125" cy="30" r="9" fill="#e8f0ff" stroke="#6699cc" stroke-width="1.2"/>
+            <circle cx="125" cy="30" r="5" fill="#4477cc" opacity="0.7"/>
+            <circle cx="170" cy="30" r="9" fill="#e8f0ff" stroke="#6699cc" stroke-width="1.2"/>
+            <circle cx="170" cy="30" r="5" fill="#4477cc" opacity="0.7"/>
+            <line x1="2" y1="30" x2="26" y2="30" stroke="#e00" stroke-width="1.2"/>
+            <line x1="198" y1="25" x2="180" y2="25" stroke="#fff" stroke-width="1"/>
+            <text x="100" y="54" text-anchor="middle" fill="#999" font-size="7">66mm × 16mm × 9mm</text>
+          </svg>
+        </div>
+        <ul class="features-list">
+          <li>New technology — high efficiency 170 lm/W</li>
+          <li>For signs with depth 80–120mm</li>
+          <li>High efficacy LED chips, max brightness</li>
+          <li>Premium components for stability</li>
+          <li>Great heat dissipation — long life</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sh-ordering">
+      <div class="spec-title">Ordering Guide</div>
+      <table class="ordering-table">
+        <thead><tr><th>Color</th><th>Color Temp</th><th>Lumens</th><th>Lm/W</th><th>Input</th><th>W/Mod</th><th>Waterproof</th></tr></thead>
+        <tbody>
+          <tr><td>Cool White</td><td>10000K</td><td class="lm-val">180±3 lm/pc</td><td>160 lm/W</td><td>DC12/24V</td><td>1.08W</td><td><span class="ip-badge">IP67</span></td></tr>
+          <tr><td>Pure White</td><td>6500K</td><td class="lm-val">180±3 lm/pc</td><td>160 lm/W</td><td>DC12/24V</td><td>1.08W</td><td><span class="ip-badge">IP67</span></td></tr>
+          <tr><td>Warm White</td><td>3000K</td><td class="lm-val">180±3 lm/pc</td><td>170 lm/W</td><td>DC12/24V</td><td>1.08W</td><td><span class="ip-badge">IP67</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="sh-bottom">
+      <div class="bottom-block">
+        <div class="bottom-title">Optical Data Distribution</div>
+        <svg class="optical-svg" viewBox="0 0 140 100" fill="none">
+          <path d="M70 90 L10 10 Q70 50 130 10 Z" fill="rgba(255,200,50,0.15)" stroke="#f59e0b" stroke-width="1"/>
+          <path d="M70 90 L25 20 Q70 55 115 20 Z" fill="rgba(255,200,50,0.1)" stroke="#f59e0b" stroke-width="0.5" stroke-dasharray="2,2"/>
+          <line x1="70" y1="90" x2="70" y2="5" stroke="#999" stroke-width="0.5"/>
+          <line x1="10" y1="90" x2="130" y2="90" stroke="#999" stroke-width="0.5"/>
+          <text x="70" y="99" text-anchor="middle" fill="#666" font-size="8">0°</text>
+          <text x="8" y="14" fill="#666" font-size="7">90°</text>
+          <text x="124" y="14" fill="#666" font-size="7">90°</text>
+          <text x="70" y="82" text-anchor="middle" fill="#f59e0b" font-size="7" font-weight="700">Beam angle: 175°</text>
+        </svg>
+      </div>
+      <div class="bottom-block">
+        <div class="bottom-title">Product Dimension</div>
+        <svg class="dim-svg" viewBox="0 0 200 80" fill="none">
+          <rect x="15" y="20" width="170" height="18" rx="3" fill="#f0f2f5" stroke="#aab0bc" stroke-width="1"/>
+          <rect x="15" y="38" width="170" height="10" rx="2" fill="#e5e8ee" stroke="#aab0bc" stroke-width="0.8"/>
+          <line x1="15" y1="13" x2="185" y2="13" stroke="#666" stroke-width="0.5" marker-start="url(#arr)" marker-end="url(#arr)"/>
+          <text x="100" y="10" text-anchor="middle" fill="#333" font-size="7">150 mm / 5.9 inch</text>
+          <line x1="30" y1="52" x2="90" y2="52" stroke="#666" stroke-width="0.5"/>
+          <text x="60" y="62" text-anchor="middle" fill="#333" font-size="7">66mm / 2.60inch</text>
+          <text x="5" y="32" fill="#555" font-size="6" transform="rotate(-90,5,32)">16mm</text>
+          <text x="5" y="47" fill="#555" font-size="6" transform="rotate(-90,5,47)">9mm</text>
+        </svg>
+      </div>
+    </div>
+    <div class="sh-shipping">
+      <div class="ship-cell"><div class="ship-label">Cascade</div><div class="ship-val">20 pcs</div></div>
+      <div class="ship-cell"><div class="ship-label">Bag</div><div class="ship-val">100 pcs</div></div>
+      <div class="ship-cell"><div class="ship-label">Box</div><div class="ship-val">2500 pcs</div></div>
+      <div class="ship-cell"><div class="ship-label">Weight</div><div class="ship-val">21 kg</div></div>
+      <div class="ship-cell"><div class="ship-label">Dimension</div><div class="ship-val">50×35×30cm</div></div>
+    </div>
+    <div class="sh-footer">
+      <button class="btn-datasheet" onclick="alert('PDF: JDS 6616B Datasheet')">📄 Datasheet</button>
+      <button class="btn-order" onclick="addToCart('JDS 6616B','DC 12/24V · 1.08W · 174lm/W · IP67 · 66×16×9mm')">הוסף לסל הזמנות</button>
+      <button class="btn-quote" onclick="addToCart('JDS 6616B','DC 12/24V · 1.08W · 174lm/W · IP67')">💬 הצעת מחיר</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- JDS 4116B -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="sheet" data-tags="jds signage dc 4116b bezel-free">
+    <div class="sh-header">
+      <div class="sh-certs">
+        <span class="cert-icon ul">cULus E475700</span>
+        <span class="cert-icon ce">CE</span>
+        <span class="cert-icon rohs">RoHS</span>
+        <span class="cert-icon patented">PATENTED</span>
+        <span class="cert-icon pwm">PWM</span>
+        <span class="cert-icon dc">DC 12/24V</span>
+        <span class="cert-icon yr5">5yr WARRANTY</span>
+        <span class="cert-icon ip67">IP67</span>
+        <span class="cert-icon angle">175°</span>
+      </div>
+      <div class="sh-brand">JDS Bezel-Free Series · Signage Lighting</div>
+      <div class="sh-model">4116B</div>
+      <div class="sh-tagline">SPECIALLY DESIGNED FOR MEDIUM-SIZED SIGNS WITH SHALLOW DEPTH (50–80mm)</div>
+    </div>
+    <div class="sh-body">
+      <div class="spec-block">
+        <div class="spec-title">Specifications</div>
+        <table class="spec-table">
+          <tr><td>Input Voltage</td><td>DC12V / 24V</td></tr>
+          <tr><td>Power</td><td>0.72 W/PCS</td></tr>
+          <tr><td>Luminous</td><td>174 lm/W</td></tr>
+          <tr><td>Beam Angle</td><td>175°</td></tr>
+          <tr><td>Waterproof</td><td>IP67</td></tr>
+          <tr><td>Size</td><td>41 × 16 × 9 mm</td></tr>
+          <tr><td>Operating Temp.</td><td>−20°C ~ +50°C</td></tr>
+          <tr><td>Storage Temp.</td><td>−30°C ~ +80°C</td></tr>
+          <tr><td>Cascade QTY</td><td>20 mods single / 50 mods double</td></tr>
+          <tr><td>Warranty</td><td>5 Years</td></tr>
+        </table>
+      </div>
+      <div class="right-block">
+        <div class="prod-img-box">
+          <svg class="prod-img-svg" viewBox="0 0 160 60" fill="none">
+            <rect x="2" y="18" width="156" height="24" rx="5" fill="#f0f2f5" stroke="#ccd0d8" stroke-width="1.2"/>
+            <circle cx="35" cy="30" r="9" fill="#e8f0ff" stroke="#6699cc" stroke-width="1.2"/>
+            <circle cx="35" cy="30" r="5" fill="#4477cc" opacity="0.7"/>
+            <circle cx="95" cy="30" r="9" fill="#e8f0ff" stroke="#6699cc" stroke-width="1.2"/>
+            <circle cx="95" cy="30" r="5" fill="#4477cc" opacity="0.7"/>
+            <line x1="2" y1="30" x2="26" y2="30" stroke="#e00" stroke-width="1.2"/>
+            <line x1="158" y1="25" x2="140" y2="25" stroke="#fff" stroke-width="1"/>
+            <text x="80" y="54" text-anchor="middle" fill="#999" font-size="7">41mm × 16mm × 9mm</text>
+          </svg>
+        </div>
+        <ul class="features-list">
+          <li>New technology — high efficiency 170 lm/W</li>
+          <li>For signs with depth 50–80mm</li>
+          <li>Compact 2-LED module design</li>
+          <li>Premium components for stability</li>
+          <li>Great heat dissipation — long life</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sh-ordering">
+      <div class="spec-title">Ordering Guide</div>
+      <table class="ordering-table">
+        <thead><tr><th>Color</th><th>Color Temp</th><th>Lumens</th><th>Lm/W</th><th>Input</th><th>W/Mod</th><th>Waterproof</th></tr></thead>
+        <tbody>
+          <tr><td>Cool White</td><td>10000K</td><td class="lm-val">120±3 lm/pc</td><td>160 lm/W</td><td>DC12/24V</td><td>0.72W</td><td><span class="ip-badge">IP67</span></td></tr>
+          <tr><td>Pure White</td><td>6500K</td><td class="lm-val">120±3 lm/pc</td><td>170 lm/W</td><td>DC12/24V</td><td>0.72W</td><td><span class="ip-badge">IP67</span></td></tr>
+          <tr><td>Warm White</td><td>3000K</td><td class="lm-val">120±3 lm/pc</td><td>170 lm/W</td><td>DC12/24V</td><td>0.72W</td><td><span class="ip-badge">IP67</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="sh-bottom">
+      <div class="bottom-block">
+        <div class="bottom-title">Optical Data Distribution</div>
+        <svg class="optical-svg" viewBox="0 0 140 100" fill="none">
+          <path d="M70 90 L10 10 Q70 50 130 10 Z" fill="rgba(255,200,50,0.15)" stroke="#f59e0b" stroke-width="1"/>
+          <path d="M70 90 L25 20 Q70 55 115 20 Z" fill="rgba(255,200,50,0.1)" stroke="#f59e0b" stroke-width="0.5" stroke-dasharray="2,2"/>
+          <line x1="70" y1="90" x2="70" y2="5" stroke="#999" stroke-width="0.5"/>
+          <line x1="10" y1="90" x2="130" y2="90" stroke="#999" stroke-width="0.5"/>
+          <text x="70" y="99" text-anchor="middle" fill="#666" font-size="8">0°</text>
+          <text x="8" y="14" fill="#666" font-size="7">90°</text>
+          <text x="124" y="14" fill="#666" font-size="7">90°</text>
+          <text x="70" y="82" text-anchor="middle" fill="#f59e0b" font-size="7" font-weight="700">Beam angle: 175°</text>
+        </svg>
+      </div>
+      <div class="bottom-block">
+        <div class="bottom-title">Product Dimension</div>
+        <svg class="dim-svg" viewBox="0 0 200 80" fill="none">
+          <rect x="30" y="20" width="140" height="18" rx="3" fill="#f0f2f5" stroke="#aab0bc" stroke-width="1"/>
+          <rect x="30" y="38" width="140" height="10" rx="2" fill="#e5e8ee" stroke="#aab0bc" stroke-width="0.8"/>
+          <line x1="30" y1="13" x2="170" y2="13" stroke="#666" stroke-width="0.5"/>
+          <text x="100" y="10" text-anchor="middle" fill="#333" font-size="7">120 mm / 4.7 inch</text>
+          <line x1="50" y1="52" x2="90" y2="52" stroke="#666" stroke-width="0.5"/>
+          <text x="70" y="62" text-anchor="middle" fill="#333" font-size="7">41mm / 1.61inch</text>
+          <text x="18" y="32" fill="#555" font-size="6" transform="rotate(-90,18,32)">16mm</text>
+        </svg>
+      </div>
+    </div>
+    <div class="sh-shipping">
+      <div class="ship-cell"><div class="ship-label">Cascade</div><div class="ship-val">20 pcs</div></div>
+      <div class="ship-cell"><div class="ship-label">Bag</div><div class="ship-val">100 pcs</div></div>
+      <div class="ship-cell"><div class="ship-label">Box</div><div class="ship-val">2500 pcs</div></div>
+      <div class="ship-cell"><div class="ship-label">Weight</div><div class="ship-val">15 kg</div></div>
+      <div class="ship-cell"><div class="ship-label">Dimension</div><div class="ship-val">50×35×30cm</div></div>
+    </div>
+    <div class="sh-footer">
+      <button class="btn-datasheet" onclick="alert('PDF: JDS 4116B Datasheet')">📄 Datasheet</button>
+      <button class="btn-order" onclick="addToCart('JDS 4116B','DC 12/24V · 0.72W · 174lm/W · IP67 · 41×16×9mm')">הוסף לסל הזמנות</button>
+      <button class="btn-quote" onclick="addToCart('JDS 4116B','DC 12/24V · 0.72W · 174lm/W · IP67')">💬 הצעת מחיר</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- MFW8A3D — Talent 2.5W AC220V HIGH POWER -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="sheet" data-tags="talent signage ac mfw8a3d">
+    <div class="sh-header">
+      <div class="sh-certs">
+        <span class="cert-icon ul">cULus</span>
+        <span class="cert-icon ce">CE</span>
+        <span class="cert-icon rohs">RoHS</span>
+        <span class="cert-icon pwm">LM80</span>
+        <span class="cert-icon dc" style="background:#fff3e8;color:#8a4200;border-color:#f5c090">AC 220V</span>
+        <span class="cert-icon yr5">5yr WARRANTY</span>
+        <span class="cert-icon ip67">IP67</span>
+        <span class="cert-icon angle">160°</span>
+      </div>
+      <div class="sh-brand">Talent Electronics · Signage Lighting · Bezel-Free</div>
+      <div class="sh-model">MFW8A3D</div>
+      <div class="sh-tagline">AC220V DIRECT INPUT · HIGH POWER 2.5W · 200 lm/W · PF&gt;0.9</div>
+    </div>
+    <div class="sh-body">
+      <div class="spec-block">
+        <div class="spec-title">Specifications</div>
+        <table class="spec-table">
+          <tr><td>Input Voltage</td><td>AC220–240V 50/60Hz</td></tr>
+          <tr><td>Power</td><td>2.5 W/mod</td></tr>
+          <tr><td>Luminous Efficacy</td><td>200 lm/W</td></tr>
+          <tr><td>Beam Angle</td><td>160°</td></tr>
+          <tr><td>Waterproof</td><td>IP67</td></tr>
+          <tr><td>Modules Density</td><td>5 pcs/m (1.5 pcs/ft)</td></tr>
+          <tr><td>Power Factor</td><td>&gt;0.9</td></tr>
+          <tr><td>Optical Lens</td><td>155°</td></tr>
+          <tr><td>Operating Temp.</td><td>−25°C ~ +60°C</td></tr>
+          <tr><td>Cascade QTY</td><td>50 mods single-ended</td></tr>
+          <tr><td>Back Tape</td><td>3M Tape</td></tr>
+          <tr><td>Warranty</td><td>5 Years</td></tr>
+        </table>
+      </div>
+      <div class="right-block">
+        <div class="prod-img-box">
+          <svg class="prod-img-svg" viewBox="0 0 210 65" fill="none">
+            <rect x="2" y="16" width="206" height="28" rx="5" fill="#fafafa" stroke="#ccd0d8" stroke-width="1.2"/>
+            <rect x="15" y="19" width="30" height="22" rx="3" fill="#f0f4ff" stroke="#6699cc" stroke-width="1"/>
+            <circle cx="30" cy="30" r="7" fill="#ddeaff" stroke="#4477cc" stroke-width="1.2"/>
+            <circle cx="30" cy="30" r="4" fill="#4477cc" opacity="0.8"/>
+            <rect x="55" y="19" width="30" height="22" rx="3" fill="#f0f4ff" stroke="#6699cc" stroke-width="1"/>
+            <circle cx="70" cy="30" r="7" fill="#ddeaff" stroke="#4477cc" stroke-width="1.2"/>
+            <circle cx="70" cy="30" r="4" fill="#4477cc" opacity="0.8"/>
+            <rect x="95" y="19" width="30" height="22" rx="3" fill="#f0f4ff" stroke="#6699cc" stroke-width="1"/>
+            <circle cx="110" cy="30" r="7" fill="#ddeaff" stroke="#4477cc" stroke-width="1.2"/>
+            <circle cx="110" cy="30" r="4" fill="#4477cc" opacity="0.8"/>
+            <line x1="2" y1="27" x2="15" y2="27" stroke="#e00" stroke-width="1.2"/>
+            <line x1="208" y1="27" x2="196" y2="27" stroke="#fff" stroke-width="1"/>
+            <text x="105" y="57" text-anchor="middle" fill="#999" font-size="7">AC 220V · 2.5W/mod · 3 LED · PF&gt;0.9</text>
+          </svg>
+        </div>
+        <ul class="features-list">
+          <li>AC220V direct — no power supply needed</li>
+          <li>200 lm/W highest efficacy in range</li>
+          <li>155° optical lens design</li>
+          <li>Constant current circuit, OTP & short circuit protection</li>
+          <li>Fire-resistant UL94V-0 material</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sh-ordering">
+      <div class="spec-title">Ordering Guide</div>
+      <table class="ordering-table">
+        <thead><tr><th>Color</th><th>Color Temp</th><th>Module/M</th><th>Lumens</th><th>Lm/W</th><th>W/Mod</th><th>Waterproof</th></tr></thead>
+        <tbody>
+          <tr><td>Pure White</td><td>6500K</td><td>5 pcs/M</td><td class="lm-val">200±5 lm/pc</td><td>80 lm/W</td><td>2.5W</td><td><span class="ip-badge">IP67</span></td></tr>
+          <tr><td>White</td><td>4000K</td><td>5 pcs/M</td><td class="lm-val">190±5 lm/pc</td><td>83 lm/W</td><td>2.5W</td><td><span class="ip-badge">IP67</span></td></tr>
+          <tr><td>Warm White</td><td>3000K</td><td>5 pcs/M</td><td class="lm-val">180±5 lm/pc</td><td>81 lm/W</td><td>2.5W</td><td><span class="ip-badge">IP67</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="sh-bottom">
+      <div class="bottom-block">
+        <div class="bottom-title">Optical Data Distribution</div>
+        <svg class="optical-svg" viewBox="0 0 140 100" fill="none">
+          <path d="M70 90 L12 12 Q70 52 128 12 Z" fill="rgba(255,200,50,0.15)" stroke="#f59e0b" stroke-width="1"/>
+          <line x1="70" y1="90" x2="70" y2="5" stroke="#999" stroke-width="0.5"/>
+          <line x1="10" y1="90" x2="130" y2="90" stroke="#999" stroke-width="0.5"/>
+          <text x="70" y="82" text-anchor="middle" fill="#f59e0b" font-size="7" font-weight="700">Beam angle: 160°</text>
+        </svg>
+      </div>
+      <div class="bottom-block">
+        <div class="bottom-title">Power Supply Loading</div>
+        <table style="width:100%;font-size:0.67rem;border-collapse:collapse">
+          <tr style="background:#f0f2f5"><td style="padding:0.2rem 0.4rem;font-weight:700">PSU</td><td style="padding:0.2rem 0.4rem">35W</td><td style="padding:0.2rem 0.4rem">60W</td><td style="padding:0.2rem 0.4rem">100W</td><td style="padding:0.2rem 0.4rem">150W</td></tr>
+          <tr><td style="padding:0.2rem 0.4rem;color:var(--muted)">By mod</td><td style="padding:0.2rem 0.4rem">23</td><td style="padding:0.2rem 0.4rem">40</td><td style="padding:0.2rem 0.4rem">67</td><td style="padding:0.2rem 0.4rem">100</td></tr>
+          <tr style="background:#f0f2f5"><td style="padding:0.2rem 0.4rem;color:var(--muted)">By meter</td><td style="padding:0.2rem 0.4rem">4.7m</td><td style="padding:0.2rem 0.4rem">8.0m</td><td style="padding:0.2rem 0.4rem">13.3m</td><td style="padding:0.2rem 0.4rem">20m</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="sh-shipping">
+      <div class="ship-cell"><div class="ship-label">Cascade</div><div class="ship-val">50 mods</div></div>
+      <div class="ship-cell"><div class="ship-label">Back Tape</div><div class="ship-val">3M</div></div>
+      <div class="ship-cell"><div class="ship-label">IP</div><div class="ship-val">IP67 / IP68</div></div>
+      <div class="ship-cell"><div class="ship-label">Warranty</div><div class="ship-val">5 Years</div></div>
+      <div class="ship-cell"><div class="ship-label">Certs</div><div class="ship-val">UL CE RoHS LM80</div></div>
+    </div>
+    <div class="sh-footer">
+      <button class="btn-datasheet" onclick="alert('PDF: MFW8A3D Datasheet')">📄 Datasheet</button>
+      <button class="btn-order" onclick="addToCart('MFW8A3D','AC 220V · 2.5W · 200lm/W · IP67')">הוסף לסל הזמנות</button>
+      <button class="btn-quote" onclick="addToCart('MFW8A3D','AC 220V · 2.5W · 200lm/W · IP67')">💬 הצעת מחיר</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- MFW1H7D1/D2 DC 170lm/W -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="sheet" data-tags="talent signage dc mfw1h7d">
+    <div class="sh-header">
+      <div class="sh-certs">
+        <span class="cert-icon ul">cULus</span>
+        <span class="cert-icon ce">CE</span>
+        <span class="cert-icon rohs">RoHS</span>
+        <span class="cert-icon dc">DC 12/24V</span>
+        <span class="cert-icon yr5">5yr WARRANTY</span>
+        <span class="cert-icon ip68">IP68</span>
+        <span class="cert-icon angle">170°</span>
+      </div>
+      <div class="sh-brand">Talent Electronics · Signage Lighting DC · Bezel-Free S-D 3:1</div>
+      <div class="sh-model">MFW1H7D1 (DC12V) / MFW1H7D2 (DC24V)</div>
+      <div class="sh-tagline">DC 12V/24V · 170 lm/W · IP68 · COMPACT FOR SMALL CHANNEL LETTERS</div>
+    </div>
+    <div class="sh-body">
+      <div class="spec-block">
+        <div class="spec-title">Specifications</div>
+        <table class="spec-table">
+          <tr><td>Input Voltage</td><td>DC12V / DC24V</td></tr>
+          <tr><td>Power</td><td>0.6 W/mod</td></tr>
+          <tr><td>Luminous Efficacy</td><td>170 lm/W</td></tr>
+          <tr><td>Beam Angle</td><td>170°</td></tr>
+          <tr><td>Waterproof</td><td>IP68</td></tr>
+          <tr><td>Modules Density</td><td>4 pcs/m (1.2 pcs/ft)</td></tr>
+          <tr><td>Operating Temp.</td><td>−25°C ~ +60°C</td></tr>
+          <tr><td>Storage Temp.</td><td>−25°C ~ +70°C</td></tr>
+          <tr><td>Cascade QTY</td><td>25 mods single / 50 mods double</td></tr>
+          <tr><td>Back Tape</td><td>3M Tape</td></tr>
+          <tr><td>Warranty</td><td>5 Years</td></tr>
+        </table>
+      </div>
+      <div class="right-block">
+        <div class="prod-img-box">
+          <svg class="prod-img-svg" viewBox="0 0 200 60" fill="none">
+            <rect x="2" y="18" width="196" height="24" rx="5" fill="#f0f2f5" stroke="#ccd0d8" stroke-width="1.2"/>
+            <circle cx="40" cy="30" r="9" fill="#edf4ff" stroke="#4488cc" stroke-width="1.5"/>
+            <circle cx="40" cy="30" r="5" fill="#3366bb" opacity="0.85"/>
+            <circle cx="100" cy="30" r="9" fill="#edf4ff" stroke="#4488cc" stroke-width="1.5"/>
+            <circle cx="100" cy="30" r="5" fill="#3366bb" opacity="0.85"/>
+            <circle cx="160" cy="30" r="9" fill="#edf4ff" stroke="#4488cc" stroke-width="1.5"/>
+            <circle cx="160" cy="30" r="5" fill="#3366bb" opacity="0.85"/>
+            <line x1="2" y1="28" x2="30" y2="28" stroke="#e00" stroke-width="1.2"/>
+            <text x="100" y="55" text-anchor="middle" fill="#aaa" font-size="7">DC 12/24V · 0.6W · IP68 · 170lm/W</text>
+          </svg>
+        </div>
+        <ul class="features-list">
+          <li>IP68 — full waterproof protection</li>
+          <li>Compact for small channel letters 5–12cm</li>
+          <li>170 lm/W impressive efficacy</li>
+          <li>DC12V or DC24V — flexible connection</li>
+          <li>5 year warranty</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sh-ordering">
+      <div class="spec-title">Ordering Guide</div>
+      <table class="ordering-table">
+        <thead><tr><th>Part#</th><th>Color</th><th>Color Temp</th><th>Module/M</th><th>Lumens</th><th>Lm/W</th><th>W/Mod</th><th>IP</th></tr></thead>
+        <tbody>
+          <tr><td>MFW1H7D1/D2</td><td>Pure White</td><td>6500K</td><td>4 pcs/M</td><td class="lm-val">102±3 lm/pc</td><td>170</td><td>0.6W</td><td><span class="ip-badge ip68" style="background:#e0f0ff;color:#003366">IP68</span></td></tr>
+          <tr><td>MFW1H7D1/D2</td><td>White</td><td>4000K</td><td>4 pcs/M</td><td class="lm-val">98±3 lm/pc</td><td>163</td><td>0.6W</td><td><span class="ip-badge ip68" style="background:#e0f0ff;color:#003366">IP68</span></td></tr>
+          <tr><td>MFW1H7D1/D2</td><td>Warm White</td><td>3000K</td><td>4 pcs/M</td><td class="lm-val">93±3 lm/pc</td><td>155</td><td>0.6W</td><td><span class="ip-badge ip68" style="background:#e0f0ff;color:#003366">IP68</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="sh-bottom">
+      <div class="bottom-block">
+        <div class="bottom-title">Optical Distribution</div>
+        <svg class="optical-svg" viewBox="0 0 140 100" fill="none">
+          <path d="M70 90 L11 11 Q70 53 129 11 Z" fill="rgba(255,200,50,0.15)" stroke="#f59e0b" stroke-width="1"/>
+          <line x1="70" y1="90" x2="70" y2="5" stroke="#999" stroke-width="0.5"/>
+          <line x1="10" y1="90" x2="130" y2="90" stroke="#999" stroke-width="0.5"/>
+          <text x="70" y="82" text-anchor="middle" fill="#f59e0b" font-size="7" font-weight="700">Beam angle: 170°</text>
+        </svg>
+      </div>
+      <div class="bottom-block">
+        <div class="bottom-title">Power Supply Loading (DC)</div>
+        <table style="width:100%;font-size:0.67rem;border-collapse:collapse">
+          <tr style="background:#f0f2f5"><td style="padding:0.2rem 0.4rem;font-weight:700">PSU</td><td style="padding:0.2rem 0.4rem">35W</td><td style="padding:0.2rem 0.4rem">60W</td><td style="padding:0.2rem 0.4rem">100W</td><td style="padding:0.2rem 0.4rem">150W</td></tr>
+          <tr><td style="padding:0.2rem 0.4rem;color:var(--muted)">By mod</td><td style="padding:0.2rem 0.4rem">47</td><td style="padding:0.2rem 0.4rem">80</td><td style="padding:0.2rem 0.4rem">133</td><td style="padding:0.2rem 0.4rem">200</td></tr>
+          <tr style="background:#f0f2f5"><td style="padding:0.2rem 0.4rem;color:var(--muted)">By meter</td><td style="padding:0.2rem 0.4rem">12m</td><td style="padding:0.2rem 0.4rem">20m</td><td style="padding:0.2rem 0.4rem">33m</td><td style="padding:0.2rem 0.4rem">50m</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="sh-shipping">
+      <div class="ship-cell"><div class="ship-label">Cascade</div><div class="ship-val">25/50 mods</div></div>
+      <div class="ship-cell"><div class="ship-label">IP Grade</div><div class="ship-val">IP68</div></div>
+      <div class="ship-cell"><div class="ship-label">Back Tape</div><div class="ship-val">3M</div></div>
+      <div class="ship-cell"><div class="ship-label">Warranty</div><div class="ship-val">5 Years</div></div>
+      <div class="ship-cell"><div class="ship-label">Certs</div><div class="ship-val">UL CE RoHS</div></div>
+    </div>
+    <div class="sh-footer">
+      <button class="btn-datasheet" onclick="alert('PDF: MFW1H7D1/D2 Datasheet')">📄 Datasheet</button>
+      <button class="btn-order" onclick="addToCart('MFW1H7D1/D2','DC 12/24V · 0.6W · 170lm/W · IP68')">הוסף לסל הזמנות</button>
+      <button class="btn-quote" onclick="addToCart('MFW1H7D1/D2','DC 12/24V · 0.6W · 170lm/W · IP68')">💬 הצעת מחיר</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- MFW8G5D Lightbox 4W -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="sheet" data-tags="talent lightbox ac mfw8g5d">
+    <div class="sh-header">
+      <div class="sh-certs">
+        <span class="cert-icon ul">cULus</span>
+        <span class="cert-icon ce">CE</span>
+        <span class="cert-icon rohs">RoHS</span>
+        <span class="cert-icon dc" style="background:#fff3e8;color:#8a4200;border-color:#f5c090">AC 220V</span>
+        <span class="cert-icon yr3">3yr WARRANTY</span>
+        <span class="cert-icon ip65">IP65</span>
+        <span class="cert-icon angle">170°</span>
+      </div>
+      <div class="sh-brand">Talent Electronics · Lightbox Source · AC Module</div>
+      <div class="sh-model">MFW8G5D</div>
+      <div class="sh-tagline">AC220V · 4W · 360 lm/pc · LIGHTBOX DEPTH 10–30cm</div>
+    </div>
+    <div class="sh-body">
+      <div class="spec-block">
+        <div class="spec-title">Specifications</div>
+        <table class="spec-table">
+          <tr><td>Input Voltage</td><td>AC 220V</td></tr>
+          <tr><td>Power</td><td>4.0 W/mod</td></tr>
+          <tr><td>Luminous Efficacy</td><td>90 lm/W</td></tr>
+          <tr><td>Beam Angle</td><td>170°</td></tr>
+          <tr><td>Waterproof</td><td>IP65</td></tr>
+          <tr><td>Modules Density</td><td>7 pcs/m (2 pcs/ft)</td></tr>
+          <tr><td>Operating Temp.</td><td>−25°C ~ +60°C</td></tr>
+          <tr><td>Cascade QTY</td><td>50 mods single-ended</td></tr>
+          <tr><td>Back Tape</td><td>3M Tape</td></tr>
+          <tr><td>Warranty</td><td>3 Years</td></tr>
+        </table>
+      </div>
+      <div class="right-block">
+        <div class="prod-img-box">
+          <svg class="prod-img-svg" viewBox="0 0 200 65" fill="none">
+            <rect x="5" y="12" width="190" height="38" rx="6" fill="#fffbf0" stroke="#e8c94a" stroke-width="1.2"/>
+            <rect x="20" y="18" width="44" height="26" rx="4" fill="#fff8e0" stroke="#d4a820" stroke-width="1.2"/>
+            <circle cx="42" cy="31" r="10" fill="#ffeeb0" stroke="#d4a820" stroke-width="1.2"/>
+            <circle cx="42" cy="31" r="6" fill="#f5c842"/>
+            <rect x="80" y="18" width="44" height="26" rx="4" fill="#fff8e0" stroke="#d4a820" stroke-width="1.2"/>
+            <circle cx="102" cy="31" r="10" fill="#ffeeb0" stroke="#d4a820" stroke-width="1.2"/>
+            <circle cx="102" cy="31" r="6" fill="#f5c842"/>
+            <rect x="140" y="18" width="44" height="26" rx="4" fill="#fff8e0" stroke="#d4a820" stroke-width="1.2"/>
+            <circle cx="162" cy="31" r="10" fill="#ffeeb0" stroke="#d4a820" stroke-width="1.2"/>
+            <circle cx="162" cy="31" r="6" fill="#f5c842"/>
+            <text x="100" y="61" text-anchor="middle" fill="#aaa" font-size="7">AC 220V · 4W · 360lm/pc · Lightbox</text>
+          </svg>
+        </div>
+        <ul class="features-list">
+          <li>360 lm/mod — high output for lightboxes</li>
+          <li>AC220V direct — no external driver</li>
+          <li>IP65 protected, 170° wide angle</li>
+          <li>For lightboxes 10–30cm depth</li>
+          <li>3M adhesive tape included</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sh-ordering">
+      <div class="spec-title">Ordering Guide</div>
+      <table class="ordering-table">
+        <thead><tr><th>Color</th><th>Color Temp</th><th>Module/M</th><th>Lumens</th><th>Lm/W</th><th>W/Mod</th><th>IP</th></tr></thead>
+        <tbody>
+          <tr><td>Pure White</td><td>6500K</td><td>3 pcs/M</td><td class="lm-val">360±30 lm/pc</td><td>90</td><td>4.0W</td><td><span class="ip-badge">IP65</span></td></tr>
+          <tr><td>White</td><td>4000K</td><td>3 pcs/M</td><td class="lm-val">340±30 lm/pc</td><td>85</td><td>4.0W</td><td><span class="ip-badge">IP65</span></td></tr>
+          <tr><td>Warm White</td><td>3000K</td><td>3 pcs/M</td><td class="lm-val">320±30 lm/pc</td><td>80</td><td>4.0W</td><td><span class="ip-badge">IP65</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="sh-bottom">
+      <div class="bottom-block">
+        <div class="bottom-title">Optical Distribution</div>
+        <svg class="optical-svg" viewBox="0 0 140 100" fill="none">
+          <path d="M70 90 L10 10 Q70 50 130 10 Z" fill="rgba(245,200,50,0.18)" stroke="#f5c842" stroke-width="1"/>
+          <line x1="70" y1="90" x2="70" y2="5" stroke="#999" stroke-width="0.5"/>
+          <line x1="10" y1="90" x2="130" y2="90" stroke="#999" stroke-width="0.5"/>
+          <text x="70" y="82" text-anchor="middle" fill="#d4a820" font-size="7" font-weight="700">Beam angle: 170°</text>
+        </svg>
+      </div>
+      <div class="bottom-block">
+        <div class="bottom-title">Layout Guide — Lightbox Depth</div>
+        <table style="width:100%;font-size:0.67rem;border-collapse:collapse">
+          <tr style="background:#f0f2f5"><td style="padding:0.2rem 0.35rem;font-weight:700">Depth</td><td style="padding:0.2rem 0.35rem">Min.Stroke</td><td style="padding:0.2rem 0.35rem">Module Spacing</td></tr>
+          <tr><td style="padding:0.2rem 0.35rem">4"/100mm</td><td style="padding:0.2rem 0.35rem">8.0"/200</td><td style="padding:0.2rem 0.35rem">8.0"/200</td></tr>
+          <tr style="background:#f8f9fb"><td style="padding:0.2rem 0.35rem">6"/150mm</td><td style="padding:0.2rem 0.35rem">14.7"/375</td><td style="padding:0.2rem 0.35rem">14.7"/375</td></tr>
+          <tr><td style="padding:0.2rem 0.35rem">8"/200mm</td><td style="padding:0.2rem 0.35rem">19.7"/500</td><td style="padding:0.2rem 0.35rem">16.0"/410</td></tr>
+          <tr style="background:#f8f9fb"><td style="padding:0.2rem 0.35rem">12"/300mm</td><td style="padding:0.2rem 0.35rem">23.6"/600</td><td style="padding:0.2rem 0.35rem">16.0"/410</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="sh-shipping">
+      <div class="ship-cell"><div class="ship-label">Cascade</div><div class="ship-val">50 mods</div></div>
+      <div class="ship-cell"><div class="ship-label">IP</div><div class="ship-val">IP65</div></div>
+      <div class="ship-cell"><div class="ship-label">Back Tape</div><div class="ship-val">3M</div></div>
+      <div class="ship-cell"><div class="ship-label">Warranty</div><div class="ship-val">3 Years</div></div>
+      <div class="ship-cell"><div class="ship-label">Certs</div><div class="ship-val">UL CE RoHS</div></div>
+    </div>
+    <div class="sh-footer">
+      <button class="btn-datasheet" onclick="alert('PDF: MFW8G5D Datasheet')">📄 Datasheet</button>
+      <button class="btn-order" onclick="addToCart('MFW8G5D','AC 220V · 4W · 360lm/pc · IP65 · Lightbox')">הוסף לסל הזמנות</button>
+      <button class="btn-quote" onclick="addToCart('MFW8G5D','AC 220V · 4W · 360lm/pc · IP65 · Lightbox')">💬 הצעת מחיר</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- LDW0B6C2-1 Edge Lighting Rigid Bar -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="sheet" data-tags="talent edge dc ldw0b6c2 rigid bar lightbox">
+    <div class="sh-header">
+      <div class="sh-certs">
+        <span class="cert-icon ul">cULus</span>
+        <span class="cert-icon ce">CE</span>
+        <span class="cert-icon rohs">RoHS</span>
+        <span class="cert-icon dc">DC 24V</span>
+        <span class="cert-icon yr3">3yr WARRANTY</span>
+        <span class="cert-icon ip20">IP20</span>
+        <span class="cert-icon angle">6°×13°</span>
+        <span class="cert-icon patented" style="background:#f0f8e8;color:#336600;border-color:#99cc66">UL94V-1</span>
+      </div>
+      <div class="sh-brand">Talent Electronics · Edge Lighting Rigid Bar Series</div>
+      <div class="sh-model">LDW0B6C2-1</div>
+      <div class="sh-tagline">DC24V · 20W · 1600lm · 500mm RIGID BAR · FOR LIGHTBOX DEPTH 10cm (3M)</div>
+    </div>
+    <div class="sh-body">
+      <div class="spec-block">
+        <div class="spec-title">Specifications</div>
+        <table class="spec-table">
+          <tr><td>Input Voltage</td><td>DC 24V</td></tr>
+          <tr><td>Power</td><td>20W</td></tr>
+          <tr><td>Luminous Efficacy</td><td>80 lm/W</td></tr>
+          <tr><td>Beam Angle</td><td>6° × 13°</td></tr>
+          <tr><td>LED Chip</td><td>3535 (10 pcs)</td></tr>
+          <tr><td>Waterproof</td><td>IP20</td></tr>
+          <tr><td>Product Size</td><td>500 × 33.8 × 19.6 mm</td></tr>
+          <tr><td>Weight</td><td>105g</td></tr>
+          <tr><td>Lightbox Depth</td><td>10cm / 3M lightbox</td></tr>
+          <tr><td>Operating Temp.</td><td>−25°C ~ +60°C</td></tr>
+          <tr><td>Fire Retardant</td><td>UL94V-1</td></tr>
+          <tr><td>Warranty</td><td>3 Years</td></tr>
+        </table>
+      </div>
+      <div class="right-block">
+        <div class="prod-img-box">
+          <svg class="prod-img-svg" viewBox="0 0 210 55" fill="none">
+            <rect x="2" y="16" width="206" height="16" rx="3" fill="#f0f4fa" stroke="#99aacc" stroke-width="1"/>
+            <rect x="2" y="32" width="206" height="8" rx="2" fill="#e8ecf4" stroke="#99aacc" stroke-width="0.8"/>
+            <circle cx="23" cy="24" r="5.5" fill="#ddeaff" stroke="#4477cc" stroke-width="1.2"/><circle cx="23" cy="24" r="3" fill="#3366bb" opacity="0.85"/>
+            <circle cx="44" cy="24" r="5.5" fill="#ddeaff" stroke="#4477cc" stroke-width="1.2"/><circle cx="44" cy="24" r="3" fill="#3366bb" opacity="0.85"/>
+            <circle cx="65" cy="24" r="5.5" fill="#ddeaff" stroke="#4477cc" stroke-width="1.2"/><circle cx="65" cy="24" r="3" fill="#3366bb" opacity="0.85"/>
+            <circle cx="86" cy="24" r="5.5" fill="#ddeaff" stroke="#4477cc" stroke-width="1.2"/><circle cx="86" cy="24" r="3" fill="#3366bb" opacity="0.85"/>
+            <circle cx="107" cy="24" r="5.5" fill="#ddeaff" stroke="#4477cc" stroke-width="1.2"/><circle cx="107" cy="24" r="3" fill="#3366bb" opacity="0.85"/>
+            <circle cx="128" cy="24" r="5.5" fill="#ddeaff" stroke="#4477cc" stroke-width="1.2"/><circle cx="128" cy="24" r="3" fill="#3366bb" opacity="0.85"/>
+            <circle cx="149" cy="24" r="5.5" fill="#ddeaff" stroke="#4477cc" stroke-width="1.2"/><circle cx="149" cy="24" r="3" fill="#3366bb" opacity="0.85"/>
+            <circle cx="170" cy="24" r="5.5" fill="#ddeaff" stroke="#4477cc" stroke-width="1.2"/><circle cx="170" cy="24" r="3" fill="#3366bb" opacity="0.85"/>
+            <circle cx="191" cy="24" r="5.5" fill="#ddeaff" stroke="#4477cc" stroke-width="1.2"/><circle cx="191" cy="24" r="3" fill="#3366bb" opacity="0.85"/>
+            <text x="105" y="50" text-anchor="middle" fill="#aaa" font-size="6.5">500mm · 10 × 3535 chips · DC24V · 20W</text>
+          </svg>
+        </div>
+        <ul class="features-list">
+          <li>High quality 3535 LEDs — uniform light, anti-static</li>
+          <li>Double angle lens 6°×13° — edge lighting</li>
+          <li>Constant power, OTP & short circuit protection</li>
+          <li>Fire retardant UL94V-1 material</li>
+          <li>Suitable for 10cm / 3M depth lightbox</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sh-ordering">
+      <div class="spec-title">Ordering Guide</div>
+      <table class="ordering-table">
+        <thead><tr><th>Part#</th><th>Color</th><th>Color Temp</th><th>LED Qty</th><th>Lumens</th><th>Lm/W</th><th>W/pc</th><th>IP</th></tr></thead>
+        <tbody>
+          <tr><td>LDW0B6C2-1</td><td>White</td><td>6500K–9000K</td><td>10 pcs</td><td class="lm-val">1600±10 lm</td><td>80</td><td>20W</td><td><span class="ip-badge" style="background:#f5f5f5;color:#555">IP20</span></td></tr>
+          <tr><td>LDW0B6C2-1</td><td>Warm White</td><td>3000–3200K</td><td>10 pcs</td><td class="lm-val">1500±10 lm</td><td>79</td><td>20W</td><td><span class="ip-badge" style="background:#f5f5f5;color:#555">IP20</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="sh-bottom">
+      <div class="bottom-block">
+        <div class="bottom-title">Optical Distribution (Edge)</div>
+        <svg class="optical-svg" viewBox="0 0 140 100" fill="none">
+          <path d="M70 90 L62 10 L78 10 Z" fill="rgba(100,180,255,0.25)" stroke="#4488cc" stroke-width="1.2"/>
+          <path d="M70 90 L58 20 L82 20 Z" fill="rgba(100,180,255,0.1)" stroke="#4488cc" stroke-width="0.5" stroke-dasharray="2,2"/>
+          <line x1="70" y1="90" x2="70" y2="5" stroke="#999" stroke-width="0.5"/>
+          <line x1="10" y1="90" x2="130" y2="90" stroke="#999" stroke-width="0.5"/>
+          <text x="70" y="82" text-anchor="middle" fill="#4488cc" font-size="7" font-weight="700">Beam: 6°×13° Edge</text>
+        </svg>
+      </div>
+      <div class="bottom-block">
+        <div class="bottom-title">Layout Guide — Lightbox</div>
+        <table style="width:100%;font-size:0.67rem;border-collapse:collapse">
+          <tr style="background:#f0f2f5"><td style="padding:0.2rem 0.35rem;font-weight:700">Depth</td><td style="padding:0.2rem 0.35rem">Width</td><td style="padding:0.2rem 0.35rem">Length</td><td style="padding:0.2rem 0.35rem">Spacing</td></tr>
+          <tr><td style="padding:0.2rem 0.35rem">3.9"/100</td><td style="padding:0.2rem 0.35rem">59"/3000</td><td style="padding:0.2rem 0.35rem">59"/3000</td><td style="padding:0.2rem 0.35rem">19.7"/500</td></tr>
+          <tr style="background:#f8f9fb"><td style="padding:0.2rem 0.35rem">5.9"/150</td><td style="padding:0.2rem 0.35rem">137"/3500</td><td style="padding:0.2rem 0.35rem">137"/3500</td><td style="padding:0.2rem 0.35rem">19.7"/500</td></tr>
+          <tr><td style="padding:0.2rem 0.35rem">7.8"/200</td><td style="padding:0.2rem 0.35rem">157"/4000</td><td style="padding:0.2rem 0.35rem">157"/4000</td><td style="padding:0.2rem 0.35rem">19.7"/500</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="sh-shipping">
+      <div class="ship-cell"><div class="ship-label">Size</div><div class="ship-val">500×33.8×19.6mm</div></div>
+      <div class="ship-cell"><div class="ship-label">Weight</div><div class="ship-val">105g/pc</div></div>
+      <div class="ship-cell"><div class="ship-label">IP</div><div class="ship-val">IP20</div></div>
+      <div class="ship-cell"><div class="ship-label">Fire</div><div class="ship-val">UL94V-1</div></div>
+      <div class="ship-cell"><div class="ship-label">Warranty</div><div class="ship-val">3 Years</div></div>
+    </div>
+    <div class="sh-footer">
+      <button class="btn-datasheet" onclick="alert('PDF: LDW0B6C2-1 Datasheet')">📄 Datasheet</button>
+      <button class="btn-order" onclick="addToCart('LDW0B6C2-1','DC 24V · 20W · 1600lm · Edge Lighting · 500mm')">הוסף לסל הזמנות</button>
+      <button class="btn-quote" onclick="addToCart('LDW0B6C2-1','DC 24V · 20W · 1600lm · Edge Lighting')">💬 הצעת מחיר</button>
+    </div>
+  </div>
+
+  <div class="no-results" id="no-results" style="display:none">
+    <p style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:0.5rem">לא נמצאו מוצרים</p>
+    <p>נסה מילות חיפוש אחרות</p>
+  </div>
+</div>
+
+<!-- CART -->
+<div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+<div class="cart-sidebar" id="cart-sidebar">
+  <div class="cart-hdr"><h3>🛒 סל הזמנות</h3><button class="cart-x" onclick="toggleCart()">✕</button></div>
+  <div class="cart-list" id="cart-list"><div class="cart-empty">הסל ריק</div></div>
+  <div class="cart-ftr">
+    <div class="cart-total"><span>פריטים:</span><span id="cart-total">0</span></div>
+    <button class="btn-send" onclick="sendQuote()">📧 שלח בקשת הצעת מחיר</button>
+    <button class="btn-checkout" onclick="alert('יחובר למערכת ניהול ההזמנות')">המשך לרכישה</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let cart=[];
+let activeFilter='all';
+let searchVal='';
+
+function setFilter(f,btn){
+  activeFilter=f;
+  document.querySelectorAll('.filter-pill').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  apply();
+}
+function doSearch(v){searchVal=v.toLowerCase();apply();}
+function apply(){
+  const sheets=document.querySelectorAll('.sheet');
+  let n=0;
+  sheets.forEach(s=>{
+    const tags=s.dataset.tags||'';
+    const txt=s.textContent.toLowerCase();
+    const fOk=activeFilter==='all'||tags.includes(activeFilter);
+    const sOk=!searchVal||txt.includes(searchVal);
+    s.classList.toggle('hidden',!(fOk&&sOk));
+    if(fOk&&sOk)n++;
+  });
+  document.getElementById('results-lbl').textContent=n+' מוצרים';
+  document.getElementById('no-results').style.display=n===0?'block':'none';
+}
+
+function addToCart(name,spec){
+  const ex=cart.find(i=>i.name===name);
+  if(ex)ex.qty++;else cart.push({name,spec,qty:1});
+  updateCart();
+  showToast('✓ <span>'+name+'</span> נוסף לסל');
+}
+function removeCI(i){cart.splice(i,1);updateCart();}
+function changeQty(i,d){cart[i].qty=Math.max(1,cart[i].qty+d);updateCart();}
+function updateCart(){
+  const total=cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cart-count').textContent=total;
+  document.getElementById('cart-total').textContent=total+' פריטים';
+  const el=document.getElementById('cart-list');
+  if(!cart.length){el.innerHTML='<div class="cart-empty">הסל ריק</div>';return;}
+  el.innerHTML=cart.map((it,i)=>`<div class="ci">
+    <div class="ci-body">
+      <div class="ci-name">${it.name}</div>
+      <div class="ci-spec">${it.spec}</div>
+      <div class="ci-qty">
+        <button class="qb" onclick="changeQty(${i},-1)">−</button>
+        <span class="qv">${it.qty}</span>
+        <button class="qb" onclick="changeQty(${i},1)">+</button>
+      </div>
+    </div>
+    <button class="ci-rm" onclick="removeCI(${i})">✕</button>
+  </div>`).join('');
+}
+function toggleCart(){
+  document.getElementById('cart-sidebar').classList.toggle('open');
+  document.getElementById('cart-overlay').classList.toggle('open');
+}
+function sendQuote(){
+  if(!cart.length){showToast('הסל ריק');return;}
+  const lines=cart.map(i=>`• ${i.name} ×${i.qty} — ${i.spec}`).join('\n');
+  const sub=encodeURIComponent('בקשת הצעת מחיר — LED IT BE קטלוג');
+  const body=encodeURIComponent('שלום,\n\nאבקש הצעת מחיר לפריטים הבאים:\n\n'+lines+'\n\nתודה');
+  window.location.href=`mailto:info@leditbe.co.il?subject=${sub}&body=${body}`;
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.innerHTML=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+// ── SESSION AWARENESS ──
+(function() {
+  try {
+    const sess = JSON.parse(sessionStorage.getItem('led_session') || 'null');
+    const chip = document.getElementById('nav-user-chip');
+    const link = document.getElementById('nav-portal-link');
+    if (sess && sess.name) {
+      const first = sess.name.split(' ')[0];
+      document.getElementById('chip-avatar').textContent = first.charAt(0);
+      document.getElementById('chip-name').textContent = first;
+      chip.classList.add('visible');
+      if (link) link.style.display = 'none';
+    } else {
+      chip.style.display = 'none';
+    }
+  } catch(e) {}
+})();
+</script>
+</body>
+</html>

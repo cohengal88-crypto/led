@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>פורטל לקוחות – LED IT BE</title>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0a1628;--navy2:#12233d;--accent:#00c8e0;--blue:#0066cc;--surface:#f5f7fa;--border:#dde3ec;--white:#fff;--muted:#5a6780;--green:#10b981;--red:#e24b4a}
+html{scroll-behavior:smooth}
+body{font-family:'Assistant',system-ui,sans-serif;color:var(--navy);background:var(--surface);direction:rtl}
+.page{display:none}.page.active{display:block}
+
+nav{background:var(--navy);padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(0,200,224,0.15)}
+.logo{display:flex;flex-direction:column;line-height:1;gap:3px;text-decoration:none}
+.logo-name{font-size:1.15rem;font-weight:700;color:#fff;letter-spacing:-0.2px}.logo-name span{color:var(--accent)}
+.logo-brand{font-size:0.52rem;color:rgba(0,200,224,0.6);letter-spacing:2.5px;text-transform:uppercase;font-weight:600}
+@media(max-width:640px){nav{padding:0 1rem}.nav-links .nav-link{display:none}}
+.nav-links{display:flex;gap:0.75rem;align-items:center}
+.nav-link{color:rgba(255,255,255,0.7);font-size:0.85rem;cursor:pointer;padding:0.35rem 0.7rem;border-radius:5px;transition:all 0.2s;text-decoration:none}
+.nav-link:hover{color:#fff;background:rgba(255,255,255,0.1)}
+.nav-cta{background:var(--accent);color:var(--navy);padding:0.4rem 1rem;border-radius:5px;font-weight:700;font-size:0.82rem;cursor:pointer;border:none;font-family:inherit}
+.nav-user{display:flex;align-items:center;gap:0.6rem;color:rgba(255,255,255,0.85);font-size:0.82rem}
+.nav-avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--navy);font-weight:700;font-size:0.78rem;display:flex;align-items:center;justify-content:center}
+.nav-logout{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.15);padding:0.28rem 0.7rem;border-radius:4px;font-size:0.75rem;cursor:pointer;font-family:inherit;transition:all 0.2s}
+.nav-logout:hover{background:rgba(255,255,255,0.18);color:#fff}
+
+/* LOGIN */
+.login-wrap{min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;padding:2rem 1rem;background:linear-gradient(150deg,#060f1e 0%,var(--navy) 40%,#0d2a4a 100%);position:relative;overflow:hidden}
+.login-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,200,224,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,224,0.04) 1px,transparent 1px);background-size:50px 50px;pointer-events:none}
+.login-card{background:var(--white);border-radius:16px;padding:2.5rem;width:100%;max-width:400px;position:relative;z-index:1;box-shadow:0 32px 80px rgba(0,0,0,0.4),0 0 0 1px rgba(255,255,255,0.05);animation:cardIn 0.45s cubic-bezier(0.16,1,0.3,1)}
+@keyframes cardIn{from{opacity:0;transform:translateY(20px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.login-logo{text-align:center;font-size:1.5rem;font-weight:700;color:var(--navy);margin-bottom:0.3rem;line-height:1.2}.login-logo span{color:var(--accent)}.login-logo-sub{font-size:0.56rem;color:var(--accent);opacity:0.7;letter-spacing:2.5px;text-transform:uppercase;font-weight:600;margin-top:3px}
+.login-sub{text-align:center;font-size:0.82rem;color:var(--muted);margin-bottom:1.5rem}
+.login-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(0,200,224,0.08);border:1px solid rgba(0,200,224,0.25);color:var(--accent);font-size:0.68rem;font-weight:700;padding:0.22rem 0.7rem;border-radius:20px;margin-bottom:1.25rem;text-transform:uppercase;letter-spacing:0.5px}
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:0.75rem;font-weight:700;color:var(--navy);margin-bottom:0.38rem}
+.field input{width:100%;padding:0.72rem 0.95rem;border:1.5px solid var(--border);border-radius:8px;font-size:0.88rem;font-family:inherit;outline:none;transition:border-color 0.2s,box-shadow 0.2s;direction:ltr;text-align:right;background:var(--white)}
+.field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,200,224,0.12)}
+.field input.err{border-color:var(--red)}
+.err-msg{font-size:0.7rem;color:var(--red);margin-top:0.3rem;display:none}.err-msg.show{display:block}
+.hint{font-size:0.68rem;color:var(--muted);margin-top:0.25rem}
+.btn-login{width:100%;background:var(--navy);color:#fff;border:none;padding:0.85rem;border-radius:8px;font-weight:700;font-size:0.92rem;cursor:pointer;font-family:inherit;margin-top:0.5rem;transition:all 0.2s;letter-spacing:0.2px}
+.btn-login:hover{background:#1a3a5c;transform:translateY(-1px);box-shadow:0 6px 20px rgba(10,22,40,0.35)}
+.btn-login:disabled{opacity:0.6;cursor:not-allowed}
+.login-alert{background:#fff5f5;border:1px solid #fcc;border-radius:7px;padding:0.7rem 0.9rem;font-size:0.78rem;color:#c00;margin-bottom:1rem;display:none}.login-alert.show{display:block}
+.login-footer{margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border);text-align:center;font-size:0.72rem;color:var(--muted)}
+.login-footer a{color:var(--blue);cursor:pointer}
+.contact-msg-box{display:none;margin-top:0.75rem;background:var(--surface);border-radius:6px;padding:0.7rem;font-size:0.78rem;line-height:1.7}
+.loading-dots::after{content:'...';animation:dots 1.2s infinite}
+@keyframes dots{0%{content:'.'}40%{content:'..'}80%{content:'...'}}
+
+/* PORTAL */
+.portal-wrap{padding:1.5rem;max-width:1200px;margin:0 auto}
+.portal-header{background:linear-gradient(135deg,var(--navy) 0%,#0d2248 100%);margin:-1.5rem -1.5rem 1.5rem;padding:2rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;border-bottom:1px solid rgba(0,200,224,0.15)}
+.pw-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.4);margin-bottom:0.25rem}
+.pw-name{font-size:1.15rem;font-weight:700;color:#fff}
+.pw-hp{font-size:0.75rem;color:rgba(255,255,255,0.4);margin-top:3px}
+.portal-stats{display:flex;gap:0.85rem;flex-wrap:wrap}
+.pstat{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:0.65rem 1rem;text-align:center;min-width:85px}
+.pstat .n{font-size:1.15rem;font-weight:700;color:var(--accent)}
+.pstat .l{font-size:0.65rem;color:rgba(255,255,255,0.4);margin-top:2px}
+
+.portal-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+@media(max-width:640px){.portal-grid{grid-template-columns:1fr}}
+.portal-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.25rem;transition:box-shadow 0.25s,transform 0.25s}
+.portal-card:hover{box-shadow:0 8px 28px rgba(0,0,0,0.08);transform:translateY(-2px)}
+.pc-hd{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);margin-bottom:0.9rem;display:flex;align-items:center;gap:0.4rem}
+.pc-hd::before{content:'';width:3px;height:12px;background:var(--accent);border-radius:2px;flex-shrink:0}
+
+.orders-list{display:flex;flex-direction:column;gap:0.5rem}
+.order-row{display:flex;align-items:center;gap:0.75rem;padding:0.65rem 0.85rem;background:var(--surface);border-radius:8px;border:1px solid var(--border);flex-wrap:wrap;transition:border-color 0.15s}
+.order-row:hover{border-color:rgba(0,200,224,0.3)}
+.or-num{font-size:0.75rem;font-weight:700;color:var(--navy);min-width:68px}
+.or-desc{flex:1;font-size:0.72rem;color:var(--muted)}
+.or-date{font-size:0.67rem;color:var(--muted);white-space:nowrap}
+.or-status{font-size:0.64rem;font-weight:700;padding:0.18rem 0.55rem;border-radius:10px;white-space:nowrap}
+.st-sent{background:#dcfce7;color:#166534}
+.st-process{background:#fef9c3;color:#854d0e}
+.st-new{background:#dbeafe;color:#1e40af}
+.empty-state{text-align:center;padding:1.75rem 1rem;color:var(--muted);font-size:0.82rem;line-height:1.7}
+
+.price-list{display:flex;flex-direction:column;gap:0.45rem}
+.price-row{display:flex;align-items:center;justify-content:space-between;padding:0.55rem 0.7rem;background:var(--surface);border-radius:7px;border:1px solid var(--border)}
+.pr-name{font-size:0.75rem;font-weight:600;color:var(--navy)}
+.pr-model{font-size:0.65rem;color:var(--muted)}
+.pr-price{font-size:0.82rem;font-weight:700;color:var(--blue)}
+.pr-badge{font-size:0.6rem;background:#dcfce7;color:#166534;padding:0.12rem 0.4rem;border-radius:3px;font-weight:700;margin-right:0.35rem}
+
+.nof-label{font-size:0.7rem;font-weight:700;color:var(--navy);margin-bottom:0.28rem;display:block}
+.nof-select,.nof-input,.nof-textarea{width:100%;padding:0.58rem 0.8rem;border:1.5px solid var(--border);border-radius:8px;font-size:0.82rem;font-family:inherit;outline:none;margin-bottom:0.65rem;transition:border-color 0.2s,box-shadow 0.2s;background:var(--white)}
+.nof-select:focus,.nof-input:focus,.nof-textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,200,224,0.1)}
+.nof-textarea{min-height:65px;resize:vertical}
+.btn-full{width:100%;border:none;padding:0.7rem;border-radius:8px;font-weight:700;font-size:0.85rem;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:all 0.2s}
+.btn-navy{background:var(--navy);color:#fff}.btn-navy:hover{background:#1a3a5c}
+.btn-accent-full{background:var(--accent);color:var(--navy);margin-top:0.65rem}
+.btn-accent-full:hover{opacity:0.88}
+
+.contact-info{display:flex;flex-direction:column;gap:0.55rem}
+.ci-row{display:flex;align-items:center;gap:0.65rem;font-size:0.8rem;color:var(--navy)}
+.ci-icon{width:30px;height:30px;border-radius:7px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.disc-box{margin-top:1rem;background:var(--surface);border-radius:8px;padding:0.75rem;border:1px solid var(--border)}
+.disc-label{font-size:0.68rem;font-weight:700;color:var(--muted);margin-bottom:0.3rem}
+.disc-val{font-size:1.1rem;font-weight:700;color:var(--green)}
+.disc-sub{font-size:0.67rem;color:var(--muted);margin-top:3px}
+
+.admin-banner{background:linear-gradient(135deg,#0d1f3a,#1a3a5c);border-radius:12px;padding:1.1rem 1.25rem;margin-bottom:1.25rem;border:1px solid rgba(0,200,224,0.25);display:flex;align-items:center;gap:0.85rem;box-shadow:0 4px 16px rgba(0,0,0,0.12)}
+.admin-icon{font-size:1.6rem}
+.admin-text{flex:1}
+.admin-title{font-size:0.85rem;font-weight:700;color:#fff;margin-bottom:0.15rem}
+.admin-sub{font-size:0.7rem;color:rgba(255,255,255,0.5)}
+.admin-btn{background:var(--accent);color:var(--navy);border:none;padding:0.4rem 0.9rem;border-radius:6px;font-weight:700;font-size:0.75rem;cursor:pointer;font-family:inherit;white-space:nowrap}
+
+.success-wrap{min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;padding:2rem}
+.success-box{text-align:center;max-width:360px}
+.success-icon{font-size:3rem;margin-bottom:1rem}
+.success-title{font-size:1.25rem;font-weight:700;margin-bottom:0.6rem}
+.success-sub{font-size:0.85rem;color:var(--muted);margin-bottom:1.75rem;line-height:1.7}
+
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(80px);background:#111d2e;color:#fff;padding:0.65rem 1.4rem;border-radius:40px;font-size:0.82rem;font-weight:600;z-index:999;transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);white-space:nowrap;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.08)}
+.toast.show{transform:translateX(-50%) translateY(0) scale(1)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="ledtech.html" class="logo">
+    <span class="logo-name">jacob <span>group</span></span>
+    <span class="logo-brand">LED IT BE</span>
+  </a>
+  <div class="nav-links">
+    <a href="ledtech.html" class="nav-link">דף הבית</a>
+    <a href="catalog.html" class="nav-link">קטלוג מוצרים</a>
+    <div id="nav-guest">
+      <button class="nav-cta" onclick="showPage('login')">🔐 כניסה ללקוחות</button>
+    </div>
+    <div id="nav-user" style="display:none" class="nav-user">
+      <div class="nav-avatar" id="nav-avatar">?</div>
+      <span id="nav-uname"></span>
+      <button class="nav-logout" onclick="doLogout()">יציאה</button>
+    </div>
+  </div>
+</nav>
+
+<!-- LOGIN -->
+<div id="page-login" class="page active">
+  <div class="login-wrap">
+    <div class="login-grid"></div>
+    <div class="login-card">
+      <div class="login-logo">
+        jacob <span>group</span>
+        <div class="login-logo-sub">LED IT BE</div>
+      </div>
+      <div class="login-sub">פורטל לקוחות מורשים בלבד</div>
+      <div style="text-align:center"><div class="login-badge">🔐 כניסה מאובטחת</div></div>
+      <div class="login-alert" id="login-alert">מספר ח.פ או סיסמה שגויים. נסה שנית.</div>
+      <div class="field">
+        <label>מספר ח.פ / ע.מ</label>
+        <input type="text" id="inp-hp" placeholder="000000000" maxlength="9" oninput="clearErr()" onkeydown="if(event.key==='Enter')tryLogin()">
+        <div class="hint">מספר ח.פ בן 9 ספרות</div>
+        <div class="err-msg" id="err-hp">נא להזין מספר ח.פ תקין (9 ספרות)</div>
+      </div>
+      <div class="field">
+        <label>סיסמה</label>
+        <input type="password" id="inp-pw" placeholder="••••••••" oninput="clearErr()" onkeydown="if(event.key==='Enter')tryLogin()">
+        <div class="err-msg" id="err-pw">נא להזין סיסמה</div>
+      </div>
+      <button class="btn-login" id="btn-login" onclick="tryLogin()">כניסה לאזור הלקוח</button>
+      <div class="login-footer">
+        לקוח חדש? <a onclick="toggleContact()">צור קשר לפתיחת חשבון</a>
+        <div class="contact-msg-box" id="contact-msg-box">
+          📞 03-1234567<br>
+          📧 info@leditbe.co.il<br>
+          א'-ה' 08:00–17:00
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PORTAL -->
+<div id="page-portal" class="page">
+  <div class="portal-wrap">
+    <div class="portal-header">
+      <div>
+        <div class="pw-label">אזור לקוח אישי</div>
+        <div class="pw-name" id="p-name"></div>
+        <div class="pw-hp" id="p-hp"></div>
+      </div>
+      <div class="portal-stats">
+        <div class="pstat"><div class="n" id="s-orders">—</div><div class="l">הזמנות</div></div>
+        <div class="pstat"><div class="n" id="s-open">—</div><div class="l">בטיפול</div></div>
+        <div class="pstat"><div class="n" id="s-disc">—</div><div class="l">הנחה</div></div>
+      </div>
+    </div>
+
+    <div id="admin-zone" style="display:none">
+      <div class="admin-banner">
+        <div class="admin-icon">⚙️</div>
+        <div class="admin-text">
+          <div class="admin-title">מצב מנהל — LED IT BE</div>
+          <div class="admin-sub">גישה מלאה למערכת · ניהול לקוחות, מחירים והזמנות</div>
+        </div>
+        <button class="admin-btn" onclick="window.location.href='admin.html'">לוח ניהול ←</button>
+      </div>
+    </div>
+
+    <div class="portal-grid">
+      <div class="portal-card">
+        <div class="pc-hd">הזמנות אחרונות</div>
+        <div class="orders-list" id="p-orders"></div>
+      </div>
+
+      <div class="portal-card">
+        <div class="pc-hd">מחירון אישי</div>
+        <div class="price-list" id="p-prices"></div>
+        <button class="btn-full btn-accent-full" onclick="window.location.href='catalog.html'">📦 צפה בקטלוג המלא</button>
+      </div>
+
+      <div class="portal-card">
+        <div class="pc-hd">הגש הזמנה חדשה</div>
+        <label class="nof-label">מוצר</label>
+        <select class="nof-select" id="o-prod">
+          <option value="">בחר מוצר...</option>
+          <option>JDS 6616B — DC12/24V · 1.08W</option>
+          <option>JDS 4116B — DC12/24V · 0.72W</option>
+          <option>MFW8A3D — AC220V · 2.5W</option>
+          <option>MFW1H7D1/D2 — DC12/24V · 0.6W</option>
+          <option>MFW8G5D — AC220V · 4W Lightbox</option>
+          <option>LDW0B6C2-1 — DC24V · 20W Edge</option>
+        </select>
+        <label class="nof-label">גוון צבע</label>
+        <select class="nof-select" id="o-color">
+          <option>Pure White 6500K</option>
+          <option>White 4000K</option>
+          <option>Warm White 3000K</option>
+          <option>Cool White 10000K</option>
+        </select>
+        <label class="nof-label">כמות (מינימום 100)</label>
+        <input class="nof-input" type="number" id="o-qty" min="100" step="100" placeholder="100">
+        <label class="nof-label">הערות</label>
+        <textarea class="nof-textarea" id="o-note" placeholder="מועד אספקה נדרש, פרטים נוספים..."></textarea>
+        <button class="btn-full btn-navy" onclick="submitOrder()">📨 שלח הזמנה</button>
+      </div>
+
+      <div class="portal-card">
+        <div class="pc-hd">איש קשר שלך</div>
+        <div class="contact-info">
+          <div class="ci-row"><div class="ci-icon">👤</div><div><div style="font-weight:700">גל כהן</div><div style="font-size:0.7rem;color:var(--muted)">LED IT BE</div></div></div>
+          <div class="ci-row"><div class="ci-icon">📞</div><span>03-1234567</span></div>
+          <div class="ci-row"><div class="ci-icon">📧</div><span style="font-size:0.75rem">info@leditbe.co.il</span></div>
+          <div class="ci-row"><div class="ci-icon">⏰</div><span style="font-size:0.75rem">א'-ה' 08:00–17:00</span></div>
+        </div>
+        <div class="disc-box">
+          <div class="disc-label">ההנחה שלך</div>
+          <div class="disc-val" id="p-disc-val">—</div>
+          <div class="disc-sub">תקף להזמנות מ-100 יחידות</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div id="page-success" class="page">
+  <div class="success-wrap">
+    <div class="success-box">
+      <div class="success-icon">✅</div>
+      <div class="success-title">ההזמנה נשלחה בהצלחה!</div>
+      <div class="success-sub">קיבלנו את הבקשה שלך ונחזור אליך תוך 24 שעות עם אישור והצעת מחיר סופית.</div>
+      <button class="btn-full btn-navy" onclick="backToPortal()">← חזור לאזור הלקוח</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════
+// מסד נתוני לקוחות — בסיסי
+// ═══════════════════════════════════════
+const BASE_DB = {
+  '200430825': {
+    name: 'גל כהן',
+    role: 'admin',
+    discount: 0,
+    orders: [],
+    prices: [
+      {name:'JDS 6616B', model:'DC12/24V · 1.08W', price:'עלות', badge:'מנהל'},
+      {name:'JDS 4116B', model:'DC12/24V · 0.72W', price:'עלות', badge:'מנהל'},
+      {name:'MFW8A3D',   model:'AC220V · 2.5W',    price:'עלות', badge:'מנהל'},
+      {name:'MFW8G5D',   model:'AC220V · 4W',      price:'עלות', badge:'מנהל'},
+      {name:'LDW0B6C2-1',model:'DC24V · 20W Edge', price:'עלות', badge:'מנהל'},
+    ]
+  }
+};
+const BASE_PASS = { '200430825': '1234' };
+
+// מיזוג עם לקוחות שנוספו דרך לוח הניהול
+function getFullDB()   { return Object.assign({}, BASE_DB, JSON.parse(localStorage.getItem('led_clients')||'{}')); }
+function getFullPass() { return Object.assign({}, BASE_PASS, JSON.parse(localStorage.getItem('led_pass')||'{}')); }
+
+let me = null, myHP = null;
+
+function showPage(p) {
+  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+  const el = document.getElementById('page-' + p);
+  if (el) el.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function clearErr() {
+  document.getElementById('login-alert').classList.remove('show');
+  ['inp-hp','inp-pw'].forEach(id => document.getElementById(id).classList.remove('err'));
+  ['err-hp','err-pw'].forEach(id => document.getElementById(id).classList.remove('show'));
+}
+
+function tryLogin() {
+  const hp = document.getElementById('inp-hp').value.trim().replace(/\D/g,'');
+  const pw = document.getElementById('inp-pw').value;
+  let ok = true;
+  if (!hp || hp.length !== 9) {
+    document.getElementById('inp-hp').classList.add('err');
+    document.getElementById('err-hp').classList.add('show');
+    ok = false;
+  }
+  if (!pw) {
+    document.getElementById('inp-pw').classList.add('err');
+    document.getElementById('err-pw').classList.add('show');
+    ok = false;
+  }
+  if (!ok) return;
+  const btn = document.getElementById('btn-login');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-dots">מתחבר</span>';
+  setTimeout(() => {
+    btn.disabled = false;
+    btn.textContent = 'כניסה לאזור הלקוח';
+    const DB = getFullDB(), PASS = getFullPass();
+    if (DB[hp] && PASS[hp] === pw) {
+      me = JSON.parse(JSON.stringify(DB[hp])); // עותק כדי לא לשנות את ה-base
+      myHP = hp;
+      doLogin();
+    } else {
+      document.getElementById('login-alert').classList.add('show');
+      document.getElementById('inp-hp').classList.add('err');
+      document.getElementById('inp-pw').classList.add('err');
+    }
+  }, 800);
+}
+
+function renderOrdersList() {
+  const statusLabel = {sent:'נשלחה', process:'בטיפול', new:'חדשה'};
+  const statusClass  = {sent:'st-sent', process:'st-process', new:'st-new'};
+  // משלב הזמנות בזמן-ריצה עם הזמנות ששמורות ב-localStorage
+  const saved = JSON.parse(localStorage.getItem('led_orders')||'[]')
+    .filter(o => o.clientHp === myHP)
+    .map(o => ({num:o.num, desc:o.product + (o.color?' · '+o.color:''), date:o.date, status:o.status}));
+  const all = [...me.orders, ...saved.filter(s => !me.orders.find(r => r.num === s.num))];
+  const oEl = document.getElementById('p-orders');
+  oEl.innerHTML = all.length
+    ? all.map(o => `
+        <div class="order-row">
+          <div class="or-num">${o.num}</div>
+          <div class="or-desc">${o.desc}</div>
+          <div class="or-date">${o.date}</div>
+          <div class="or-status ${statusClass[o.status]||'st-new'}">${statusLabel[o.status]||o.status}</div>
+        </div>`).join('')
+    : '<div class="empty-state">אין הזמנות עדיין<br><small>ההזמנה הראשונה שלך תופיע כאן</small></div>';
+  const open = all.filter(o => o.status !== 'sent').length;
+  document.getElementById('s-orders').textContent = all.length || '—';
+  document.getElementById('s-open').textContent   = open || '—';
+}
+
+function doLogin(silent) {
+  sessionStorage.setItem('led_session', JSON.stringify({hp: myHP, name: me.name, role: me.role}));
+
+  document.getElementById('nav-guest').style.display = 'none';
+  document.getElementById('nav-user').style.display  = 'flex';
+  document.getElementById('nav-avatar').textContent  = me.name.charAt(0);
+  document.getElementById('nav-uname').textContent   = me.name.split(' ')[0];
+  document.getElementById('p-name').textContent      = me.name;
+  document.getElementById('p-hp').textContent        = 'ח.פ / ע.מ: ' + myHP;
+
+  document.getElementById('s-disc').textContent     = me.role === 'admin' ? 'מנהל' : (me.discount + '%');
+  document.getElementById('p-disc-val').textContent = me.role === 'admin'
+    ? 'גישת מנהל מלאה' : (me.discount + '% על כל הזמנה');
+
+  document.getElementById('admin-zone').style.display = me.role === 'admin' ? 'block' : 'none';
+
+  renderOrdersList();
+
+  document.getElementById('p-prices').innerHTML = (me.prices||[]).map(p => `
+    <div class="price-row">
+      <div><div class="pr-name">${p.name}</div><div class="pr-model">${p.model}</div></div>
+      <div>${p.badge ? `<span class="pr-badge">${p.badge}</span>` : ''}<span class="pr-price">${p.price}</span></div>
+    </div>`).join('') || '<div class="empty-state">אין מחירון אישי</div>';
+
+  showPage('portal');
+  if (!silent) showToast('ברוך הבא, ' + me.name + '! 👋');
+}
+
+function restoreSession() {
+  try {
+    const sess = JSON.parse(sessionStorage.getItem('led_session') || 'null');
+    if (!sess || !sess.hp) return false;
+    const DB = getFullDB();
+    const user = DB[sess.hp];
+    if (!user) return false;
+    myHP = sess.hp;
+    me = JSON.parse(JSON.stringify(user));
+    doLogin(true);
+    return true;
+  } catch(e) { return false; }
+}
+
+window.onload = function() {
+  if (!restoreSession()) showPage('login');
+};
+
+function doLogout() {
+  me = null; myHP = null;
+  sessionStorage.removeItem('led_session');
+  document.getElementById('nav-guest').style.display = '';
+  document.getElementById('nav-user').style.display  = 'none';
+  document.getElementById('inp-hp').value = '';
+  document.getElementById('inp-pw').value = '';
+  clearErr();
+  showPage('login');
+  showToast('יצאת בהצלחה');
+}
+
+function backToPortal() {
+  renderOrdersList();
+  showPage('portal');
+}
+
+function submitOrder() {
+  const prod  = document.getElementById('o-prod').value;
+  const color = document.getElementById('o-color').value;
+  const qty   = parseInt(document.getElementById('o-qty').value);
+  const note  = document.getElementById('o-note').value.trim();
+
+  if (!prod)      { showToast('נא לבחור מוצר'); return; }
+  if (!qty || qty < 100) { showToast('כמות מינימלית: 100 יחידות'); return; }
+
+  const order = {
+    id:         Date.now().toString(36).toUpperCase(),
+    num:        '#' + (10000 + Math.floor(Math.random() * 89999)),
+    clientHp:   myHP,
+    clientName: me.name,
+    product:    prod,
+    color:      color,
+    qty:        qty,
+    note:       note,
+    date:       new Date().toLocaleDateString('he-IL'),
+    status:     'new'
+  };
+
+  // שמירה ב-localStorage כדי שלוח הניהול יראה
+  const allOrders = JSON.parse(localStorage.getItem('led_orders')||'[]');
+  allOrders.push(order);
+  localStorage.setItem('led_orders', JSON.stringify(allOrders));
+
+  // עדכון בזמן-ריצה
+  me.orders.push({num: order.num, desc: prod + (color?' · '+color:''), date: order.date, status: 'new'});
+
+  // איפוס הטופס
+  document.getElementById('o-prod').value  = '';
+  document.getElementById('o-qty').value   = '';
+  document.getElementById('o-note').value  = '';
+
+  showPage('success');
+}
+
+function toggleContact() {
+  const el = document.getElementById('contact-msg-box');
+  el.style.display = el.style.display === 'block' ? 'none' : 'block';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
