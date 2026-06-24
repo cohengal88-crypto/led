@@ -375,7 +375,7 @@ const RL_KEY = 'led_rl', RL_MAX = 5, RL_MS = 5 * 60 * 1000;
 function rlCheck(id) {
   const d = JSON.parse(localStorage.getItem(RL_KEY)||'{}'), e = d[id]||{};
   if (e.until && Date.now() < e.until) return {locked:true, sec:Math.ceil((e.until-Date.now())/1000)};
-  return {locked:false};
+  return {locked:false, remaining: RL_MAX - (e.n||0)};
 }
 function rlFail(id) {
   const d = JSON.parse(localStorage.getItem(RL_KEY)||'{}'), e = d[id]||{n:0};
@@ -464,6 +464,10 @@ async function tryLogin() {
   }
 
   rlFail(hp);
+  const r2 = rlCheck(hp);
+  alertEl.textContent = r2.locked
+    ? 'חשבון נעול ל-5 דקות לאחר יותר מדי ניסיונות כושלים.'
+    : `מספר ח.פ או סיסמה שגויים.${r2.remaining < RL_MAX ? ' נותרו '+r2.remaining+' ניסיונות.' : ''}`;
   alertEl.classList.add('show');
   document.getElementById('inp-hp').classList.add('err');
   document.getElementById('inp-pw').classList.add('err');
