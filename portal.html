@@ -411,7 +411,7 @@ function clearErr() {
 
 async function tryLogin() {
   const hp = document.getElementById('inp-hp').value.trim().replace(/\D/g,'');
-  const pw = document.getElementById('inp-pw').value;
+  const pw = document.getElementById('inp-pw').value.trim();
   const alertEl = document.getElementById('login-alert');
   let ok = true;
   if (!hp || hp.length !== 9) {

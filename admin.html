@@ -395,10 +395,7 @@ body{font-family:'Assistant',system-ui,sans-serif;background:var(--surface);colo
             </div>
             <div class="f-group">
               <label class="f-label">סיסמה *</label>
-              <div class="pw-wrap f-input-wrap">
-                <input class="f-input" type="password" id="nc-pw" placeholder="לפחות 4 תווים" style="padding-left:2.7rem">
-                <button class="pw-eye" type="button" id="nc-pw-btn" onclick="togglePw('nc-pw','nc-pw-btn')" tabindex="-1">הצג</button>
-              </div>
+              <input class="f-input" type="text" id="nc-pw" placeholder="לפחות 4 תווים" autocomplete="off">
             </div>
             <div class="f-group">
               <label class="f-label">הנחה (%)</label>
@@ -438,10 +435,7 @@ body{font-family:'Assistant',system-ui,sans-serif;background:var(--surface);colo
             </div>
             <div class="f-group" style="grid-column:1/-1">
               <label class="f-label">סיסמה *</label>
-              <div class="pw-wrap f-input-wrap">
-                <input class="f-input" type="password" id="na-pw" placeholder="לפחות 4 תווים" style="padding-left:2.7rem">
-                <button class="pw-eye" type="button" id="na-pw-btn" onclick="togglePw('na-pw','na-pw-btn')" tabindex="-1">הצג</button>
-              </div>
+              <input class="f-input" type="text" id="na-pw" placeholder="לפחות 4 תווים" autocomplete="off">
             </div>
           </div>
           <div style="margin-top:1.1rem;display:flex;gap:0.65rem">
@@ -579,7 +573,7 @@ function init() {
 
 async function gateLogin() {
   const hp = document.getElementById('gate-hp').value.trim().replace(/\D/g,'');
-  const pw = document.getElementById('gate-pw').value;
+  const pw = document.getElementById('gate-pw').value.trim();
   const errEl = document.getElementById('gate-err');
   errEl.classList.remove('show');
 
