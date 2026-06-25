@@ -505,6 +505,26 @@ body{font-family:'Assistant',system-ui,sans-serif;background:var(--surface);colo
         </div>
       </div>
 
+      <!-- ── SEED CODE GENERATOR ── -->
+      <div class="card" style="max-width:520px;border-top:2px solid var(--accent)">
+        <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.5rem">🌱 קוד זרע — לשיתוף קבוע בין מכשירים</div>
+        <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.9rem;line-height:1.55">
+          כדי שלקוחות ומנהלים יוכלו להתחבר מ<strong>כל מכשיר חדש</strong> ללא שלב ייבוא ידני:
+          לחץ "ייצא קוד זרע", העתק את הקוד שמתקבל, פתח את <code style="font-size:0.7rem;background:var(--surface);padding:0.1rem 0.3rem;border-radius:3px">admin.html</code> בעורך הקוד (VS Code),
+          מצא את השורה <code style="font-size:0.7rem;background:var(--surface);padding:0.1rem 0.3rem;border-radius:3px">const SEED_VERSION</code> — החלף את שני השורות <code style="font-size:0.7rem;background:var(--surface);padding:0.1rem 0.3rem;border-radius:3px">SEED_VERSION + SEED_USERS</code>
+          בקוד החדש — עשה אותו הדבר ב-<code style="font-size:0.7rem;background:var(--surface);padding:0.1rem 0.3rem;border-radius:3px">portal.html</code> — שמור ודחוף ל-GitHub.
+        </p>
+        <button class="btn btn-sm btn-navy" onclick="genSeedCode()">🌱 ייצא קוד זרע</button>
+        <div id="seed-code-wrap" style="display:none;margin-top:0.85rem">
+          <label class="f-label">קוד זרע — העתק והדבק ב-admin.html וב-portal.html</label>
+          <div style="position:relative;margin-top:0.4rem">
+            <textarea id="seed-code-out" class="f-input" rows="8" readonly style="font-size:0.62rem;font-family:monospace;direction:ltr;resize:none;padding-left:3.5rem;word-break:break-all"></textarea>
+            <button onclick="copySeedCode()" style="position:absolute;left:0.5rem;top:0.5rem;background:var(--accent);color:var(--navy);border:none;border-radius:5px;padding:0.3rem 0.55rem;font-size:0.72rem;cursor:pointer;font-family:inherit;font-weight:700">העתק</button>
+          </div>
+          <div id="seed-copy-msg" style="font-size:0.75rem;color:var(--green,#27ae60);margin-top:0.35rem;display:none">✓ הקוד הועתק — הדבק ב-admin.html וב-portal.html, שמור ודחוף</div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -625,6 +645,30 @@ const BASE_DB = {
 };
 // סיסמאות מאוחסנות כ-SHA-256. הערך כאן = sha256('1234')
 const BASE_PASS = { '200430825': '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4' };
+
+// ═══ SEED DATA ═══
+// These users are written to localStorage on every fresh device.
+// Bump SEED_VERSION and add entries whenever you add permanent users.
+// Generate this block from Admin Panel → 📱 סנכרון → "ייצוא קוד זרע"
+const SEED_VERSION = 1;
+const SEED_USERS = {
+  // '123456789': { name: 'שם לקוח', role: 'customer', discount: 0, pwHash: 'sha256-hash' }
+};
+(function initSeed() {
+  if (parseInt(localStorage.getItem('led_seed_v') || '0') >= SEED_VERSION) return;
+  const clients = JSON.parse(localStorage.getItem('led_clients') || '{}');
+  const pass    = JSON.parse(localStorage.getItem('led_pass') || '{}');
+  Object.keys(SEED_USERS).forEach(hp => {
+    if (!clients[hp]) {
+      const { pwHash, ...data } = SEED_USERS[hp];
+      clients[hp] = { orders: [], prices: [], ...data };
+      if (pwHash) pass[hp] = pwHash;
+    }
+  });
+  localStorage.setItem('led_clients', JSON.stringify(clients));
+  localStorage.setItem('led_pass', JSON.stringify(pass));
+  localStorage.setItem('led_seed_v', String(SEED_VERSION));
+})();
 
 // ═══ SECURITY UTILITIES ═══
 // Pure-JS SHA-256 fallback for non-secure contexts (HTTP on local network)
@@ -886,6 +930,44 @@ function copyShareLink(inputId) {
   } else {
     inp.select(); document.execCommand('copy');
     if (msgEl) { msgEl.style.display = ''; setTimeout(() => msgEl.style.display = 'none', 3000); }
+  }
+}
+
+// ═══ SEED CODE GENERATOR ═══
+function genSeedCode() {
+  const clients = JSON.parse(localStorage.getItem('led_clients') || '{}');
+  const pass    = JSON.parse(localStorage.getItem('led_pass') || '{}');
+  const newV    = SEED_VERSION + 1;
+
+  const entries = Object.keys(clients)
+    .filter(hp => hp !== ADMIN_HP)
+    .map(hp => {
+      const c = clients[hp];
+      const h = pass[hp] || '';
+      const safeName = (c.name || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+      return `  '${hp}': { name: '${safeName}', role: '${c.role || 'customer'}', discount: ${c.discount || 0}, pwHash: '${h}' }`;
+    });
+
+  const code = [
+    `const SEED_VERSION = ${newV};`,
+    `const SEED_USERS = {`,
+    entries.length ? entries.join(',\n') : `  // אין משתמשים נוספים עדיין`,
+    `};`
+  ].join('\n');
+
+  document.getElementById('seed-code-out').value = code;
+  document.getElementById('seed-code-wrap').style.display = '';
+}
+function copySeedCode() {
+  const code = document.getElementById('seed-code-out').value;
+  const msg  = document.getElementById('seed-copy-msg');
+  const copy = txt => { msg.style.display=''; setTimeout(()=>msg.style.display='none', 4000); };
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(code).then(copy);
+  } else {
+    document.getElementById('seed-code-out').select();
+    document.execCommand('copy');
+    copy();
   }
 }
 
