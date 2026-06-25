@@ -52,7 +52,7 @@
   .logo { display:flex; flex-direction:column; line-height:1; gap:3px; text-decoration:none; }
   .logo-name { font-size:1.25rem; font-weight:700; color:var(--white); letter-spacing:-0.2px; }
   .logo-name span { color:var(--accent); }
-  .logo-brand { font-size:0.54rem; color:rgba(0,200,224,0.6); letter-spacing:2.5px; text-transform:uppercase; font-weight:600; }
+  .logo-brand { font-size:0.54rem; color:rgba(0,200,224,0.85); letter-spacing:2.5px; text-transform:uppercase; font-weight:600; }
   .nav-links { display: flex; gap: 2rem; list-style: none; }
   .nav-links a {
     color: rgba(255,255,255,0.75); font-size: 0.9rem; font-weight: 500;
@@ -62,9 +62,20 @@
   .nav-cta {
     background: var(--accent); color: var(--navy) !important;
     padding: 0.45rem 1.2rem; border-radius: 6px; font-weight: 600 !important;
-    transition: opacity 0.2s !important;
+    transition: all 0.2s !important;
   }
   .nav-cta:hover { opacity: 0.88; color: var(--navy) !important; }
+  .nav-cta-outline {
+    background: transparent !important;
+    color: rgba(255,255,255,0.88) !important;
+    border: 1.5px solid rgba(255,255,255,0.35) !important;
+  }
+  .nav-cta-outline:hover {
+    background: rgba(255,255,255,0.09) !important;
+    border-color: rgba(255,255,255,0.6) !important;
+    color: #fff !important;
+    opacity: 1 !important;
+  }
   .lang-btn {
     color: rgba(255,255,255,0.6); font-size: 0.8rem;
     background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
@@ -493,7 +504,7 @@
       <li><a href="#industries">תעשיות</a></li>
       <li><a href="#why">למה אנחנו</a></li>
       <li><a href="catalog.html" class="nav-cta" style="background:var(--accent)">📦 קטלוג מוצרים</a></li>
-      <li><a href="#contact" class="nav-cta" style="background:transparent;border:1.5px solid rgba(255,255,255,0.3)">צור קשר</a></li>
+      <li><a href="#contact" class="nav-cta nav-cta-outline">צור קשר</a></li>
     </ul>
     <ul class="nav-links en-flex" style="display:none">
       <li><a href="#products">Products</a></li>
