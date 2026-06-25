@@ -361,6 +361,26 @@ nav{background:var(--navy);padding:0 1.5rem;height:64px;display:flex;align-items
 <div class="toast" id="toast"></div>
 
 <script>
+// ═══ AUTO-IMPORT FROM SHARE LINK ═══
+(function() {
+  const h = window.location.hash;
+  if (!h.startsWith('#import=')) return;
+  try {
+    const data = JSON.parse(decodeURIComponent(escape(atob(h.slice(8)))));
+    if (data.v !== 1 || !data.c) return;
+    const clients = JSON.parse(localStorage.getItem('led_clients')||'{}');
+    const pass    = JSON.parse(localStorage.getItem('led_pass')||'{}');
+    Object.keys(data.c).forEach(hp => {
+      clients[hp] = data.c[hp];
+      if (data.p?.[hp]) pass[hp] = data.p[hp];
+    });
+    localStorage.setItem('led_clients', JSON.stringify(clients));
+    localStorage.setItem('led_pass', JSON.stringify(pass));
+    history.replaceState(null, '', location.pathname + location.search);
+    sessionStorage.setItem('led_auto_imported', '1');
+  } catch(e) {}
+})();
+
 // ═══════════════════════════════════════
 // מסד נתוני לקוחות — בסיסי
 // ═══════════════════════════════════════
@@ -764,6 +784,17 @@ function doImportData() {
     setTimeout(closeImportModal, 2500);
   } catch(e) {
     msg.innerHTML = '<span style="color:#c00">✗ קוד שגוי — העתק שוב מלוח הניהול</span>';
+  }
+}
+
+// Show "imported" banner if redirected from share link
+if (sessionStorage.getItem('led_auto_imported')) {
+  sessionStorage.removeItem('led_auto_imported');
+  const al = document.getElementById('login-alert');
+  if (al) {
+    al.textContent = '✓ פרטיך יובאו בהצלחה — כעת תוכל להתחבר';
+    al.style.cssText = al.style.cssText + ';background:#dcfce7;color:#166534;border-color:#86efac;display:block';
+    al.classList.add('show');
   }
 }
 

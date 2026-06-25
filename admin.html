@@ -543,6 +543,23 @@ body{font-family:'Assistant',system-ui,sans-serif;background:var(--surface);colo
   </div>
 </div>
 
+<!-- MODAL: Share Link -->
+<div class="modal-bg" id="modal-share" onclick="if(event.target===this)closeModal('modal-share')">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-hd">
+      <div class="modal-title">📱 קישור להתחברות מהטלפון</div>
+      <button class="modal-x" onclick="closeModal('modal-share')">✕</button>
+    </div>
+    <p id="share-desc" style="font-size:0.8rem;color:var(--muted);margin-bottom:0.85rem"></p>
+    <input id="share-link-inp" readonly style="width:100%;font-size:0.65rem;direction:ltr;padding:0.5rem 0.65rem;border:1.5px solid var(--border);border-radius:7px;font-family:monospace;box-sizing:border-box;background:var(--surface);word-break:break-all;margin-bottom:0.6rem">
+    <div style="display:flex;gap:0.5rem;justify-content:flex-end">
+      <button class="btn btn-sm" style="background:var(--surface);color:var(--text);border:1px solid var(--border)" onclick="closeModal('modal-share')">סגור</button>
+      <button class="btn btn-sm btn-navy" onclick="copyModalShareLink()">העתק קישור</button>
+    </div>
+    <div id="share-copy-msg" style="font-size:0.75rem;color:var(--green,#27ae60);margin-top:0.4rem;text-align:center;display:none">✓ הקישור הועתק — שלח אותו ב-WhatsApp</div>
+  </div>
+</div>
+
 <!-- MODAL: Client Details -->
 <div class="modal-bg" id="modal-client" onclick="if(event.target===this)closeModal('modal-client')">
   <div class="modal">
@@ -568,6 +585,26 @@ body{font-family:'Assistant',system-ui,sans-serif;background:var(--surface);colo
 <div class="toast" id="toast"></div>
 
 <script>
+// ═══ AUTO-IMPORT FROM SHARE LINK ═══
+(function() {
+  const h = window.location.hash;
+  if (!h.startsWith('#import=')) return;
+  try {
+    const data = JSON.parse(decodeURIComponent(escape(atob(h.slice(8)))));
+    if (data.v !== 1 || !data.c) return;
+    const clients = JSON.parse(localStorage.getItem('led_clients')||'{}');
+    const pass    = JSON.parse(localStorage.getItem('led_pass')||'{}');
+    Object.keys(data.c).forEach(hp => {
+      clients[hp] = data.c[hp];
+      if (data.p?.[hp]) pass[hp] = data.p[hp];
+    });
+    localStorage.setItem('led_clients', JSON.stringify(clients));
+    localStorage.setItem('led_pass', JSON.stringify(pass));
+    history.replaceState(null, '', location.pathname + location.search);
+    sessionStorage.setItem('led_auto_imported', '1');
+  } catch(e) {}
+})();
+
 // ═══════════════════════════════════════════
 // BASE DATA (identical to portal.html)
 // ═══════════════════════════════════════════
@@ -809,6 +846,48 @@ function showSec(name) {
 }
 
 function refreshCurrent() { showSec(currentSec); showToast('הנתונים עודכנו ✓'); }
+
+// ═══ SHARE LINK ═══
+function buildShareLink(page, hp, clientData, pwHash) {
+  const data = { v: 1, c: { [hp]: clientData }, p: { [hp]: pwHash } };
+  const code = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  const url = new URL(page, location.href);
+  url.hash = 'import=' + code;
+  return url.href;
+}
+function showShareLink(hp) {
+  const DB = getDB(), PASS = getPass();
+  const c = DB[hp]; if (!c) return;
+  const page = c.role === 'admin' ? 'admin.html' : 'portal.html';
+  const link = buildShareLink(page, hp, c, PASS[hp]);
+  document.getElementById('share-desc').textContent =
+    (c.role === 'admin' ? 'שלח קישור זה למנהל ' : 'שלח קישור זה ללקוח ') + c.name + '. פתיחתו תייבא אוטומטית את הנתונים.';
+  document.getElementById('share-link-inp').value = link;
+  document.getElementById('share-copy-msg').style.display = 'none';
+  openModal('modal-share');
+}
+function copyModalShareLink() {
+  const inp = document.getElementById('share-link-inp');
+  const msg = document.getElementById('share-copy-msg');
+  const txt = inp.value;
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(txt).then(() => { msg.style.display=''; setTimeout(()=>msg.style.display='none',3000); });
+  } else {
+    inp.select(); document.execCommand('copy');
+    msg.style.display=''; setTimeout(()=>msg.style.display='none',3000);
+  }
+}
+function copyShareLink(inputId) {
+  const inp = document.getElementById(inputId);
+  const msgEl = document.getElementById(inputId + '-msg');
+  if (!inp) return;
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(inp.value).then(() => { if(msgEl){msgEl.style.display='';setTimeout(()=>msgEl.style.display='none',3000);} });
+  } else {
+    inp.select(); document.execCommand('copy');
+    if (msgEl) { msgEl.style.display = ''; setTimeout(() => msgEl.style.display = 'none', 3000); }
+  }
+}
 
 // ═══ DEVICE SYNC ═══
 function genSyncCode() {
@@ -1138,15 +1217,26 @@ async function addClient() {
   const pwHash = await sha256(pw);
 
   const extra = JSON.parse(localStorage.getItem('led_clients')||'{}');
-  extra[hp] = { name, role: 'customer', discount: disc, orders: [], prices: [] };
+  const clientData = { name, role: 'customer', discount: disc, orders: [], prices: [] };
+  extra[hp] = clientData;
   localStorage.setItem('led_clients', JSON.stringify(extra));
 
   const extraP = JSON.parse(localStorage.getItem('led_pass')||'{}');
   extraP[hp] = pwHash;
   localStorage.setItem('led_pass', JSON.stringify(extraP));
 
+  const shareLink = buildShareLink('portal.html', hp, clientData, pwHash);
+  const linkId = 'sl-' + hp;
   // הסיסמה מוצגת פעם אחת בלבד למנהל — לאחר מכן לא ניתן לשחזר
-  showMsg(`✓ לקוח <strong>${esc(name)}</strong> נוסף! ח.פ: <strong>${esc(hp)}</strong> · סיסמה (שמור אותה): <code style="background:#f3f4f6;padding:0.1rem 0.35rem;border-radius:3px">${esc(pw)}</code>`, true);
+  showMsg(`✓ לקוח <strong>${esc(name)}</strong> נוסף! ח.פ: <strong>${esc(hp)}</strong> · סיסמה: <code style="background:#f3f4f6;padding:0.1rem 0.35rem;border-radius:3px">${esc(pw)}</code>
+    <div style="margin-top:0.75rem;padding-top:0.65rem;border-top:1px solid #bbf7d0">
+      <div style="font-size:0.74rem;font-weight:700;margin-bottom:0.4rem">📱 קישור להתחברות מהטלפון — שלח ל${esc(name)}:</div>
+      <div style="display:flex;gap:0.4rem;align-items:center;flex-wrap:wrap">
+        <input id="${linkId}" readonly value="${esc(shareLink)}" style="flex:1;font-size:0.64rem;direction:ltr;padding:0.35rem 0.5rem;border:1px solid #86efac;border-radius:5px;background:#f0fdf4;font-family:monospace;min-width:0">
+        <button onclick="copyShareLink('${linkId}')" style="background:#1a2b4a;color:#fff;border:none;border-radius:5px;padding:0.35rem 0.7rem;font-size:0.75rem;cursor:pointer;white-space:nowrap;font-family:inherit">העתק</button>
+      </div>
+      <div id="${linkId}-msg" style="font-size:0.7rem;color:#166534;margin-top:0.25rem;display:none">✓ הקישור הועתק</div>
+    </div>`, true);
   clearClientForm();
   renderAllClients();
   showToast('לקוח חדש נוסף: ' + name);
@@ -1168,7 +1258,12 @@ function renderAllClients() {
       <td><span style="color:var(--muted);font-size:0.72rem">🔒 מוגן</span>${isAdmin?'':` <button class="btn-ghost" style="font-size:0.65rem;padding:0.15rem 0.4rem" onclick="changeClientPassword('${hp}')">שנה</button>`}</td>
       <td style="color:var(--green);font-weight:600">${isAdmin||isAdminRole?'—':(c.discount+'%')}</td>
       <td>${isAdmin||isAdminRole?'<span class="badge b-navy">מנהל</span>':'<span class="badge b-blue">לקוח</span>'}</td>
-      <td>${isAdminRole?'<span style="font-size:0.68rem;color:var(--muted)">מנהל — מוגן</span>':`<button class="btn-ghost-danger" onclick="deleteClient('${hp}')">🗑 מחק</button>`}</td>
+      <td style="display:flex;gap:0.35rem;flex-wrap:wrap;align-items:center">
+        ${isAdmin?'<span style="font-size:0.68rem;color:var(--muted)">מנהל ראשי</span>':
+          isAdminRole?'<span style="font-size:0.68rem;color:var(--muted)">מנהל — מוגן</span>':
+          `<button class="btn-ghost-danger" onclick="deleteClient('${hp}')">🗑 מחק</button>`}
+        ${!isAdmin?`<button class="btn-ghost" style="font-size:0.68rem;padding:0.2rem 0.45rem" onclick="showShareLink('${hp}')">📱 קישור</button>`:''}
+      </td>
     </tr>`;
   }).join('') || '<tr><td colspan="6" class="tbl-empty">אין לקוחות</td></tr>';
 }
@@ -1202,7 +1297,8 @@ function renderAdminsList() {
           ${isSuper
             ? '<span style="font-size:0.68rem;color:var(--muted)">מוגן</span>'
             : `<button class="btn-ghost-danger" onclick="deleteAdmin('${hp}')">🗑 מחק</button>
-               <button class="btn-ghost" style="font-size:0.72rem;padding:0.25rem 0.55rem" onclick="resetAdminPw('${hp}','${esc(c.name)}')">🔑 איפוס סיסמה</button>`
+               <button class="btn-ghost" style="font-size:0.72rem;padding:0.25rem 0.55rem" onclick="resetAdminPw('${hp}','${esc(c.name)}')">🔑 איפוס סיסמה</button>
+               <button class="btn-ghost" style="font-size:0.72rem;padding:0.25rem 0.55rem" onclick="showShareLink('${hp}')">📱 קישור</button>`
           }
         </td>
       </tr>`;
@@ -1231,14 +1327,25 @@ async function addAdmin() {
   const pwHash = await sha256(pw);
 
   const extra = JSON.parse(localStorage.getItem('led_clients')||'{}');
-  extra[hp] = { name, role: 'admin', discount: 0, orders: [], prices: [] };
+  const adminData = { name, role: 'admin', discount: 0, orders: [], prices: [] };
+  extra[hp] = adminData;
   localStorage.setItem('led_clients', JSON.stringify(extra));
 
   const extraP = JSON.parse(localStorage.getItem('led_pass')||'{}');
   extraP[hp] = pwHash;
   localStorage.setItem('led_pass', JSON.stringify(extraP));
 
-  showMsg(`✓ מנהל <strong>${esc(name)}</strong> נוסף בהצלחה! ח.פ: <strong>${esc(hp)}</strong> · סיסמה (שמור אותה): <code style="background:#f3f4f6;padding:0.1rem 0.35rem;border-radius:3px">${esc(pw)}</code>`, true);
+  const shareLink = buildShareLink('admin.html', hp, adminData, pwHash);
+  const linkId = 'sl-adm-' + hp;
+  showMsg(`✓ מנהל <strong>${esc(name)}</strong> נוסף בהצלחה! ח.פ: <strong>${esc(hp)}</strong> · סיסמה: <code style="background:#f3f4f6;padding:0.1rem 0.35rem;border-radius:3px">${esc(pw)}</code>
+    <div style="margin-top:0.75rem;padding-top:0.65rem;border-top:1px solid #bbf7d0">
+      <div style="font-size:0.74rem;font-weight:700;margin-bottom:0.4rem">📱 קישור כניסה לניהול מהטלפון — שלח ל${esc(name)}:</div>
+      <div style="display:flex;gap:0.4rem;align-items:center;flex-wrap:wrap">
+        <input id="${linkId}" readonly value="${esc(shareLink)}" style="flex:1;font-size:0.64rem;direction:ltr;padding:0.35rem 0.5rem;border:1px solid #86efac;border-radius:5px;background:#f0fdf4;font-family:monospace;min-width:0">
+        <button onclick="copyShareLink('${linkId}')" style="background:#1a2b4a;color:#fff;border:none;border-radius:5px;padding:0.35rem 0.7rem;font-size:0.75rem;cursor:pointer;white-space:nowrap;font-family:inherit">העתק</button>
+      </div>
+      <div id="${linkId}-msg" style="font-size:0.7rem;color:#166534;margin-top:0.25rem;display:none">✓ הקישור הועתק</div>
+    </div>`, true);
   clearAdminForm();
   renderAdminsList();
   showToast('מנהל חדש נוסף: ' + name);
@@ -1327,6 +1434,16 @@ function filterClients(q) {
 }
 
 init();
+
+// Show "imported" banner if redirected from share link
+if (sessionStorage.getItem('led_auto_imported')) {
+  sessionStorage.removeItem('led_auto_imported');
+  const el = document.getElementById('gate-err');
+  if (el) {
+    el.textContent = '✓ פרטיך יובאו בהצלחה — כעת תוכל להתחבר';
+    el.style.cssText = 'background:#dcfce7;color:#166534;border:1px solid #86efac;display:block;border-radius:7px;padding:0.6rem;text-align:center;margin-bottom:0.75rem';
+  }
+}
 
 // SHA-256 startup self-test
 (async () => {
