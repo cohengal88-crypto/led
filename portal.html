@@ -176,6 +176,9 @@ nav{background:var(--navy);padding:0 1.5rem;height:64px;display:flex;align-items
 </style>
 </head>
 <body>
+<div id="sha-err-banner" style="display:none;background:#b00;color:#fff;text-align:center;padding:0.7rem 1rem;font-size:0.9rem;position:fixed;top:0;left:0;right:0;z-index:9999;direction:rtl">
+  ⚠️ שגיאת הצפנה — הכניסה לא תפעל. נסה לרענן את הדף או עבור לדפדפן אחר (Chrome / Safari).
+</div>
 <a href="#main-content" class="skip-link" style="position:absolute;top:-40px;right:0;background:var(--navy);color:#fff;padding:0.5rem 1rem;border-radius:0 0 6px 6px;font-size:0.82rem;font-weight:700;transition:top 0.2s;z-index:9999" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">דלג לתוכן הראשי</a>
 
 <nav role="navigation" aria-label="ניווט ראשי">
@@ -232,6 +235,28 @@ nav{background:var(--navy);padding:0 1.5rem;height:64px;display:flex;align-items
           א'-ה' 08:00–17:00
         </div>
       </div>
+      <div style="text-align:center;margin-top:0.75rem">
+        <button onclick="openImportModal()" style="background:none;border:none;font-size:0.72rem;color:var(--muted);cursor:pointer;font-family:inherit;text-decoration:underline;opacity:0.65">📱 ייבוא נתונים ממכשיר אחר</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Import Sync Data -->
+<div class="modal-bg" id="modal-import" onclick="if(event.target===this)closeImportModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;display:flex;align-items:center;justify-content:center;display:none">
+  <div style="background:#fff;border-radius:14px;padding:1.5rem;max-width:380px;width:90%;direction:rtl;box-shadow:0 8px 32px rgba(0,0,0,0.22)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <div style="font-weight:700;font-size:1rem;color:#1a2b4a">📱 ייבוא נתונים ממכשיר אחר</div>
+      <button onclick="closeImportModal()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#888;line-height:1">✕</button>
+    </div>
+    <p style="font-size:0.8rem;color:#666;margin-bottom:0.85rem;line-height:1.5">
+      הדבק כאן את קוד הסנכרון שיצאת מלוח הניהול במחשב. לאחר הייבוא תוכל להתחבר עם הסיסמה הרגילה שלך.
+    </p>
+    <textarea id="import-code-inp" rows="4" placeholder="הדבק קוד סנכרון כאן..." style="width:100%;padding:0.6rem;border:1.5px solid #ddd;border-radius:7px;font-size:0.72rem;font-family:monospace;direction:ltr;resize:none;box-sizing:border-box;margin-bottom:0.6rem"></textarea>
+    <div id="import-msg" style="font-size:0.78rem;margin-bottom:0.6rem;min-height:1.2rem"></div>
+    <div style="display:flex;gap:0.6rem">
+      <button onclick="doImportData()" style="flex:1;background:#1a2b4a;color:#fff;border:none;border-radius:7px;padding:0.65rem;font-size:0.85rem;cursor:pointer;font-family:inherit">⬆️ ייבא נתונים</button>
+      <button onclick="closeImportModal()" style="background:#f0f0f0;color:#555;border:none;border-radius:7px;padding:0.65rem 1rem;font-size:0.85rem;cursor:pointer;font-family:inherit">ביטול</button>
     </div>
   </div>
 </div>
@@ -712,6 +737,48 @@ function getGreeting() {
   if (h < 17) return 'צהריים טובים,';
   return 'ערב טוב,';
 }
+
+// ═══ DEVICE SYNC ═══
+function openImportModal() {
+  document.getElementById('import-code-inp').value = '';
+  document.getElementById('import-msg').textContent = '';
+  document.getElementById('modal-import').style.display = 'flex';
+}
+function closeImportModal() {
+  document.getElementById('modal-import').style.display = 'none';
+}
+function doImportData() {
+  const code = document.getElementById('import-code-inp').value.trim();
+  const msg = document.getElementById('import-msg');
+  if (!code) { msg.innerHTML = '<span style="color:#c00">נא להדביק קוד סנכרון</span>'; return; }
+  try {
+    const data = JSON.parse(decodeURIComponent(escape(atob(code))));
+    if (!data.v || !data.c) throw new Error('invalid');
+    const clients = JSON.parse(localStorage.getItem('led_clients')||'{}');
+    const pass    = JSON.parse(localStorage.getItem('led_pass')||'{}');
+    let added = 0;
+    Object.keys(data.c).forEach(hp => { if(!clients[hp]){clients[hp]=data.c[hp];pass[hp]=data.p?.[hp];added++;} });
+    localStorage.setItem('led_clients', JSON.stringify(clients));
+    localStorage.setItem('led_pass', JSON.stringify(pass));
+    msg.innerHTML = `<span style="color:green">✓ ייבוא הצליח — ${added} רשומות נוספו. כעת תוכל להתחבר.</span>`;
+    setTimeout(closeImportModal, 2500);
+  } catch(e) {
+    msg.innerHTML = '<span style="color:#c00">✗ קוד שגוי — העתק שוב מלוח הניהול</span>';
+  }
+}
+
+// SHA-256 startup self-test
+(async () => {
+  try {
+    const h = await sha256('1234');
+    const ok = h === '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4';
+    console.log('[sha256 test]', ok ? 'OK' : 'FAIL', h);
+    if (!ok) document.getElementById('sha-err-banner').style.display = '';
+  } catch(e) {
+    console.error('[sha256 test] threw:', e);
+    document.getElementById('sha-err-banner').style.display = '';
+  }
+})();
 </script>
 </body>
 </html>

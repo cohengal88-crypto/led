@@ -229,6 +229,9 @@ body{font-family:'Assistant',system-ui,sans-serif;background:var(--surface);colo
 </style>
 </head>
 <body>
+<div id="sha-err-banner" style="display:none;background:#b00;color:#fff;text-align:center;padding:0.7rem 1rem;font-size:0.9rem;position:fixed;top:0;left:0;right:0;z-index:9999;direction:rtl">
+  ⚠️ שגיאת הצפנה — הכניסה לא תפעל. נסה לרענן את הדף או עבור לדפדפן אחר (Chrome / Safari).
+</div>
 
 <!-- ═══ GATE ═══ -->
 <div id="gate-wrap">
@@ -276,6 +279,7 @@ body{font-family:'Assistant',system-ui,sans-serif;background:var(--surface);colo
       <button class="mnp" onclick="showSec('orders')" data-msec="orders">📦 הזמנות</button>
       <button class="mnp" onclick="showSec('add-client')" data-msec="add-client">➕ חדש</button>
       <button class="mnp" onclick="showSec('admins')" data-msec="admins">🛡️ מנהלים</button>
+      <button class="mnp" onclick="showSec('sync')" data-msec="sync">📱 סנכרון</button>
       <button class="mnp" onclick="adminLogout()" style="color:rgba(255,150,150,0.8)">יציאה</button>
     </div>
   </div>
@@ -307,6 +311,10 @@ body{font-family:'Assistant',system-ui,sans-serif;background:var(--surface);colo
         </div>
         <div class="sb-link" onclick="showSec('admins')" data-sec="admins">
           <span class="sb-icon">🛡️</span>מנהלים
+        </div>
+        <div class="sb-section">כלים</div>
+        <div class="sb-link" onclick="showSec('sync')" data-sec="sync">
+          <span class="sb-icon">📱</span>סנכרון מכשיר
         </div>
         <div class="sb-section">האתר</div>
         <a class="sb-link" href="portal.html"><span class="sb-icon">🔐</span>פורטל לקוחות</a>
@@ -465,6 +473,35 @@ body{font-family:'Assistant',system-ui,sans-serif;background:var(--surface);colo
             <thead><tr><th>שם מנהל</th><th>ח.פ / ע.מ</th><th>סוג</th><th>מחיקה</th></tr></thead>
             <tbody id="admins-tbody"></tbody>
           </table>
+        </div>
+      </div>
+
+      <!-- ── SYNC ── -->
+      <div class="section" id="sec-sync">
+        <div class="sec-hd"><div class="sec-title">📱 סנכרון מכשיר</div></div>
+        <div class="card" style="max-width:520px;margin-bottom:1.5rem">
+          <p style="font-size:0.82rem;color:var(--muted);margin-bottom:1.1rem;line-height:1.55">
+            ייצא קוד סנכרון כדי שמשתמשים יוכלו להתחבר ממכשיר אחר (טלפון, טאבלט).
+            שתף את הקוד עם עצמך (ווצאפ / מייל), פתח את פורטל הלקוחות בטלפון ולחץ "ייבוא נתונים ממכשיר אחר".
+          </p>
+          <div style="display:flex;gap:0.65rem;margin-bottom:1rem;flex-wrap:wrap">
+            <button class="btn btn-sm btn-navy" onclick="genSyncCode()">⬇️ ייצא קוד סנכרון</button>
+            <button class="btn btn-sm" style="background:var(--surface);color:var(--text);border:1px solid var(--border)" onclick="document.getElementById('sync-import-wrap').style.display='';document.getElementById('sync-code-wrap').style.display='none'">⬆️ ייבוא קוד</button>
+          </div>
+          <div id="sync-code-wrap" style="display:none;margin-bottom:1rem">
+            <label class="f-label">קוד סנכרון — העתק ושלח לעצמך</label>
+            <div style="position:relative;margin-top:0.4rem">
+              <textarea id="sync-code-out" class="f-input" rows="5" readonly style="font-size:0.65rem;font-family:monospace;direction:ltr;resize:none;padding-left:3.5rem;word-break:break-all"></textarea>
+              <button onclick="copySyncCode()" style="position:absolute;left:0.5rem;top:0.5rem;background:var(--accent);color:var(--navy);border:none;border-radius:5px;padding:0.3rem 0.55rem;font-size:0.72rem;cursor:pointer;font-family:inherit;font-weight:700">העתק</button>
+            </div>
+            <div id="sync-copy-msg" style="font-size:0.75rem;color:var(--green,#27ae60);margin-top:0.35rem;display:none">✓ הקוד הועתק ללוח</div>
+          </div>
+          <div id="sync-import-wrap" style="display:none">
+            <label class="f-label">ייבוא — הדבק קוד סנכרון</label>
+            <textarea id="sync-code-in" class="f-input" rows="5" placeholder="הדבק כאן את קוד הסנכרון..." style="font-size:0.65rem;font-family:monospace;direction:ltr;resize:none;margin-top:0.4rem;margin-bottom:0.6rem;word-break:break-all"></textarea>
+            <button class="btn btn-sm btn-navy" onclick="importSyncCode()">⬆️ ייבא נתונים</button>
+            <div id="sync-import-msg" style="font-size:0.78rem;margin-top:0.5rem;min-height:1.2rem"></div>
+          </div>
         </div>
       </div>
 
@@ -749,7 +786,7 @@ function adminLogout() {
 // ═══ NAVIGATION ═══
 const secTitles = {
   dashboard:'סקירה כללית', clients:'לקוחות',
-  orders:'הזמנות', 'add-client':'הוספת לקוח', admins:'מנהלי המערכת'
+  orders:'הזמנות', 'add-client':'הוספת לקוח', admins:'מנהלי המערכת', sync:'סנכרון מכשיר'
 };
 
 function showSec(name) {
@@ -772,6 +809,49 @@ function showSec(name) {
 }
 
 function refreshCurrent() { showSec(currentSec); showToast('הנתונים עודכנו ✓'); }
+
+// ═══ DEVICE SYNC ═══
+function genSyncCode() {
+  const data = {
+    v: 1,
+    c: JSON.parse(localStorage.getItem('led_clients')||'{}'),
+    p: JSON.parse(localStorage.getItem('led_pass')||'{}')
+  };
+  const code = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  document.getElementById('sync-code-out').value = code;
+  document.getElementById('sync-code-wrap').style.display = '';
+  document.getElementById('sync-import-wrap').style.display = 'none';
+}
+function copySyncCode() {
+  const code = document.getElementById('sync-code-out').value;
+  const msgEl = document.getElementById('sync-copy-msg');
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(code).then(() => { msgEl.style.display = ''; setTimeout(() => msgEl.style.display = 'none', 3000); });
+  } else {
+    document.getElementById('sync-code-out').select();
+    document.execCommand('copy');
+    msgEl.style.display = ''; setTimeout(() => msgEl.style.display = 'none', 3000);
+  }
+}
+function importSyncCode() {
+  const code = document.getElementById('sync-code-in').value.trim();
+  const msgEl = document.getElementById('sync-import-msg');
+  if (!code) { msgEl.innerHTML = '<span style="color:var(--red,#c00)">נא להדביק קוד סנכרון</span>'; return; }
+  try {
+    const data = JSON.parse(decodeURIComponent(escape(atob(code))));
+    if (!data.v || !data.c) throw new Error('invalid');
+    const clients = JSON.parse(localStorage.getItem('led_clients')||'{}');
+    const pass    = JSON.parse(localStorage.getItem('led_pass')||'{}');
+    let added = 0;
+    Object.keys(data.c).forEach(hp => { if(!clients[hp]){ clients[hp]=data.c[hp]; if(data.p?.[hp]) pass[hp]=data.p[hp]; added++; }});
+    localStorage.setItem('led_clients', JSON.stringify(clients));
+    localStorage.setItem('led_pass', JSON.stringify(pass));
+    msgEl.innerHTML = `<span style="color:var(--green,#27ae60)">✓ ייבוא הצליח — ${added} רשומות נוספו</span>`;
+    if (added > 0) setTimeout(renderDashboard, 400);
+  } catch(e) {
+    msgEl.innerHTML = '<span style="color:var(--red,#c00)">✗ קוד שגוי — נסה שוב</span>';
+  }
+}
 
 // ═══ DASHBOARD ═══
 function renderDashboard() {
@@ -1247,6 +1327,19 @@ function filterClients(q) {
 }
 
 init();
+
+// SHA-256 startup self-test
+(async () => {
+  try {
+    const h = await sha256('1234');
+    const ok = h === '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4';
+    console.log('[sha256 test]', ok ? 'OK' : 'FAIL', h);
+    if (!ok) document.getElementById('sha-err-banner').style.display = '';
+  } catch(e) {
+    console.error('[sha256 test] threw:', e);
+    document.getElementById('sha-err-banner').style.display = '';
+  }
+})();
 </script>
 </body>
 </html>
