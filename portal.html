@@ -228,12 +228,7 @@ nav{background:var(--navy);padding:0 1.5rem;height:64px;display:flex;align-items
       </div>
       <button class="btn-login" id="btn-login" onclick="tryLogin()">כניסה לאזור הלקוח</button>
       <div class="login-footer">
-        לקוח חדש? <a onclick="toggleContact()">צור קשר לפתיחת חשבון</a>
-        <div class="contact-msg-box" id="contact-msg-box">
-          📞 03-1234567<br>
-          📧 info@leditbe.co.il<br>
-          א'-ה' 08:00–17:00
-        </div>
+        לקוח חדש? <a onclick="openContactModal()">צור קשר לפתיחת חשבון</a>
       </div>
       <div style="text-align:center;margin-top:0.75rem">
         <button onclick="openImportModal()" style="background:none;border:none;font-size:0.72rem;color:var(--muted);cursor:pointer;font-family:inherit;text-decoration:underline;opacity:0.65">📱 ייבוא נתונים ממכשיר אחר</button>
@@ -257,6 +252,50 @@ nav{background:var(--navy);padding:0 1.5rem;height:64px;display:flex;align-items
     <div style="display:flex;gap:0.6rem">
       <button onclick="doImportData()" style="flex:1;background:#1a2b4a;color:#fff;border:none;border-radius:7px;padding:0.65rem;font-size:0.85rem;cursor:pointer;font-family:inherit">⬆️ ייבא נתונים</button>
       <button onclick="closeImportModal()" style="background:#f0f0f0;color:#555;border:none;border-radius:7px;padding:0.65rem 1rem;font-size:0.85rem;cursor:pointer;font-family:inherit">ביטול</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: צור קשר לפתיחת חשבון -->
+<div class="modal-bg" id="modal-contact" onclick="if(event.target===this)closeContactModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;display:flex;align-items:center;justify-content:center;display:none">
+  <div style="background:#fff;border-radius:14px;padding:1.5rem;max-width:480px;width:90%;direction:rtl;box-shadow:0 8px 32px rgba(0,0,0,0.22)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <div style="font-weight:700;font-size:1rem;color:#1a2b4a">📋 בקשת הצטרפות - לקוח חדש</div>
+      <button onclick="closeContactModal()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#888;line-height:1">✕</button>
+    </div>
+    <p style="font-size:0.8rem;color:#666;margin-bottom:0.85rem;line-height:1.5">
+      מלא את הפרטים שלך וניצור עמך קשר בהקדם כדי להפעיל את החשבון שלך. אנחנו מעוניינים בשיתוף פעולה! 😊
+    </p>
+    <div id="contact-form">
+      <div style="margin-bottom:0.65rem">
+        <label style="display:block;font-size:0.75rem;font-weight:700;color:#1a2b4a;margin-bottom:0.3rem">שם מלא *</label>
+        <input type="text" id="cf-name" placeholder="ישראל כהן" style="width:100%;padding:0.6rem;border:1.5px solid #ddd;border-radius:7px;font-size:0.85rem;font-family:inherit;outline:none;direction:rtl;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:0.65rem">
+        <label style="display:block;font-size:0.75rem;font-weight:700;color:#1a2b4a;margin-bottom:0.3rem">מספר ח.פ / ע.מ *</label>
+        <input type="text" id="cf-hp" placeholder="000000000" maxlength="9" inputmode="numeric" pattern="[0-9]*" style="width:100%;padding:0.6rem;border:1.5px solid #ddd;border-radius:7px;font-size:0.85rem;font-family:inherit;outline:none;direction:ltr;text-align:right;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:0.65rem">
+        <label style="display:block;font-size:0.75rem;font-weight:700;color:#1a2b4a;margin-bottom:0.3rem">דוא"ל *</label>
+        <input type="email" id="cf-email" placeholder="example@company.com" style="width:100%;padding:0.6rem;border:1.5px solid #ddd;border-radius:7px;font-size:0.85rem;font-family:inherit;outline:none;direction:ltr;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:0.65rem">
+        <label style="display:block;font-size:0.75rem;font-weight:700;color:#1a2b4a;margin-bottom:0.3rem">מספר טלפון *</label>
+        <input type="tel" id="cf-phone" placeholder="03-1234567" inputmode="tel" style="width:100%;padding:0.6rem;border:1.5px solid #ddd;border-radius:7px;font-size:0.85rem;font-family:inherit;outline:none;direction:ltr;text-align:right;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:0.65rem">
+        <label style="display:block;font-size:0.75rem;font-weight:700;color:#1a2b4a;margin-bottom:0.3rem">שם החברה (אופציונלי)</label>
+        <input type="text" id="cf-company" placeholder="שם החברה שלך" style="width:100%;padding:0.6rem;border:1.5px solid #ddd;border-radius:7px;font-size:0.85rem;font-family:inherit;outline:none;direction:rtl;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:1rem">
+        <label style="display:block;font-size:0.75rem;font-weight:700;color:#1a2b4a;margin-bottom:0.3rem">מה אתה מחפש? (אופציונלי)</label>
+        <textarea id="cf-needs" placeholder="תיאור קצר של הצרכים שלך..." maxlength="300" style="width:100%;padding:0.6rem;border:1.5px solid #ddd;border-radius:7px;font-size:0.82rem;font-family:inherit;outline:none;direction:rtl;resize:vertical;min-height:65px;box-sizing:border-box"></textarea>
+      </div>
+      <div id="contact-msg" style="font-size:0.78rem;margin-bottom:0.6rem;min-height:1.2rem;color:#c00;display:none"></div>
+      <div style="display:flex;gap:0.6rem">
+        <button onclick="submitContactForm()" style="flex:1;background:#1a2b4a;color:#fff;border:none;border-radius:7px;padding:0.65rem;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:inherit">✅ שלח בקשה</button>
+        <button onclick="closeContactModal()" style="background:#f0f0f0;color:#555;border:none;border-radius:7px;padding:0.65rem 1rem;font-size:0.85rem;cursor:pointer;font-family:inherit">ביטול</button>
+      </div>
     </div>
   </div>
 </div>
@@ -721,6 +760,57 @@ async function submitOrder() {
   btn.textContent = 'שלח הזמנה';
 
   showPage('success');
+}
+
+function openContactModal() {
+  // אפס את הטופס
+  document.getElementById('cf-name').value = '';
+  document.getElementById('cf-hp').value = '';
+  document.getElementById('cf-email').value = '';
+  document.getElementById('cf-phone').value = '';
+  document.getElementById('cf-company').value = '';
+  document.getElementById('cf-needs').value = '';
+  document.getElementById('contact-msg').textContent = '';
+  document.getElementById('contact-msg').style.display = 'none';
+  document.getElementById('modal-contact').style.display = 'flex';
+}
+
+function closeContactModal() {
+  document.getElementById('modal-contact').style.display = 'none';
+}
+
+function submitContactForm() {
+  const name = document.getElementById('cf-name').value.trim();
+  const hp = document.getElementById('cf-hp').value.trim();
+  const email = document.getElementById('cf-email').value.trim();
+  const phone = document.getElementById('cf-phone').value.trim();
+  const company = document.getElementById('cf-company').value.trim();
+  const needs = document.getElementById('cf-needs').value.trim();
+  const msg = document.getElementById('contact-msg');
+  
+  // וידוא שדות חובה
+  if (!name) { msg.textContent = 'נא למלא שם מלא'; msg.style.display = 'block'; return; }
+  if (!hp || hp.length !== 9) { msg.textContent = 'נא למלא מספר ח.פ תקין (9 ספרות)'; msg.style.display = 'block'; return; }
+  if (!email) { msg.textContent = 'נא למלא דוא"ל'; msg.style.display = 'block'; return; }
+  if (!phone) { msg.textContent = 'נא למלא מספר טלפון'; msg.style.display = 'block'; return; }
+  
+  // שמור בלוקל סטורג'
+  const newCustomers = JSON.parse(localStorage.getItem('led_new_customers') || '[]');
+  newCustomers.push({
+    id: Date.now(),
+    name,
+    hp,
+    email,
+    phone,
+    company,
+    needs,
+    timestamp: new Date().toLocaleString('he-IL')
+  });
+  localStorage.setItem('led_new_customers', JSON.stringify(newCustomers));
+  
+  // הצג הודעת הצלחה וסגור
+  showToast('✅ הבקשה נשלחה בהצלחה! ניצור עמך קשר בהקדם.');
+  closeContactModal();
 }
 
 function toggleContact() {

@@ -309,6 +309,9 @@ body{font-family:'Assistant',system-ui,sans-serif;background:var(--surface);colo
         <div class="sb-link" onclick="showSec('add-client')" data-sec="add-client">
           <span class="sb-icon">➕</span>לקוח חדש
         </div>
+        <div class="sb-link" onclick="showSec('pending-clients')" data-sec="pending-clients">
+          <span class="sb-icon">⏳</span>בקשות הצטרפות
+        </div>
         <div class="sb-link" onclick="showSec('admins')" data-sec="admins">
           <span class="sb-icon">🛡️</span>מנהלים
         </div>
@@ -524,6 +527,49 @@ body{font-family:'Assistant',system-ui,sans-serif;background:var(--surface);colo
           <div id="seed-copy-msg" style="font-size:0.75rem;color:var(--green,#27ae60);margin-top:0.35rem;display:none">✓ הקוד הועתק — הדבק ב-admin.html וב-portal.html, שמור ודחוף</div>
         </div>
       </div>
+
+      <!-- PENDING CLIENTS -->
+      <div class="section" id="sec-pending-clients">
+        <div class="sec-hd"><div class="sec-title">⏳ בקשות הצטרפות</div></div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>שם</th>
+                <th>מספר ח.פ</th>
+                <th>דוא"ל</th>
+                <th>טלפון</th>
+                <th>חברה</th>
+                <th>תאריך</th>
+                <th>פעולות</th>
+              </tr>
+            </thead>
+            <tbody id="pending-list">
+              <tr><td class="tbl-empty" colspan="7">אין בקשות הצטרפות חדשות</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MODAL: Pending Client Details -->
+      <div class="modal-bg" id="modal-pending" onclick="if(event.target===this)closeModal('modal-pending')">
+        <div class="modal">
+          <div class="modal-hd">
+            <div class="modal-title">פרטי בקשה - לקוח חדש</div>
+            <button class="modal-x" onclick="closeModal('modal-pending')">✕</button>
+          </div>
+          <div id="pending-detail"></div>
+          <div style="display:flex;gap:0.6rem;justify-content:flex-end;margin-top:1.1rem">
+            <button class="btn btn-sm" style="background:var(--surface);color:var(--muted);border:1px solid var(--border)" onclick="closeModal('modal-pending')">סגור</button>
+            <button class="btn btn-sm btn-green" onclick="approvePendingClient()">✅ אישור והוספה</button>
+            <button class="btn btn-sm btn-danger" onclick="deletePendingClient()">🗑 מחיקה</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
     </div>
   </div>
@@ -867,7 +913,7 @@ function adminLogout() {
 // ═══ NAVIGATION ═══
 const secTitles = {
   dashboard:'סקירה כללית', clients:'לקוחות',
-  orders:'הזמנות', 'add-client':'הוספת לקוח', admins:'מנהלי המערכת', sync:'סנכרון מכשיר'
+  orders:'הזמנות', 'add-client':'הוספת לקוח', 'pending-clients':'בקשות הצטרפות', admins:'מנהלי המערכת', sync:'סנכרון מכשיר'
 };
 
 function showSec(name) {
@@ -882,11 +928,12 @@ function showSec(name) {
   if (sec) sec.classList.add('active');
   currentSec = name;
   document.getElementById('topbar-title').textContent = secTitles[name] || name;
-  if (name === 'dashboard')    renderDashboard();
-  else if (name === 'clients') renderClients();
-  else if (name === 'orders')  renderOrders();
-  else if (name === 'add-client') renderAllClients();
-  else if (name === 'admins')  renderAdminsList();
+  if (name === 'dashboard')         renderDashboard();
+  else if (name === 'clients')      renderClients();
+  else if (name === 'orders')       renderOrders();
+  else if (name === 'add-client')   renderAllClients();
+  else if (name === 'pending-clients') renderPendingClients();
+  else if (name === 'admins')       renderAdminsList();
 }
 
 function refreshCurrent() { showSec(currentSec); showToast('הנתונים עודכנו ✓'); }
@@ -1489,8 +1536,16 @@ async function doResetAdminPw() {
 // ═══ HELPERS ═══
 function sLabel(s) { return {new:'חדשה', process:'בטיפול', sent:'נשלחה'}[s] || s; }
 function sBadge(s) { return {new:'b-blue', process:'b-yellow', sent:'b-green'}[s] || 'b-gray'; }
-function openModal(id)  { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function openModal(id)  { 
+  const el = document.getElementById(id);
+  el.classList.add('open');
+  el.style.display = 'flex';
+}
+function closeModal(id) { 
+  const el = document.getElementById(id);
+  el.classList.remove('open');
+  el.style.display = 'none';
+}
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
@@ -1539,6 +1594,148 @@ if (sessionStorage.getItem('led_auto_imported')) {
     document.getElementById('sha-err-banner').style.display = '';
   }
 })();
+
+// ═══ PENDING CLIENTS (NEW CONTACT REQUESTS) ═══
+let currentPending = null;
+
+function renderPendingClients() {
+  const newCustomers = JSON.parse(localStorage.getItem('led_new_customers') || '[]');
+  const tbody = document.getElementById('pending-list');
+  
+  if (newCustomers.length === 0) {
+    tbody.innerHTML = '<tr><td class="tbl-empty" colspan="7">אין בקשות הצטרפות חדשות</td></tr>';
+    return;
+  }
+  
+  tbody.innerHTML = newCustomers.map((customer, idx) => `
+    <tr>
+      <td>${esc(customer.name)}</td>
+      <td style="font-weight:700;color:var(--blue)">${esc(customer.hp)}</td>
+      <td style="font-size:0.75rem;direction:ltr;text-align:left">${esc(customer.email)}</td>
+      <td style="font-size:0.75rem;direction:ltr;text-align:left">${esc(customer.phone)}</td>
+      <td style="font-size:0.75rem;color:var(--muted)">${esc(customer.company || '—')}</td>
+      <td style="font-size:0.75rem;color:var(--muted)">${esc(customer.timestamp)}</td>
+      <td>
+        <button class="btn-ghost" onclick="showPendingDetail(${idx})">👁️ צפיה</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function showPendingDetail(idx) {
+  const newCustomers = JSON.parse(localStorage.getItem('led_new_customers') || '[]');
+  const customer = newCustomers[idx];
+  if (!customer) return;
+  
+  currentPending = idx;
+  const detailHtml = `
+    <div class="info-grid">
+      <div class="info-cell">
+        <div class="info-cell-label">שם מלא</div>
+        <div class="info-cell-val">${esc(customer.name)}</div>
+      </div>
+      <div class="info-cell">
+        <div class="info-cell-label">מספר ח.פ</div>
+        <div class="info-cell-val">${esc(customer.hp)}</div>
+      </div>
+      <div class="info-cell">
+        <div class="info-cell-label">דוא"ל</div>
+        <div class="info-cell-val" style="word-break:break-all;font-size:0.8rem">${esc(customer.email)}</div>
+      </div>
+      <div class="info-cell">
+        <div class="info-cell-label">טלפון</div>
+        <div class="info-cell-val" style="direction:ltr;text-align:left">${esc(customer.phone)}</div>
+      </div>
+      <div class="info-cell">
+        <div class="info-cell-label">חברה</div>
+        <div class="info-cell-val">${esc(customer.company || '—')}</div>
+      </div>
+      <div class="info-cell">
+        <div class="info-cell-label">תאריך הבקשה</div>
+        <div class="info-cell-val" style="font-size:0.78rem">${esc(customer.timestamp)}</div>
+      </div>
+    </div>
+    ${customer.needs ? `
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:0.75rem;margin-bottom:0.85rem">
+        <div style="font-size:0.72rem;font-weight:700;color:var(--muted);margin-bottom:0.4rem">מה הלקוח מחפש:</div>
+        <div style="font-size:0.82rem;line-height:1.6;color:var(--navy)">${esc(customer.needs)}</div>
+      </div>
+    ` : ''}
+  `;
+  
+  document.getElementById('pending-detail').innerHTML = detailHtml;
+  document.getElementById('modal-pending').style.display = 'flex';
+}
+
+function approvePendingClient() {
+  if (currentPending === null) return;
+  
+  const newCustomers = JSON.parse(localStorage.getItem('led_new_customers') || '[]');
+  const customer = newCustomers[currentPending];
+  if (!customer) return;
+  
+  // בדוק אם כבר קיים לקוח עם אותו ח.פ
+  const DB = getDB();
+  if (DB[customer.hp]) {
+    showMsg('כבר קיים חשבון עם מספר ח.פ זה במערכת', false);
+    return;
+  }
+  
+  // הוסף כלקוח חדש עם ח.פ וסיסמה זמנית
+  const tempPassword = generateTempPassword();
+  const pwHash = _sha256pure(tempPassword); // שימוש בפונקציה סינכרונית לנוכחות
+  
+  const extra = JSON.parse(localStorage.getItem('led_clients')||'{}');
+  const clientData = { 
+    name: customer.name, 
+    role: 'customer', 
+    discount: 0, 
+    orders: [], 
+    prices: [],
+    company: customer.company,
+    email: customer.email,
+    phone: customer.phone
+  };
+  extra[customer.hp] = clientData;
+  localStorage.setItem('led_clients', JSON.stringify(extra));
+  
+  const extraP = JSON.parse(localStorage.getItem('led_pass')||'{}');
+  extraP[customer.hp] = pwHash;
+  localStorage.setItem('led_pass', JSON.stringify(extraP));
+  
+  // הסר מהרשימה של בקשות
+  deletePendingClientDirect();
+  
+  showMsg(`✓ הלקוח <strong>${esc(customer.name)}</strong> נוסף בהצלחה! ח.פ: <strong>${esc(customer.hp)}</strong> · סיסמה זמנית: <code style="background:#f3f4f6;padding:0.1rem 0.35rem;border-radius:3px">${esc(tempPassword)}</code>`, true);
+  renderPendingClients();
+  closeModal('modal-pending');
+
+function deletePendingClient() {
+  const ok = confirm('האם בטוח שברצונך למחוק את הבקשה הזו?');
+  if (!ok) return;
+  deletePendingClientDirect();
+}
+
+function deletePendingClientDirect() {
+  if (currentPending === null) return;
+  
+  const newCustomers = JSON.parse(localStorage.getItem('led_new_customers') || '[]');
+  newCustomers.splice(currentPending, 1);
+  localStorage.setItem('led_new_customers', JSON.stringify(newCustomers));
+  
+  currentPending = null;
+  document.getElementById('modal-pending').style.display = 'none';
+  renderPendingClients();
+}
+
+function generateTempPassword() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let pwd = '';
+  for (let i = 0; i < 8; i++) {
+    pwd += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return pwd;
+}
 </script>
 </body>
 </html>
