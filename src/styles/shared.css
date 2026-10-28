@@ -16,3 +16,21 @@
   .nav-inner .quote-nav-btn .he-text, .nav-inner .quote-nav-btn .en-text { display: none !important; }
 }
 .mm-portal .quote-count { margin-inline-start: .5rem; }
+
+/* Dynamic content: language visibility driven by <html lang> (static markup also gets inline styles from i18n.js) */
+html .t-in.he-text, html .t-in.en-text { display: inline; }
+html[lang="en"] .he-text { display: none !important; }
+html[lang="he"] .en-text { display: none !important; }
+
+/* Toast */
+.ui-toast {
+  position: fixed; bottom: 1.5rem; left: 50%; z-index: 999;
+  transform: translateX(-50%) translateY(120%); opacity: 0;
+  background: #111d2e; color: #fff; padding: .7rem 1.2rem; border-radius: 40px;
+  font-size: .85rem; font-weight: 600; box-shadow: 0 8px 32px rgba(0,0,0,.35);
+  border: 1px solid rgba(255,255,255,.08); display: flex; gap: .9rem; align-items: center;
+  transition: transform .3s cubic-bezier(.16,1,.3,1), opacity .2s; max-width: calc(100vw - 2rem);
+}
+.ui-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+.ui-toast a { color: var(--accent); font-weight: 700; text-decoration: none; white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .ui-toast { transition: none; } }

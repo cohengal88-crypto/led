@@ -1,1 +1,1135 @@
-[]
+[
+ {
+  "id": "6616b",
+  "model": "6616B",
+  "name": "JDS 6616B",
+  "summary": "DC 12/24V · 1.08W · 174lm/W · IP67 · 66×16×9mm",
+  "brand": "JDS",
+  "series": "JDS Bezel-Free Series · Signage Lighting",
+  "category": [
+   "signage"
+  ],
+  "tags": [
+   "jds",
+   "signage",
+   "dc",
+   "6616b",
+   "bezel-free"
+  ],
+  "tagline": "SPECIALLY DESIGNED FOR MEDIUM-SIZED SIGNS WITH SHALLOW DEPTH (80–120mm)",
+  "badges": [
+   {
+    "label": "cULus E475700",
+    "kind": "ul"
+   },
+   {
+    "label": "CE",
+    "kind": "ce"
+   },
+   {
+    "label": "RoHS",
+    "kind": "rohs"
+   },
+   {
+    "label": "PATENTED",
+    "kind": "patented"
+   },
+   {
+    "label": "PWM",
+    "kind": "pwm"
+   },
+   {
+    "label": "DC 12/24V",
+    "kind": "dc"
+   },
+   {
+    "label": "5yr WARRANTY",
+    "kind": "yr5"
+   },
+   {
+    "label": "IP67",
+    "kind": "ip67"
+   },
+   {
+    "label": "175°",
+    "kind": "angle"
+   }
+  ],
+  "specs": [
+   {
+    "label": "Input Voltage",
+    "value": "DC12V / 24V"
+   },
+   {
+    "label": "Power",
+    "value": "1.08 W/PCS"
+   },
+   {
+    "label": "Luminous",
+    "value": "174 lm/W"
+   },
+   {
+    "label": "Beam Angle",
+    "value": "175°"
+   },
+   {
+    "label": "Waterproof",
+    "value": "IP67"
+   },
+   {
+    "label": "Size",
+    "value": "66 × 16 × 9 mm"
+   },
+   {
+    "label": "Operating Temp.",
+    "value": "−20°C ~ +50°C"
+   },
+   {
+    "label": "Storage Temp.",
+    "value": "−30°C ~ +80°C"
+   },
+   {
+    "label": "Cascade QTY",
+    "value": "20 mods single / 50 mods double"
+   },
+   {
+    "label": "Warranty",
+    "value": "5 Years"
+   }
+  ],
+  "features": [
+   "New technology — high efficiency 170 lm/W",
+   "For signs with depth 80–120mm",
+   "High efficacy LED chips, max brightness",
+   "Premium components for stability",
+   "Great heat dissipation — long life"
+  ],
+  "ordering": {
+   "columns": [
+    "Color",
+    "Color Temp",
+    "Lumens",
+    "Lm/W",
+    "Input",
+    "W/Mod",
+    "Waterproof"
+   ],
+   "rows": [
+    [
+     "Cool White",
+     "10000K",
+     "180±3 lm/pc",
+     "160 lm/W",
+     "DC12/24V",
+     "1.08W",
+     "IP67"
+    ],
+    [
+     "Pure White",
+     "6500K",
+     "180±3 lm/pc",
+     "160 lm/W",
+     "DC12/24V",
+     "1.08W",
+     "IP67"
+    ],
+    [
+     "Warm White",
+     "3000K",
+     "180±3 lm/pc",
+     "170 lm/W",
+     "DC12/24V",
+     "1.08W",
+     "IP67"
+    ]
+   ]
+  },
+  "imageSvg": "<svg class=\"prod-img-svg\" fill=\"none\" viewbox=\"0 0 200 60\">\n<rect fill=\"#f0f2f5\" height=\"24\" rx=\"5\" stroke=\"#ccd0d8\" stroke-width=\"1.2\" width=\"196\" x=\"2\" y=\"18\"></rect>\n<circle cx=\"35\" cy=\"30\" fill=\"#e8f0ff\" r=\"9\" stroke=\"#6699cc\" stroke-width=\"1.2\"></circle>\n<circle cx=\"35\" cy=\"30\" fill=\"#4477cc\" opacity=\"0.7\" r=\"5\"></circle>\n<circle cx=\"80\" cy=\"30\" fill=\"#e8f0ff\" r=\"9\" stroke=\"#6699cc\" stroke-width=\"1.2\"></circle>\n<circle cx=\"80\" cy=\"30\" fill=\"#4477cc\" opacity=\"0.7\" r=\"5\"></circle>\n<circle cx=\"125\" cy=\"30\" fill=\"#e8f0ff\" r=\"9\" stroke=\"#6699cc\" stroke-width=\"1.2\"></circle>\n<circle cx=\"125\" cy=\"30\" fill=\"#4477cc\" opacity=\"0.7\" r=\"5\"></circle>\n<circle cx=\"170\" cy=\"30\" fill=\"#e8f0ff\" r=\"9\" stroke=\"#6699cc\" stroke-width=\"1.2\"></circle>\n<circle cx=\"170\" cy=\"30\" fill=\"#4477cc\" opacity=\"0.7\" r=\"5\"></circle>\n<line stroke=\"#e00\" stroke-width=\"1.2\" x1=\"2\" x2=\"26\" y1=\"30\" y2=\"30\"></line>\n<line stroke=\"#fff\" stroke-width=\"1\" x1=\"198\" x2=\"180\" y1=\"25\" y2=\"25\"></line>\n<text fill=\"#999\" font-size=\"7\" text-anchor=\"middle\" x=\"100\" y=\"54\">66mm × 16mm × 9mm</text>\n</svg>",
+  "media": [
+   {
+    "title": "Optical Data Distribution",
+    "html": "<svg class=\"optical-svg\" fill=\"none\" viewbox=\"0 0 140 100\">\n<path d=\"M70 90 L10 10 Q70 50 130 10 Z\" fill=\"rgba(255,200,50,0.15)\" stroke=\"#f59e0b\" stroke-width=\"1\"></path>\n<path d=\"M70 90 L25 20 Q70 55 115 20 Z\" fill=\"rgba(255,200,50,0.1)\" stroke=\"#f59e0b\" stroke-dasharray=\"2,2\" stroke-width=\"0.5\"></path>\n<line stroke=\"#999\" stroke-width=\"0.5\" x1=\"70\" x2=\"70\" y1=\"90\" y2=\"5\"></line>\n<line stroke=\"#999\" stroke-width=\"0.5\" x1=\"10\" x2=\"130\" y1=\"90\" y2=\"90\"></line>\n<text fill=\"#666\" font-size=\"8\" text-anchor=\"middle\" x=\"70\" y=\"99\">0°</text>\n<text fill=\"#666\" font-size=\"7\" x=\"8\" y=\"14\">90°</text>\n<text fill=\"#666\" font-size=\"7\" x=\"124\" y=\"14\">90°</text>\n<text fill=\"#f59e0b\" font-size=\"7\" font-weight=\"700\" text-anchor=\"middle\" x=\"70\" y=\"82\">Beam angle: 175°</text>\n</svg>"
+   },
+   {
+    "title": "Product Dimension",
+    "html": "<svg class=\"dim-svg\" fill=\"none\" viewbox=\"0 0 200 80\">\n<rect fill=\"#f0f2f5\" height=\"18\" rx=\"3\" stroke=\"#aab0bc\" stroke-width=\"1\" width=\"170\" x=\"15\" y=\"20\"></rect>\n<rect fill=\"#e5e8ee\" height=\"10\" rx=\"2\" stroke=\"#aab0bc\" stroke-width=\"0.8\" width=\"170\" x=\"15\" y=\"38\"></rect>\n<line marker-end=\"url(#arr)\" marker-start=\"url(#arr)\" stroke=\"#666\" stroke-width=\"0.5\" x1=\"15\" x2=\"185\" y1=\"13\" y2=\"13\"></line>\n<text fill=\"#333\" font-size=\"7\" text-anchor=\"middle\" x=\"100\" y=\"10\">150 mm / 5.9 inch</text>\n<line stroke=\"#666\" stroke-width=\"0.5\" x1=\"30\" x2=\"90\" y1=\"52\" y2=\"52\"></line>\n<text fill=\"#333\" font-size=\"7\" text-anchor=\"middle\" x=\"60\" y=\"62\">66mm / 2.60inch</text>\n<text fill=\"#555\" font-size=\"6\" transform=\"rotate(-90,5,32)\" x=\"5\" y=\"32\">16mm</text>\n<text fill=\"#555\" font-size=\"6\" transform=\"rotate(-90,5,47)\" x=\"5\" y=\"47\">9mm</text>\n</svg>"
+   }
+  ],
+  "images": [],
+  "datasheetUrl": "",
+  "published": true,
+  "order": 1,
+  "price": null,
+  "showPrice": false,
+  "packaging": [
+   {
+    "label": "Cascade",
+    "value": "20 pcs"
+   },
+   {
+    "label": "Bag",
+    "value": "100 pcs"
+   },
+   {
+    "label": "Box",
+    "value": "2500 pcs"
+   },
+   {
+    "label": "Weight",
+    "value": "21 kg"
+   },
+   {
+    "label": "Dimension",
+    "value": "50×35×30cm"
+   }
+  ],
+  "variants": [
+   "Cool White · 10000K",
+   "Pure White · 6500K",
+   "Warm White · 3000K"
+  ]
+ },
+ {
+  "id": "4116b",
+  "model": "4116B",
+  "name": "JDS 4116B",
+  "summary": "DC 12/24V · 0.72W · 174lm/W · IP67 · 41×16×9mm",
+  "brand": "JDS",
+  "series": "JDS Bezel-Free Series · Signage Lighting",
+  "category": [
+   "signage"
+  ],
+  "tags": [
+   "jds",
+   "signage",
+   "dc",
+   "4116b",
+   "bezel-free"
+  ],
+  "tagline": "SPECIALLY DESIGNED FOR MEDIUM-SIZED SIGNS WITH SHALLOW DEPTH (50–80mm)",
+  "badges": [
+   {
+    "label": "cULus E475700",
+    "kind": "ul"
+   },
+   {
+    "label": "CE",
+    "kind": "ce"
+   },
+   {
+    "label": "RoHS",
+    "kind": "rohs"
+   },
+   {
+    "label": "PATENTED",
+    "kind": "patented"
+   },
+   {
+    "label": "PWM",
+    "kind": "pwm"
+   },
+   {
+    "label": "DC 12/24V",
+    "kind": "dc"
+   },
+   {
+    "label": "5yr WARRANTY",
+    "kind": "yr5"
+   },
+   {
+    "label": "IP67",
+    "kind": "ip67"
+   },
+   {
+    "label": "175°",
+    "kind": "angle"
+   }
+  ],
+  "specs": [
+   {
+    "label": "Input Voltage",
+    "value": "DC12V / 24V"
+   },
+   {
+    "label": "Power",
+    "value": "0.72 W/PCS"
+   },
+   {
+    "label": "Luminous",
+    "value": "174 lm/W"
+   },
+   {
+    "label": "Beam Angle",
+    "value": "175°"
+   },
+   {
+    "label": "Waterproof",
+    "value": "IP67"
+   },
+   {
+    "label": "Size",
+    "value": "41 × 16 × 9 mm"
+   },
+   {
+    "label": "Operating Temp.",
+    "value": "−20°C ~ +50°C"
+   },
+   {
+    "label": "Storage Temp.",
+    "value": "−30°C ~ +80°C"
+   },
+   {
+    "label": "Cascade QTY",
+    "value": "20 mods single / 50 mods double"
+   },
+   {
+    "label": "Warranty",
+    "value": "5 Years"
+   }
+  ],
+  "features": [
+   "New technology — high efficiency 170 lm/W",
+   "For signs with depth 50–80mm",
+   "Compact 2-LED module design",
+   "Premium components for stability",
+   "Great heat dissipation — long life"
+  ],
+  "ordering": {
+   "columns": [
+    "Color",
+    "Color Temp",
+    "Lumens",
+    "Lm/W",
+    "Input",
+    "W/Mod",
+    "Waterproof"
+   ],
+   "rows": [
+    [
+     "Cool White",
+     "10000K",
+     "120±3 lm/pc",
+     "160 lm/W",
+     "DC12/24V",
+     "0.72W",
+     "IP67"
+    ],
+    [
+     "Pure White",
+     "6500K",
+     "120±3 lm/pc",
+     "170 lm/W",
+     "DC12/24V",
+     "0.72W",
+     "IP67"
+    ],
+    [
+     "Warm White",
+     "3000K",
+     "120±3 lm/pc",
+     "170 lm/W",
+     "DC12/24V",
+     "0.72W",
+     "IP67"
+    ]
+   ]
+  },
+  "imageSvg": "<svg class=\"prod-img-svg\" fill=\"none\" viewbox=\"0 0 160 60\">\n<rect fill=\"#f0f2f5\" height=\"24\" rx=\"5\" stroke=\"#ccd0d8\" stroke-width=\"1.2\" width=\"156\" x=\"2\" y=\"18\"></rect>\n<circle cx=\"35\" cy=\"30\" fill=\"#e8f0ff\" r=\"9\" stroke=\"#6699cc\" stroke-width=\"1.2\"></circle>\n<circle cx=\"35\" cy=\"30\" fill=\"#4477cc\" opacity=\"0.7\" r=\"5\"></circle>\n<circle cx=\"95\" cy=\"30\" fill=\"#e8f0ff\" r=\"9\" stroke=\"#6699cc\" stroke-width=\"1.2\"></circle>\n<circle cx=\"95\" cy=\"30\" fill=\"#4477cc\" opacity=\"0.7\" r=\"5\"></circle>\n<line stroke=\"#e00\" stroke-width=\"1.2\" x1=\"2\" x2=\"26\" y1=\"30\" y2=\"30\"></line>\n<line stroke=\"#fff\" stroke-width=\"1\" x1=\"158\" x2=\"140\" y1=\"25\" y2=\"25\"></line>\n<text fill=\"#999\" font-size=\"7\" text-anchor=\"middle\" x=\"80\" y=\"54\">41mm × 16mm × 9mm</text>\n</svg>",
+  "media": [
+   {
+    "title": "Optical Data Distribution",
+    "html": "<svg class=\"optical-svg\" fill=\"none\" viewbox=\"0 0 140 100\">\n<path d=\"M70 90 L10 10 Q70 50 130 10 Z\" fill=\"rgba(255,200,50,0.15)\" stroke=\"#f59e0b\" stroke-width=\"1\"></path>\n<path d=\"M70 90 L25 20 Q70 55 115 20 Z\" fill=\"rgba(255,200,50,0.1)\" stroke=\"#f59e0b\" stroke-dasharray=\"2,2\" stroke-width=\"0.5\"></path>\n<line stroke=\"#999\" stroke-width=\"0.5\" x1=\"70\" x2=\"70\" y1=\"90\" y2=\"5\"></line>\n<line stroke=\"#999\" stroke-width=\"0.5\" x1=\"10\" x2=\"130\" y1=\"90\" y2=\"90\"></line>\n<text fill=\"#666\" font-size=\"8\" text-anchor=\"middle\" x=\"70\" y=\"99\">0°</text>\n<text fill=\"#666\" font-size=\"7\" x=\"8\" y=\"14\">90°</text>\n<text fill=\"#666\" font-size=\"7\" x=\"124\" y=\"14\">90°</text>\n<text fill=\"#f59e0b\" font-size=\"7\" font-weight=\"700\" text-anchor=\"middle\" x=\"70\" y=\"82\">Beam angle: 175°</text>\n</svg>"
+   },
+   {
+    "title": "Product Dimension",
+    "html": "<svg class=\"dim-svg\" fill=\"none\" viewbox=\"0 0 200 80\">\n<rect fill=\"#f0f2f5\" height=\"18\" rx=\"3\" stroke=\"#aab0bc\" stroke-width=\"1\" width=\"140\" x=\"30\" y=\"20\"></rect>\n<rect fill=\"#e5e8ee\" height=\"10\" rx=\"2\" stroke=\"#aab0bc\" stroke-width=\"0.8\" width=\"140\" x=\"30\" y=\"38\"></rect>\n<line stroke=\"#666\" stroke-width=\"0.5\" x1=\"30\" x2=\"170\" y1=\"13\" y2=\"13\"></line>\n<text fill=\"#333\" font-size=\"7\" text-anchor=\"middle\" x=\"100\" y=\"10\">120 mm / 4.7 inch</text>\n<line stroke=\"#666\" stroke-width=\"0.5\" x1=\"50\" x2=\"90\" y1=\"52\" y2=\"52\"></line>\n<text fill=\"#333\" font-size=\"7\" text-anchor=\"middle\" x=\"70\" y=\"62\">41mm / 1.61inch</text>\n<text fill=\"#555\" font-size=\"6\" transform=\"rotate(-90,18,32)\" x=\"18\" y=\"32\">16mm</text>\n</svg>"
+   }
+  ],
+  "images": [],
+  "datasheetUrl": "",
+  "published": true,
+  "order": 2,
+  "price": null,
+  "showPrice": false,
+  "packaging": [
+   {
+    "label": "Cascade",
+    "value": "20 pcs"
+   },
+   {
+    "label": "Bag",
+    "value": "100 pcs"
+   },
+   {
+    "label": "Box",
+    "value": "2500 pcs"
+   },
+   {
+    "label": "Weight",
+    "value": "15 kg"
+   },
+   {
+    "label": "Dimension",
+    "value": "50×35×30cm"
+   }
+  ],
+  "variants": [
+   "Cool White · 10000K",
+   "Pure White · 6500K",
+   "Warm White · 3000K"
+  ]
+ },
+ {
+  "id": "mfw8a3d",
+  "model": "MFW8A3D",
+  "name": "MFW8A3D",
+  "summary": "AC 220V · 2.5W · 200lm/W · IP67",
+  "brand": "Talent Electronics",
+  "series": "Talent Electronics · Signage Lighting · Bezel-Free",
+  "category": [
+   "signage"
+  ],
+  "tags": [
+   "talent",
+   "signage",
+   "ac",
+   "mfw8a3d"
+  ],
+  "tagline": "AC220V DIRECT INPUT · HIGH POWER 2.5W · 200 lm/W · PF>0.9",
+  "badges": [
+   {
+    "label": "cULus",
+    "kind": "ul"
+   },
+   {
+    "label": "CE",
+    "kind": "ce"
+   },
+   {
+    "label": "RoHS",
+    "kind": "rohs"
+   },
+   {
+    "label": "LM80",
+    "kind": "pwm"
+   },
+   {
+    "label": "AC 220V",
+    "kind": "dc"
+   },
+   {
+    "label": "5yr WARRANTY",
+    "kind": "yr5"
+   },
+   {
+    "label": "IP67",
+    "kind": "ip67"
+   },
+   {
+    "label": "160°",
+    "kind": "angle"
+   }
+  ],
+  "specs": [
+   {
+    "label": "Input Voltage",
+    "value": "AC220–240V 50/60Hz"
+   },
+   {
+    "label": "Power",
+    "value": "2.5 W/mod"
+   },
+   {
+    "label": "Luminous Efficacy",
+    "value": "200 lm/W"
+   },
+   {
+    "label": "Beam Angle",
+    "value": "160°"
+   },
+   {
+    "label": "Waterproof",
+    "value": "IP67"
+   },
+   {
+    "label": "Modules Density",
+    "value": "5 pcs/m (1.5 pcs/ft)"
+   },
+   {
+    "label": "Power Factor",
+    "value": ">0.9"
+   },
+   {
+    "label": "Optical Lens",
+    "value": "155°"
+   },
+   {
+    "label": "Operating Temp.",
+    "value": "−25°C ~ +60°C"
+   },
+   {
+    "label": "Cascade QTY",
+    "value": "50 mods single-ended"
+   },
+   {
+    "label": "Back Tape",
+    "value": "3M Tape"
+   },
+   {
+    "label": "Warranty",
+    "value": "5 Years"
+   }
+  ],
+  "features": [
+   "AC220V direct — no power supply needed",
+   "200 lm/W highest efficacy in range",
+   "155° optical lens design",
+   "Constant current circuit, OTP & short circuit protection",
+   "Fire-resistant UL94V-0 material"
+  ],
+  "ordering": {
+   "columns": [
+    "Color",
+    "Color Temp",
+    "Module/M",
+    "Lumens",
+    "Lm/W",
+    "W/Mod",
+    "Waterproof"
+   ],
+   "rows": [
+    [
+     "Pure White",
+     "6500K",
+     "5 pcs/M",
+     "200±5 lm/pc",
+     "80 lm/W",
+     "2.5W",
+     "IP67"
+    ],
+    [
+     "White",
+     "4000K",
+     "5 pcs/M",
+     "190±5 lm/pc",
+     "83 lm/W",
+     "2.5W",
+     "IP67"
+    ],
+    [
+     "Warm White",
+     "3000K",
+     "5 pcs/M",
+     "180±5 lm/pc",
+     "81 lm/W",
+     "2.5W",
+     "IP67"
+    ]
+   ]
+  },
+  "imageSvg": "<svg class=\"prod-img-svg\" fill=\"none\" viewbox=\"0 0 210 65\">\n<rect fill=\"#fafafa\" height=\"28\" rx=\"5\" stroke=\"#ccd0d8\" stroke-width=\"1.2\" width=\"206\" x=\"2\" y=\"16\"></rect>\n<rect fill=\"#f0f4ff\" height=\"22\" rx=\"3\" stroke=\"#6699cc\" stroke-width=\"1\" width=\"30\" x=\"15\" y=\"19\"></rect>\n<circle cx=\"30\" cy=\"30\" fill=\"#ddeaff\" r=\"7\" stroke=\"#4477cc\" stroke-width=\"1.2\"></circle>\n<circle cx=\"30\" cy=\"30\" fill=\"#4477cc\" opacity=\"0.8\" r=\"4\"></circle>\n<rect fill=\"#f0f4ff\" height=\"22\" rx=\"3\" stroke=\"#6699cc\" stroke-width=\"1\" width=\"30\" x=\"55\" y=\"19\"></rect>\n<circle cx=\"70\" cy=\"30\" fill=\"#ddeaff\" r=\"7\" stroke=\"#4477cc\" stroke-width=\"1.2\"></circle>\n<circle cx=\"70\" cy=\"30\" fill=\"#4477cc\" opacity=\"0.8\" r=\"4\"></circle>\n<rect fill=\"#f0f4ff\" height=\"22\" rx=\"3\" stroke=\"#6699cc\" stroke-width=\"1\" width=\"30\" x=\"95\" y=\"19\"></rect>\n<circle cx=\"110\" cy=\"30\" fill=\"#ddeaff\" r=\"7\" stroke=\"#4477cc\" stroke-width=\"1.2\"></circle>\n<circle cx=\"110\" cy=\"30\" fill=\"#4477cc\" opacity=\"0.8\" r=\"4\"></circle>\n<line stroke=\"#e00\" stroke-width=\"1.2\" x1=\"2\" x2=\"15\" y1=\"27\" y2=\"27\"></line>\n<line stroke=\"#fff\" stroke-width=\"1\" x1=\"208\" x2=\"196\" y1=\"27\" y2=\"27\"></line>\n<text fill=\"#999\" font-size=\"7\" text-anchor=\"middle\" x=\"105\" y=\"57\">AC 220V · 2.5W/mod · 3 LED · PF&gt;0.9</text>\n</svg>",
+  "media": [
+   {
+    "title": "Optical Data Distribution",
+    "html": "<svg class=\"optical-svg\" fill=\"none\" viewbox=\"0 0 140 100\">\n<path d=\"M70 90 L12 12 Q70 52 128 12 Z\" fill=\"rgba(255,200,50,0.15)\" stroke=\"#f59e0b\" stroke-width=\"1\"></path>\n<line stroke=\"#999\" stroke-width=\"0.5\" x1=\"70\" x2=\"70\" y1=\"90\" y2=\"5\"></line>\n<line stroke=\"#999\" stroke-width=\"0.5\" x1=\"10\" x2=\"130\" y1=\"90\" y2=\"90\"></line>\n<text fill=\"#f59e0b\" font-size=\"7\" font-weight=\"700\" text-anchor=\"middle\" x=\"70\" y=\"82\">Beam angle: 160°</text>\n</svg>"
+   },
+   {
+    "title": "Power Supply Loading",
+    "html": "<table style=\"width:100%;font-size:0.67rem;border-collapse:collapse\">\n<tr style=\"background:#f0f2f5\"><td style=\"padding:0.2rem 0.4rem;font-weight:700\">PSU</td><td style=\"padding:0.2rem 0.4rem\">35W</td><td style=\"padding:0.2rem 0.4rem\">60W</td><td style=\"padding:0.2rem 0.4rem\">100W</td><td style=\"padding:0.2rem 0.4rem\">150W</td></tr>\n<tr><td style=\"padding:0.2rem 0.4rem;color:var(--muted)\">By mod</td><td style=\"padding:0.2rem 0.4rem\">23</td><td style=\"padding:0.2rem 0.4rem\">40</td><td style=\"padding:0.2rem 0.4rem\">67</td><td style=\"padding:0.2rem 0.4rem\">100</td></tr>\n<tr style=\"background:#f0f2f5\"><td style=\"padding:0.2rem 0.4rem;color:var(--muted)\">By meter</td><td style=\"padding:0.2rem 0.4rem\">4.7m</td><td style=\"padding:0.2rem 0.4rem\">8.0m</td><td style=\"padding:0.2rem 0.4rem\">13.3m</td><td style=\"padding:0.2rem 0.4rem\">20m</td></tr>\n</table>"
+   }
+  ],
+  "images": [],
+  "datasheetUrl": "",
+  "published": true,
+  "order": 3,
+  "price": null,
+  "showPrice": false,
+  "packaging": [
+   {
+    "label": "Cascade",
+    "value": "50 mods"
+   },
+   {
+    "label": "Back Tape",
+    "value": "3M"
+   },
+   {
+    "label": "IP",
+    "value": "IP67 / IP68"
+   },
+   {
+    "label": "Warranty",
+    "value": "5 Years"
+   },
+   {
+    "label": "Certs",
+    "value": "UL CE RoHS LM80"
+   }
+  ],
+  "variants": [
+   "Pure White · 6500K",
+   "White · 4000K",
+   "Warm White · 3000K"
+  ]
+ },
+ {
+  "id": "mfw1h7d",
+  "model": "MFW1H7D1 (DC12V) / MFW1H7D2 (DC24V)",
+  "name": "MFW1H7D1/D2",
+  "summary": "DC 12/24V · 0.6W · 170lm/W · IP68",
+  "brand": "Talent Electronics",
+  "series": "Talent Electronics · Signage Lighting DC · Bezel-Free S-D 3:1",
+  "category": [
+   "signage"
+  ],
+  "tags": [
+   "talent",
+   "signage",
+   "dc",
+   "mfw1h7d"
+  ],
+  "tagline": "DC 12V/24V · 170 lm/W · IP68 · COMPACT FOR SMALL CHANNEL LETTERS",
+  "badges": [
+   {
+    "label": "cULus",
+    "kind": "ul"
+   },
+   {
+    "label": "CE",
+    "kind": "ce"
+   },
+   {
+    "label": "RoHS",
+    "kind": "rohs"
+   },
+   {
+    "label": "DC 12/24V",
+    "kind": "dc"
+   },
+   {
+    "label": "5yr WARRANTY",
+    "kind": "yr5"
+   },
+   {
+    "label": "IP68",
+    "kind": "ip68"
+   },
+   {
+    "label": "170°",
+    "kind": "angle"
+   }
+  ],
+  "specs": [
+   {
+    "label": "Input Voltage",
+    "value": "DC12V / DC24V"
+   },
+   {
+    "label": "Power",
+    "value": "0.6 W/mod"
+   },
+   {
+    "label": "Luminous Efficacy",
+    "value": "170 lm/W"
+   },
+   {
+    "label": "Beam Angle",
+    "value": "170°"
+   },
+   {
+    "label": "Waterproof",
+    "value": "IP68"
+   },
+   {
+    "label": "Modules Density",
+    "value": "4 pcs/m (1.2 pcs/ft)"
+   },
+   {
+    "label": "Operating Temp.",
+    "value": "−25°C ~ +60°C"
+   },
+   {
+    "label": "Storage Temp.",
+    "value": "−25°C ~ +70°C"
+   },
+   {
+    "label": "Cascade QTY",
+    "value": "25 mods single / 50 mods double"
+   },
+   {
+    "label": "Back Tape",
+    "value": "3M Tape"
+   },
+   {
+    "label": "Warranty",
+    "value": "5 Years"
+   }
+  ],
+  "features": [
+   "IP68 — full waterproof protection",
+   "Compact for small channel letters 5–12cm",
+   "170 lm/W impressive efficacy",
+   "DC12V or DC24V — flexible connection",
+   "5 year warranty"
+  ],
+  "ordering": {
+   "columns": [
+    "Part#",
+    "Color",
+    "Color Temp",
+    "Module/M",
+    "Lumens",
+    "Lm/W",
+    "W/Mod",
+    "IP"
+   ],
+   "rows": [
+    [
+     "MFW1H7D1/D2",
+     "Pure White",
+     "6500K",
+     "4 pcs/M",
+     "102±3 lm/pc",
+     "170",
+     "0.6W",
+     "IP68"
+    ],
+    [
+     "MFW1H7D1/D2",
+     "White",
+     "4000K",
+     "4 pcs/M",
+     "98±3 lm/pc",
+     "163",
+     "0.6W",
+     "IP68"
+    ],
+    [
+     "MFW1H7D1/D2",
+     "Warm White",
+     "3000K",
+     "4 pcs/M",
+     "93±3 lm/pc",
+     "155",
+     "0.6W",
+     "IP68"
+    ]
+   ]
+  },
+  "imageSvg": "<svg class=\"prod-img-svg\" fill=\"none\" viewbox=\"0 0 200 60\">\n<rect fill=\"#f0f2f5\" height=\"24\" rx=\"5\" stroke=\"#ccd0d8\" stroke-width=\"1.2\" width=\"196\" x=\"2\" y=\"18\"></rect>\n<circle cx=\"40\" cy=\"30\" fill=\"#edf4ff\" r=\"9\" stroke=\"#4488cc\" stroke-width=\"1.5\"></circle>\n<circle cx=\"40\" cy=\"30\" fill=\"#3366bb\" opacity=\"0.85\" r=\"5\"></circle>\n<circle cx=\"100\" cy=\"30\" fill=\"#edf4ff\" r=\"9\" stroke=\"#4488cc\" stroke-width=\"1.5\"></circle>\n<circle cx=\"100\" cy=\"30\" fill=\"#3366bb\" opacity=\"0.85\" r=\"5\"></circle>\n<circle cx=\"160\" cy=\"30\" fill=\"#edf4ff\" r=\"9\" stroke=\"#4488cc\" stroke-width=\"1.5\"></circle>\n<circle cx=\"160\" cy=\"30\" fill=\"#3366bb\" opacity=\"0.85\" r=\"5\"></circle>\n<line stroke=\"#e00\" stroke-width=\"1.2\" x1=\"2\" x2=\"30\" y1=\"28\" y2=\"28\"></line>\n<text fill=\"#aaa\" font-size=\"7\" text-anchor=\"middle\" x=\"100\" y=\"55\">DC 12/24V · 0.6W · IP68 · 170lm/W</text>\n</svg>",
+  "media": [
+   {
+    "title": "Optical Distribution",
+    "html": "<svg class=\"optical-svg\" fill=\"none\" viewbox=\"0 0 140 100\">\n<path d=\"M70 90 L11 11 Q70 53 129 11 Z\" fill=\"rgba(255,200,50,0.15)\" stroke=\"#f59e0b\" stroke-width=\"1\"></path>\n<line stroke=\"#999\" stroke-width=\"0.5\" x1=\"70\" x2=\"70\" y1=\"90\" y2=\"5\"></line>\n<line stroke=\"#999\" stroke-width=\"0.5\" x1=\"10\" x2=\"130\" y1=\"90\" y2=\"90\"></line>\n<text fill=\"#f59e0b\" font-size=\"7\" font-weight=\"700\" text-anchor=\"middle\" x=\"70\" y=\"82\">Beam angle: 170°</text>\n</svg>"
+   },
+   {
+    "title": "Power Supply Loading (DC)",
+    "html": "<table style=\"width:100%;font-size:0.67rem;border-collapse:collapse\">\n<tr style=\"background:#f0f2f5\"><td style=\"padding:0.2rem 0.4rem;font-weight:700\">PSU</td><td style=\"padding:0.2rem 0.4rem\">35W</td><td style=\"padding:0.2rem 0.4rem\">60W</td><td style=\"padding:0.2rem 0.4rem\">100W</td><td style=\"padding:0.2rem 0.4rem\">150W</td></tr>\n<tr><td style=\"padding:0.2rem 0.4rem;color:var(--muted)\">By mod</td><td style=\"padding:0.2rem 0.4rem\">47</td><td style=\"padding:0.2rem 0.4rem\">80</td><td style=\"padding:0.2rem 0.4rem\">133</td><td style=\"padding:0.2rem 0.4rem\">200</td></tr>\n<tr style=\"background:#f0f2f5\"><td style=\"padding:0.2rem 0.4rem;color:var(--muted)\">By meter</td><td style=\"padding:0.2rem 0.4rem\">12m</td><td style=\"padding:0.2rem 0.4rem\">20m</td><td style=\"padding:0.2rem 0.4rem\">33m</td><td style=\"padding:0.2rem 0.4rem\">50m</td></tr>\n</table>"
+   }
+  ],
+  "images": [],
+  "datasheetUrl": "",
+  "published": true,
+  "order": 4,
+  "price": null,
+  "showPrice": false,
+  "packaging": [
+   {
+    "label": "Cascade",
+    "value": "25/50 mods"
+   },
+   {
+    "label": "IP Grade",
+    "value": "IP68"
+   },
+   {
+    "label": "Back Tape",
+    "value": "3M"
+   },
+   {
+    "label": "Warranty",
+    "value": "5 Years"
+   },
+   {
+    "label": "Certs",
+    "value": "UL CE RoHS"
+   }
+  ],
+  "variants": [
+   "Pure White · 6500K",
+   "White · 4000K",
+   "Warm White · 3000K"
+  ]
+ },
+ {
+  "id": "mfw8g5d",
+  "model": "MFW8G5D",
+  "name": "MFW8G5D",
+  "summary": "AC 220V · 4W · 360lm/pc · IP65 · Lightbox",
+  "brand": "Talent Electronics",
+  "series": "Talent Electronics · Lightbox Source · AC Module",
+  "category": [
+   "lightbox"
+  ],
+  "tags": [
+   "talent",
+   "lightbox",
+   "ac",
+   "mfw8g5d"
+  ],
+  "tagline": "AC220V · 4W · 360 lm/pc · LIGHTBOX DEPTH 10–30cm",
+  "badges": [
+   {
+    "label": "cULus",
+    "kind": "ul"
+   },
+   {
+    "label": "CE",
+    "kind": "ce"
+   },
+   {
+    "label": "RoHS",
+    "kind": "rohs"
+   },
+   {
+    "label": "AC 220V",
+    "kind": "dc"
+   },
+   {
+    "label": "3yr WARRANTY",
+    "kind": "yr3"
+   },
+   {
+    "label": "IP65",
+    "kind": "ip65"
+   },
+   {
+    "label": "170°",
+    "kind": "angle"
+   }
+  ],
+  "specs": [
+   {
+    "label": "Input Voltage",
+    "value": "AC 220V"
+   },
+   {
+    "label": "Power",
+    "value": "4.0 W/mod"
+   },
+   {
+    "label": "Luminous Efficacy",
+    "value": "90 lm/W"
+   },
+   {
+    "label": "Beam Angle",
+    "value": "170°"
+   },
+   {
+    "label": "Waterproof",
+    "value": "IP65"
+   },
+   {
+    "label": "Modules Density",
+    "value": "7 pcs/m (2 pcs/ft)"
+   },
+   {
+    "label": "Operating Temp.",
+    "value": "−25°C ~ +60°C"
+   },
+   {
+    "label": "Cascade QTY",
+    "value": "50 mods single-ended"
+   },
+   {
+    "label": "Back Tape",
+    "value": "3M Tape"
+   },
+   {
+    "label": "Warranty",
+    "value": "3 Years"
+   }
+  ],
+  "features": [
+   "360 lm/mod — high output for lightboxes",
+   "AC220V direct — no external driver",
+   "IP65 protected, 170° wide angle",
+   "For lightboxes 10–30cm depth",
+   "3M adhesive tape included"
+  ],
+  "ordering": {
+   "columns": [
+    "Color",
+    "Color Temp",
+    "Module/M",
+    "Lumens",
+    "Lm/W",
+    "W/Mod",
+    "IP"
+   ],
+   "rows": [
+    [
+     "Pure White",
+     "6500K",
+     "3 pcs/M",
+     "360±30 lm/pc",
+     "90",
+     "4.0W",
+     "IP65"
+    ],
+    [
+     "White",
+     "4000K",
+     "3 pcs/M",
+     "340±30 lm/pc",
+     "85",
+     "4.0W",
+     "IP65"
+    ],
+    [
+     "Warm White",
+     "3000K",
+     "3 pcs/M",
+     "320±30 lm/pc",
+     "80",
+     "4.0W",
+     "IP65"
+    ]
+   ]
+  },
+  "imageSvg": "<svg class=\"prod-img-svg\" fill=\"none\" viewbox=\"0 0 200 65\">\n<rect fill=\"#fffbf0\" height=\"38\" rx=\"6\" stroke=\"#e8c94a\" stroke-width=\"1.2\" width=\"190\" x=\"5\" y=\"12\"></rect>\n<rect fill=\"#fff8e0\" height=\"26\" rx=\"4\" stroke=\"#d4a820\" stroke-width=\"1.2\" width=\"44\" x=\"20\" y=\"18\"></rect>\n<circle cx=\"42\" cy=\"31\" fill=\"#ffeeb0\" r=\"10\" stroke=\"#d4a820\" stroke-width=\"1.2\"></circle>\n<circle cx=\"42\" cy=\"31\" fill=\"#f5c842\" r=\"6\"></circle>\n<rect fill=\"#fff8e0\" height=\"26\" rx=\"4\" stroke=\"#d4a820\" stroke-width=\"1.2\" width=\"44\" x=\"80\" y=\"18\"></rect>\n<circle cx=\"102\" cy=\"31\" fill=\"#ffeeb0\" r=\"10\" stroke=\"#d4a820\" stroke-width=\"1.2\"></circle>\n<circle cx=\"102\" cy=\"31\" fill=\"#f5c842\" r=\"6\"></circle>\n<rect fill=\"#fff8e0\" height=\"26\" rx=\"4\" stroke=\"#d4a820\" stroke-width=\"1.2\" width=\"44\" x=\"140\" y=\"18\"></rect>\n<circle cx=\"162\" cy=\"31\" fill=\"#ffeeb0\" r=\"10\" stroke=\"#d4a820\" stroke-width=\"1.2\"></circle>\n<circle cx=\"162\" cy=\"31\" fill=\"#f5c842\" r=\"6\"></circle>\n<text fill=\"#aaa\" font-size=\"7\" text-anchor=\"middle\" x=\"100\" y=\"61\">AC 220V · 4W · 360lm/pc · Lightbox</text>\n</svg>",
+  "media": [
+   {
+    "title": "Optical Distribution",
+    "html": "<svg class=\"optical-svg\" fill=\"none\" viewbox=\"0 0 140 100\">\n<path d=\"M70 90 L10 10 Q70 50 130 10 Z\" fill=\"rgba(245,200,50,0.18)\" stroke=\"#f5c842\" stroke-width=\"1\"></path>\n<line stroke=\"#999\" stroke-width=\"0.5\" x1=\"70\" x2=\"70\" y1=\"90\" y2=\"5\"></line>\n<line stroke=\"#999\" stroke-width=\"0.5\" x1=\"10\" x2=\"130\" y1=\"90\" y2=\"90\"></line>\n<text fill=\"#d4a820\" font-size=\"7\" font-weight=\"700\" text-anchor=\"middle\" x=\"70\" y=\"82\">Beam angle: 170°</text>\n</svg>"
+   },
+   {
+    "title": "Layout Guide — Lightbox Depth",
+    "html": "<table style=\"width:100%;font-size:0.67rem;border-collapse:collapse\">\n<tr style=\"background:#f0f2f5\"><td style=\"padding:0.2rem 0.35rem;font-weight:700\">Depth</td><td style=\"padding:0.2rem 0.35rem\">Min.Stroke</td><td style=\"padding:0.2rem 0.35rem\">Module Spacing</td></tr>\n<tr><td style=\"padding:0.2rem 0.35rem\">4\"/100mm</td><td style=\"padding:0.2rem 0.35rem\">8.0\"/200</td><td style=\"padding:0.2rem 0.35rem\">8.0\"/200</td></tr>\n<tr style=\"background:#f8f9fb\"><td style=\"padding:0.2rem 0.35rem\">6\"/150mm</td><td style=\"padding:0.2rem 0.35rem\">14.7\"/375</td><td style=\"padding:0.2rem 0.35rem\">14.7\"/375</td></tr>\n<tr><td style=\"padding:0.2rem 0.35rem\">8\"/200mm</td><td style=\"padding:0.2rem 0.35rem\">19.7\"/500</td><td style=\"padding:0.2rem 0.35rem\">16.0\"/410</td></tr>\n<tr style=\"background:#f8f9fb\"><td style=\"padding:0.2rem 0.35rem\">12\"/300mm</td><td style=\"padding:0.2rem 0.35rem\">23.6\"/600</td><td style=\"padding:0.2rem 0.35rem\">16.0\"/410</td></tr>\n</table>"
+   }
+  ],
+  "images": [],
+  "datasheetUrl": "",
+  "published": true,
+  "order": 5,
+  "price": null,
+  "showPrice": false,
+  "packaging": [
+   {
+    "label": "Cascade",
+    "value": "50 mods"
+   },
+   {
+    "label": "IP",
+    "value": "IP65"
+   },
+   {
+    "label": "Back Tape",
+    "value": "3M"
+   },
+   {
+    "label": "Warranty",
+    "value": "3 Years"
+   },
+   {
+    "label": "Certs",
+    "value": "UL CE RoHS"
+   }
+  ],
+  "variants": [
+   "Pure White · 6500K",
+   "White · 4000K",
+   "Warm White · 3000K"
+  ]
+ },
+ {
+  "id": "ldw0b6c2-1",
+  "model": "LDW0B6C2-1",
+  "name": "LDW0B6C2-1",
+  "summary": "DC 24V · 20W · 1600lm · Edge Lighting · 500mm",
+  "brand": "Talent Electronics",
+  "series": "Talent Electronics · Edge Lighting Rigid Bar Series",
+  "category": [
+   "edge",
+   "lightbox"
+  ],
+  "tags": [
+   "talent",
+   "edge",
+   "dc",
+   "ldw0b6c2",
+   "rigid",
+   "bar",
+   "lightbox"
+  ],
+  "tagline": "DC24V · 20W · 1600lm · 500mm RIGID BAR · FOR LIGHTBOX DEPTH 10cm (3M)",
+  "badges": [
+   {
+    "label": "cULus",
+    "kind": "ul"
+   },
+   {
+    "label": "CE",
+    "kind": "ce"
+   },
+   {
+    "label": "RoHS",
+    "kind": "rohs"
+   },
+   {
+    "label": "DC 24V",
+    "kind": "dc"
+   },
+   {
+    "label": "3yr WARRANTY",
+    "kind": "yr3"
+   },
+   {
+    "label": "IP20",
+    "kind": "ip20"
+   },
+   {
+    "label": "6°×13°",
+    "kind": "angle"
+   },
+   {
+    "label": "UL94V-1",
+    "kind": "patented"
+   }
+  ],
+  "specs": [
+   {
+    "label": "Input Voltage",
+    "value": "DC 24V"
+   },
+   {
+    "label": "Power",
+    "value": "20W"
+   },
+   {
+    "label": "Luminous Efficacy",
+    "value": "80 lm/W"
+   },
+   {
+    "label": "Beam Angle",
+    "value": "6° × 13°"
+   },
+   {
+    "label": "LED Chip",
+    "value": "3535 (10 pcs)"
+   },
+   {
+    "label": "Waterproof",
+    "value": "IP20"
+   },
+   {
+    "label": "Product Size",
+    "value": "500 × 33.8 × 19.6 mm"
+   },
+   {
+    "label": "Weight",
+    "value": "105g"
+   },
+   {
+    "label": "Lightbox Depth",
+    "value": "10cm / 3M lightbox"
+   },
+   {
+    "label": "Operating Temp.",
+    "value": "−25°C ~ +60°C"
+   },
+   {
+    "label": "Fire Retardant",
+    "value": "UL94V-1"
+   },
+   {
+    "label": "Warranty",
+    "value": "3 Years"
+   }
+  ],
+  "features": [
+   "High quality 3535 LEDs — uniform light, anti-static",
+   "Double angle lens 6°×13° — edge lighting",
+   "Constant power, OTP & short circuit protection",
+   "Fire retardant UL94V-1 material",
+   "Suitable for 10cm / 3M depth lightbox"
+  ],
+  "ordering": {
+   "columns": [
+    "Part#",
+    "Color",
+    "Color Temp",
+    "LED Qty",
+    "Lumens",
+    "Lm/W",
+    "W/pc",
+    "IP"
+   ],
+   "rows": [
+    [
+     "LDW0B6C2-1",
+     "White",
+     "6500K–9000K",
+     "10 pcs",
+     "1600±10 lm",
+     "80",
+     "20W",
+     "IP20"
+    ],
+    [
+     "LDW0B6C2-1",
+     "Warm White",
+     "3000–3200K",
+     "10 pcs",
+     "1500±10 lm",
+     "79",
+     "20W",
+     "IP20"
+    ]
+   ]
+  },
+  "imageSvg": "<svg class=\"prod-img-svg\" fill=\"none\" viewbox=\"0 0 210 55\">\n<rect fill=\"#f0f4fa\" height=\"16\" rx=\"3\" stroke=\"#99aacc\" stroke-width=\"1\" width=\"206\" x=\"2\" y=\"16\"></rect>\n<rect fill=\"#e8ecf4\" height=\"8\" rx=\"2\" stroke=\"#99aacc\" stroke-width=\"0.8\" width=\"206\" x=\"2\" y=\"32\"></rect>\n<circle cx=\"23\" cy=\"24\" fill=\"#ddeaff\" r=\"5.5\" stroke=\"#4477cc\" stroke-width=\"1.2\"></circle><circle cx=\"23\" cy=\"24\" fill=\"#3366bb\" opacity=\"0.85\" r=\"3\"></circle>\n<circle cx=\"44\" cy=\"24\" fill=\"#ddeaff\" r=\"5.5\" stroke=\"#4477cc\" stroke-width=\"1.2\"></circle><circle cx=\"44\" cy=\"24\" fill=\"#3366bb\" opacity=\"0.85\" r=\"3\"></circle>\n<circle cx=\"65\" cy=\"24\" fill=\"#ddeaff\" r=\"5.5\" stroke=\"#4477cc\" stroke-width=\"1.2\"></circle><circle cx=\"65\" cy=\"24\" fill=\"#3366bb\" opacity=\"0.85\" r=\"3\"></circle>\n<circle cx=\"86\" cy=\"24\" fill=\"#ddeaff\" r=\"5.5\" stroke=\"#4477cc\" stroke-width=\"1.2\"></circle><circle cx=\"86\" cy=\"24\" fill=\"#3366bb\" opacity=\"0.85\" r=\"3\"></circle>\n<circle cx=\"107\" cy=\"24\" fill=\"#ddeaff\" r=\"5.5\" stroke=\"#4477cc\" stroke-width=\"1.2\"></circle><circle cx=\"107\" cy=\"24\" fill=\"#3366bb\" opacity=\"0.85\" r=\"3\"></circle>\n<circle cx=\"128\" cy=\"24\" fill=\"#ddeaff\" r=\"5.5\" stroke=\"#4477cc\" stroke-width=\"1.2\"></circle><circle cx=\"128\" cy=\"24\" fill=\"#3366bb\" opacity=\"0.85\" r=\"3\"></circle>\n<circle cx=\"149\" cy=\"24\" fill=\"#ddeaff\" r=\"5.5\" stroke=\"#4477cc\" stroke-width=\"1.2\"></circle><circle cx=\"149\" cy=\"24\" fill=\"#3366bb\" opacity=\"0.85\" r=\"3\"></circle>\n<circle cx=\"170\" cy=\"24\" fill=\"#ddeaff\" r=\"5.5\" stroke=\"#4477cc\" stroke-width=\"1.2\"></circle><circle cx=\"170\" cy=\"24\" fill=\"#3366bb\" opacity=\"0.85\" r=\"3\"></circle>\n<circle cx=\"191\" cy=\"24\" fill=\"#ddeaff\" r=\"5.5\" stroke=\"#4477cc\" stroke-width=\"1.2\"></circle><circle cx=\"191\" cy=\"24\" fill=\"#3366bb\" opacity=\"0.85\" r=\"3\"></circle>\n<text fill=\"#aaa\" font-size=\"6.5\" text-anchor=\"middle\" x=\"105\" y=\"50\">500mm · 10 × 3535 chips · DC24V · 20W</text>\n</svg>",
+  "media": [
+   {
+    "title": "Optical Distribution (Edge)",
+    "html": "<svg class=\"optical-svg\" fill=\"none\" viewbox=\"0 0 140 100\">\n<path d=\"M70 90 L62 10 L78 10 Z\" fill=\"rgba(100,180,255,0.25)\" stroke=\"#4488cc\" stroke-width=\"1.2\"></path>\n<path d=\"M70 90 L58 20 L82 20 Z\" fill=\"rgba(100,180,255,0.1)\" stroke=\"#4488cc\" stroke-dasharray=\"2,2\" stroke-width=\"0.5\"></path>\n<line stroke=\"#999\" stroke-width=\"0.5\" x1=\"70\" x2=\"70\" y1=\"90\" y2=\"5\"></line>\n<line stroke=\"#999\" stroke-width=\"0.5\" x1=\"10\" x2=\"130\" y1=\"90\" y2=\"90\"></line>\n<text fill=\"#4488cc\" font-size=\"7\" font-weight=\"700\" text-anchor=\"middle\" x=\"70\" y=\"82\">Beam: 6°×13° Edge</text>\n</svg>"
+   },
+   {
+    "title": "Layout Guide — Lightbox",
+    "html": "<table style=\"width:100%;font-size:0.67rem;border-collapse:collapse\">\n<tr style=\"background:#f0f2f5\"><td style=\"padding:0.2rem 0.35rem;font-weight:700\">Depth</td><td style=\"padding:0.2rem 0.35rem\">Width</td><td style=\"padding:0.2rem 0.35rem\">Length</td><td style=\"padding:0.2rem 0.35rem\">Spacing</td></tr>\n<tr><td style=\"padding:0.2rem 0.35rem\">3.9\"/100</td><td style=\"padding:0.2rem 0.35rem\">59\"/3000</td><td style=\"padding:0.2rem 0.35rem\">59\"/3000</td><td style=\"padding:0.2rem 0.35rem\">19.7\"/500</td></tr>\n<tr style=\"background:#f8f9fb\"><td style=\"padding:0.2rem 0.35rem\">5.9\"/150</td><td style=\"padding:0.2rem 0.35rem\">137\"/3500</td><td style=\"padding:0.2rem 0.35rem\">137\"/3500</td><td style=\"padding:0.2rem 0.35rem\">19.7\"/500</td></tr>\n<tr><td style=\"padding:0.2rem 0.35rem\">7.8\"/200</td><td style=\"padding:0.2rem 0.35rem\">157\"/4000</td><td style=\"padding:0.2rem 0.35rem\">157\"/4000</td><td style=\"padding:0.2rem 0.35rem\">19.7\"/500</td></tr>\n</table>"
+   }
+  ],
+  "images": [],
+  "datasheetUrl": "",
+  "published": true,
+  "order": 6,
+  "price": null,
+  "showPrice": false,
+  "packaging": [
+   {
+    "label": "Size",
+    "value": "500×33.8×19.6mm"
+   },
+   {
+    "label": "Weight",
+    "value": "105g/pc"
+   },
+   {
+    "label": "IP",
+    "value": "IP20"
+   },
+   {
+    "label": "Fire",
+    "value": "UL94V-1"
+   },
+   {
+    "label": "Warranty",
+    "value": "3 Years"
+   }
+  ],
+  "variants": [
+   "White · 6500K–9000K",
+   "Warm White · 3000–3200K"
+  ]
+ }
+]

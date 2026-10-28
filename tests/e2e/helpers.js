@@ -10,5 +10,6 @@ export function trackErrors(page) {
 export const PAGES = [
   { path: '/', title: /LED IT BE/ },
   { path: '/catalog.html', title: /קטלוג/ },
+  { path: '/product.html?id=6616b', title: /6616B/ },
   { path: '/quote.html', title: /הצעת מחיר/ },
 ];

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מוצר – LED IT BE</title>
+<meta name="description" content="מפרט טכני מלא ובקשת הצעת מחיר.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Assistant:wght@300;400;500;600;700&display=swap&font-display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- @include nav.html -->
+
+<main class="catalog-page" id="main">
+  <div class="product-wrap">
+    <div class="crumbs" role="navigation" aria-label="breadcrumb">
+      <a href="./"><span class="he-text t-in">בית</span><span class="en-text t-in">Home</span></a> /
+      <a href="catalog.html"><span class="he-text t-in">קטלוג</span><span class="en-text t-in">Catalog</span></a> /
+      <span id="crumb-model" aria-current="page"></span>
+    </div>
+    <div id="product" aria-busy="true"></div>
+  </div>
+</main>
+
+<!-- @include footer.html -->
+<script type="module" src="/src/pages/product.js"></script>
+</body>
+</html>
