@@ -1,0 +1,18 @@
+/* Shared additions on top of the original design (keeps existing tokens: --accent, --navy ...) */
+.quote-nav-btn { display: inline-flex; align-items: center; gap: .4rem; }
+.quote-count {
+  min-width: 1.25rem; height: 1.25rem; padding: 0 .3rem; border-radius: 999px;
+  background: var(--accent); color: #04121c; font-size: .7rem; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center; line-height: 1;
+}
+.quote-count[hidden] { display: none; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+@media (max-width: 640px) {
+  /* language switch inside the mobile menu must stay reachable (was hidden by .lang-btn rule) */
+  .mobile-menu .lang-btn { display: inline-block !important; }
+  /* compact quote cart in the mobile header */
+  .nav-inner .quote-nav-btn { display: inline-flex !important; margin-inline-start: auto; margin-inline-end: .5rem; padding: .4rem .6rem; }
+  .nav-inner .quote-nav-btn .he-text, .nav-inner .quote-nav-btn .en-text { display: none !important; }
+}
+.mm-portal .quote-count { margin-inline-start: .5rem; }

@@ -1669,6 +1669,11 @@ function showPendingDetail(idx) {
 
 function approvePendingClient() {
   if (currentPending === null) return;
+  const showMsg = (text, ok) => {
+    const box = document.getElementById('pending-detail');
+    const old = box.querySelector('.pending-msg'); if (old) old.remove();
+    box.insertAdjacentHTML('afterbegin', `<div class="pending-msg" style="background:${ok?'#dcfce7':'#fee2e2'};border-radius:7px;padding:0.6rem 0.85rem;margin-bottom:0.85rem;font-size:0.78rem;color:${ok?'#166534':'#991b1b'}">${text}</div>`);
+  };
   
   const newCustomers = JSON.parse(localStorage.getItem('led_new_customers') || '[]');
   const customer = newCustomers[currentPending];
@@ -1703,12 +1708,16 @@ function approvePendingClient() {
   extraP[customer.hp] = pwHash;
   localStorage.setItem('led_pass', JSON.stringify(extraP));
   
-  // הסר מהרשימה של בקשות
-  deletePendingClientDirect();
+  // הסר מהרשימה של בקשות — המודאל נשאר פתוח כדי שהמנהל יראה את הסיסמה הזמנית
+  const remaining = JSON.parse(localStorage.getItem('led_new_customers') || '[]');
+  remaining.splice(currentPending, 1);
+  localStorage.setItem('led_new_customers', JSON.stringify(remaining));
+  currentPending = null;
+  document.getElementById('pending-detail').innerHTML = '';
   
   showMsg(`✓ הלקוח <strong>${esc(customer.name)}</strong> נוסף בהצלחה! ח.פ: <strong>${esc(customer.hp)}</strong> · סיסמה זמנית: <code style="background:#f3f4f6;padding:0.1rem 0.35rem;border-radius:3px">${esc(tempPassword)}</code>`, true);
   renderPendingClients();
-  closeModal('modal-pending');
+}
 
 function deletePendingClient() {
   const ok = confirm('האם בטוח שברצונך למחוק את הבקשה הזו?');

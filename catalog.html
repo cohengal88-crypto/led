@@ -176,7 +176,7 @@ nav{background:rgba(10,22,40,0.97);position:sticky;top:0;z-index:100;border-bott
 <!-- NAV -->
 <nav>
   <div class="nav-inner">
-    <a href="ledtech.html" class="logo">
+    <a href="./" class="logo">
       <span class="logo-name">jacob <span>group</span></span>
       <span class="logo-brand">LED IT BE</span>
     </a>
@@ -188,11 +188,11 @@ nav{background:rgba(10,22,40,0.97);position:sticky;top:0;z-index:100;border-bott
       <button class="filter-pill" onclick="setFilter('jds',this)">JDS</button>
     </div>
     <div style="display:flex;align-items:center;gap:0.6rem">
-      <a href="portal.html" id="nav-user-chip" class="nav-user-chip">
+      <a href="quote.html" id="nav-user-chip" class="nav-user-chip">
         <span id="chip-avatar" style="width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--navy);font-weight:700;font-size:0.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0">?</span>
         <span id="chip-name"></span>
       </a>
-      <a href="portal.html" id="nav-portal-link" class="nav-portal-link">🔐 כניסה</a>
+      <a href="quote.html" id="nav-portal-link" class="nav-portal-link">🔐 כניסה</a>
       <button class="cart-btn" onclick="toggleCart()">🛒 סל <span class="cart-count" id="cart-count">0</span></button>
     </div>
   </div>
@@ -979,5 +979,6 @@ function showToast(msg){
   } catch(e) {}
 })();
 </script>
+<script type="module" src="/src/pages/catalog-legacy.js"></script>
 </body>
 </html>
