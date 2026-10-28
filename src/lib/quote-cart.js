@@ -17,12 +17,12 @@ const keyOf = (productId, variant) => `${productId}::${variant || ''}`;
 export const items = () => read();
 export const count = () => read().reduce((n, i) => n + i.qty, 0);
 
-export function add({ productId, model, variant = '', qty = 1 }) {
+export function add({ productId, model, variant = '', sku = '', qty = 1 }) {
   if (!productId) throw new Error('productId required');
   qty = Math.max(1, Math.floor(Number(qty) || 1));
   const list = read();
   const ex = list.find(i => keyOf(i.productId, i.variant) === keyOf(productId, variant));
-  if (ex) ex.qty += qty; else list.push({ productId, model, variant, qty });
+  if (ex) ex.qty += qty; else list.push({ productId, model, variant, sku, qty });
   write(list);
 }
 export function setQty(productId, variant, qty) {

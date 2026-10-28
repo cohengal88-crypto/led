@@ -1,64 +1,92 @@
 import { test, expect } from '@playwright/test';
 
 const cards = page => page.getByTestId('product-card');
+let data;
+test.beforeAll(async ({ request }) => { data = await (await request.get('/data/products.json')).json(); });
 
-test('shows all products from the data file', async ({ page, request }) => {
-  const all = await (await request.get('/data/products.json')).json();
-  await page.goto('/catalog.html');
-  await expect(cards(page)).toHaveCount(all.length);
-  await expect(page.locator('#results-lbl')).toContainText(String(all.length));
-  await expect(page.locator('[data-count-total]')).toHaveText(String(all.length));
+test('import: every SKU from the item file is in exactly one product', async () => {
+  const skus = data.products.flatMap(p => p.skus);
+  expect(new Set(skus).size).toBe(skus.length);
+  expect(skus.length).toBe(671);
+  expect(skus).not.toContain('15601'); // discount line
+  expect(skus).not.toContain('15701'); // commissions
+  expect(skus).not.toContain('15516'); // inactive
+  for (const p of data.products) {
+    expect(p.variants.map(v => v.sku)).toEqual(p.skus);
+    expect(new Set(p.variants.map(v => v.he)).size, `duplicate variant labels in ${p.id}`).toBe(p.variants.length);
+  }
 });
 
-test('search narrows results, is forgiving about spaces/dashes, and is kept in the URL', async ({ page }) => {
+test('first page shows 24 cards, "show more" loads the rest', async ({ page }) => {
   await page.goto('/catalog.html');
-  await page.fill('#search', 'mfw 8a3d');
-  await expect(cards(page)).toHaveCount(1);
-  await expect(cards(page).first()).toContainText('MFW8A3D');
-  await expect(page).toHaveURL(/q=mfw/);
+  await expect(cards(page)).toHaveCount(24);
+  await expect(page.locator('#results-lbl')).toContainText(`24`);
+  await expect(page.locator('#results-lbl')).toContainText(String(data.products.length));
+  await page.locator('#more').click();
+  await expect(cards(page)).toHaveCount(48);
+  await expect(page.locator('[data-count-skus]')).toHaveText('671');
+});
 
+test('default order is by SKU', async ({ page }) => {
+  await page.goto('/catalog.html');
+  const skus = await cards(page).locator('[data-sku]').allTextContents();
+  const first = skus.map(s => s.split('–')[0]);
+  expect(first).toEqual([...first].sort());
+});
+
+test('search by exact SKU finds the product and pre-selects that variant', async ({ page }) => {
+  await page.goto('/catalog.html');
+  await page.fill('#search', '12005');
+  await expect(cards(page)).toHaveCount(1);
+  const card = cards(page).first();
+  await expect(card).toContainText('לד נעיצה 9');
+  await expect(card.locator('[data-sku]')).toHaveText('12005');
+  await expect(card.locator('select[data-variant] option:checked')).toContainText('כחול');
+  await expect(page).toHaveURL(/q=12005/);
+});
+
+test('search by name is forgiving (spaces, ×/x)', async ({ page }) => {
+  await page.goto('/catalog.html');
+  await page.fill('#search', 'ניאון 6x12');
+  await expect(cards(page).first()).toContainText('6×12');
+  for (const c of await cards(page).all()) await expect(c).toContainText('6×12');
+});
+
+test('category filter shows counts, filters, and is kept in the URL', async ({ page }) => {
+  await page.goto('/catalog.html');
+  const neon = data.categories.find(c => c.id === 'neon');
+  const pill = page.locator('[data-filter="neon"]');
+  await expect(pill).toContainText(String(neon.count));
+  await pill.click();
+  await expect(pill).toHaveAttribute('aria-pressed', 'true');
+  await expect(cards(page)).toHaveCount(Math.min(24, neon.count));
+  await expect(page).toHaveURL(/cat=neon/);
   await page.reload();
-  await expect(cards(page)).toHaveCount(1);
+  await expect(page.locator('[data-filter="neon"]')).toHaveAttribute('aria-pressed', 'true');
 });
 
-test('category filter + empty state + reset', async ({ page }) => {
+test('empty state + reset', async ({ page }) => {
   await page.goto('/catalog.html');
-  await page.locator('[data-filter="jds"]').click();
-  await expect(page.locator('[data-filter="jds"]')).toHaveAttribute('aria-pressed', 'true');
-  await expect(cards(page)).toHaveCount(2);
-  for (const c of await cards(page).all()) await expect(c).toContainText('JDS');
-
-  await page.fill('#search', 'zzz-not-a-product');
+  await page.fill('#search', 'zzzz-nothing');
   await expect(page.getByTestId('no-results')).toBeVisible();
   await page.locator('[data-reset]').click();
-  await expect(cards(page)).toHaveCount(6);
-  await expect(page.locator('#search')).toHaveValue('');
+  await expect(cards(page)).toHaveCount(24);
 });
 
-test('add to quote from a card with chosen variant and quantity', async ({ page }) => {
-  await page.goto('/catalog.html?q=6616b');
+test('changing the variant on a card updates its SKU', async ({ page }) => {
+  await page.goto('/catalog.html?q=' + encodeURIComponent('לד נעיצה 9'));
+  const card = cards(page).filter({ hasText: '12V' }).first();
+  await card.locator('select[data-variant]').selectOption({ index: 3 });
+  await expect(card.locator('[data-sku]')).toHaveText('12004');
+  await expect(card.locator('a[data-link]')).toHaveAttribute('href', /sku=12004/);
+});
+
+test('add to quote from a card keeps the SKU', async ({ page }) => {
+  await page.goto('/catalog.html?q=15204');
   const card = cards(page).first();
-  await card.locator('[data-variant]').selectOption({ label: 'Warm White · 3000K' });
-  await card.locator('[data-qty]').fill('25');
+  await card.locator('[data-qty]').fill('3');
   await card.locator('[data-add]').click();
-  await expect(page.locator('.ui-toast')).toContainText('6616B');
-  await expect(page.locator('.quote-nav-btn [data-quote-count]')).toHaveText('25');
-
-  await page.goto('/quote.html');
-  const item = page.getByTestId('quote-item');
-  await expect(item).toHaveCount(1);
-  await expect(item).toContainText('Warm White · 3000K');
-  await expect(item.locator('input')).toHaveValue('25');
-});
-
-test('card links to the product page', async ({ page }) => {
-  await page.goto('/catalog.html');
-  await cards(page).filter({ hasText: '4116B' }).locator('.btn-details').click();
-  await expect(page).toHaveURL(/product\.html\?id=4116b/);
-  await expect(page.locator('h1.sh-model')).toHaveText('4116B');
-});
-
-test('spec sheets read left-to-right (units after numbers)', async ({ page }) => {
-  await page.goto('/catalog.html');
-  await expect(cards(page).first()).toHaveAttribute('dir', 'ltr');
+  await expect(page.locator('.ui-toast')).toContainText('× 3');
+  const cart = await page.evaluate(() => JSON.parse(localStorage.getItem('led_quote_v1')));
+  expect(cart).toEqual([expect.objectContaining({ sku: '15204', qty: 3, variant: 'אדום' })]);
 });

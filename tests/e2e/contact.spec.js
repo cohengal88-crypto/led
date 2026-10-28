@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test('home contact form: validation, submit, saved message', async ({ page }) => {
   await page.goto('/#contact');
+  await page.locator('#contact-form[data-ready]').waitFor({ state: 'attached' });
   await page.click('#c-submit');
   await expect(page.locator('#ce-message')).toHaveText('נא לכתוב כמה מילים');
   await expect(page.locator('#c-name')).toBeFocused();
@@ -30,4 +31,15 @@ test('home contact form is prefilled for a known customer', async ({ page }) => 
 test('no mailto buttons left in the contact section', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('#contact button[onclick*="mailto"]')).toHaveCount(0);
+});
+
+test('before scripts load, submitting never puts personal data in the URL', async ({ page }) => {
+  await page.route('**/assets/*.js', r => r.abort()); // JS never arrives
+  await page.goto('/#contact', { waitUntil: 'domcontentloaded' });
+  await page.fill('#c-name', 'יוסי');
+  await page.fill('#c-phone', '0521234567');
+  await page.click('#c-submit');
+  await page.waitForTimeout(300);
+  expect(page.url()).not.toContain('0521234567');
+  expect(page.url()).not.toContain('name=');
 });

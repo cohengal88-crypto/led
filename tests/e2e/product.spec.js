@@ -1,44 +1,53 @@
 import { test, expect } from '@playwright/test';
 
-test('product page shows the full sheet', async ({ page }) => {
-  await page.goto('/product.html?id=6616b');
-  const sheet = page.getByTestId('product-sheet');
-  await expect(sheet.locator('h1')).toHaveText('6616B');
-  await expect(sheet.locator('.spec-table tr')).toHaveCount(10);
-  await expect(sheet.locator('.ordering-table tbody tr')).toHaveCount(3);
-  await expect(sheet.locator('.sh-bottom .bottom-block')).toHaveCount(2);
-  await expect(sheet.locator('.ship-cell')).toHaveCount(5);
-  await expect(page.locator('#crumb-model')).toHaveText('6616B');
-  await expect(page).toHaveTitle(/6616B/);
+test('product page: name, SKU, variants, specs', async ({ page }) => {
+  await page.goto('/product.html?id=pixel-12001');
+  const pd = page.getByTestId('product-detail');
+  await expect(pd.locator('h1')).toContainText('לד נעיצה 9');
+  await expect(pd.locator('[data-sku]')).toHaveText('12001');
+  await expect(pd.locator('input[data-variant]')).toHaveCount(11);
+  await expect(pd.locator('.pd-specs')).toContainText('12V');
+  await expect(page).toHaveTitle(/לד נעיצה 9/);
 });
 
-test('clicking an ordering-guide row selects that variant and adds it', async ({ page }) => {
-  await page.goto('/product.html?id=6616b');
-  const rows = page.locator('.ordering-table tbody tr');
-  await rows.nth(2).click();
-  await expect(rows.nth(2)).toHaveAttribute('aria-selected', 'true');
-  await expect(rows.nth(0)).toHaveAttribute('aria-selected', 'false');
-  await expect(page.locator('.buy-box [data-variant]')).toHaveValue('2');
-
-  await page.locator('.buy-box [data-qty]').fill('100');
-  await page.locator('.buy-box [data-add]').click();
-
-  await page.goto('/quote.html');
-  await expect(page.getByTestId('quote-item')).toContainText('Warm White · 3000K');
-  await expect(page.getByTestId('quote-item').locator('input')).toHaveValue('100');
+test('?sku= pre-selects the variant; choosing another updates SKU and URL', async ({ page }) => {
+  await page.goto('/product.html?id=pixel-12001&sku=12005');
+  const pd = page.getByTestId('product-detail');
+  await expect(pd.locator('[data-sku]')).toHaveText('12005');
+  await expect(pd.getByLabel(/ירוק/)).not.toBeChecked();
+  await pd.locator('label', { hasText: 'ירוק' }).click();
+  await expect(pd.locator('[data-sku]')).toHaveText('12004');
+  await expect(page).toHaveURL(/sku=12004/);
+  await expect(pd.locator('[data-source]')).toContainText('ירוק');
 });
 
-test('same product + same variant merges quantities; different variant is a new line', async ({ page }) => {
-  await page.goto('/product.html?id=4116b');
-  const add = page.locator('.buy-box [data-add]');
-  await add.click();
-  await add.click();
-  await page.locator('.buy-box [data-variant]').selectOption('1');
-  await add.click();
+test('variants are a keyboard-operable radio group', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'keyboard');
+  await page.goto('/product.html?id=pixel-12001');
+  await page.locator('#var-0').focus();
+  await page.keyboard.press('ArrowDown');
+  await expect(page.locator('#var-1')).toBeChecked();
+  await expect(page.locator('[data-sku]')).toHaveText('12002');
+});
+
+test('adding two variants creates two quote lines with their SKUs', async ({ page }) => {
+  await page.goto('/product.html?id=pixel-12001');
+  await page.locator('#pd-qty').fill('500');
+  await page.locator('.pd [data-add]').click();
+  await page.locator('label', { hasText: 'כחול' }).click();
+  await page.locator('.pd [data-add]').click();
   await page.goto('/quote.html');
   const items = page.getByTestId('quote-item');
   await expect(items).toHaveCount(2);
-  await expect(items.nth(0).locator('input')).toHaveValue('2');
+  await expect(items.nth(0)).toContainText('12001');
+  await expect(items.nth(0).locator('input')).toHaveValue('500');
+  await expect(items.nth(1)).toContainText('12005');
+});
+
+test('single-variant product has no variant picker', async ({ page }) => {
+  await page.goto('/product.html?id=controllers-15102');
+  await expect(page.locator('input[data-variant]')).toHaveCount(0);
+  await expect(page.locator('[data-sku]')).toHaveText('15102');
 });
 
 test('unknown product shows a friendly not-found', async ({ page }) => {

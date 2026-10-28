@@ -59,3 +59,10 @@ html[lang="en"] .contact-form input[dir="ltr"] { text-align: left; }
 .contact-done p { color: rgba(255,255,255,.75); margin: .3rem auto; }
 .contact-done .done-icon { width: 56px; height: 56px; border-radius: 50%; background: rgba(0,200,224,.15); color: var(--accent); font-size: 1.7rem; font-weight: 700; display: grid; place-items: center; margin: 0 auto .8rem; }
 @media (max-width: 600px) { .cf-grid { grid-template-columns: 1fr; } }
+
+/* WCAG AA contrast fixes on the original design (checked with axe-core) */
+.marquee-item { color: rgba(255,255,255,.72) !important; }
+.section-label { color: #1567ab !important; }               /* was #1a7fcf (4.0:1) → 5.3:1 */
+.industry-card p { color: rgba(255,255,255,.66) !important; } /* was 3.8:1 on dark card */
+.author-role { color: #5b6b80 !important; }                 /* was #8a9bb0 (2.8:1) */
+#industries .section-label { color: #3fd6ea !important; }      /* dark section */

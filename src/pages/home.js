@@ -15,6 +15,7 @@ const REQUIRED = ['name', 'phone', 'email', 'message'];
 const known = getCustomer();
 if (known) for (const f of ['name', 'phone', 'email', 'company']) if (known[f]) form.elements[f].value = known[f];
 liveValidate(form, REQUIRED);
+form.dataset.ready = '';
 
 form.addEventListener('submit', async e => {
   e.preventDefault();

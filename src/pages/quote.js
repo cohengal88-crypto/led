@@ -29,14 +29,14 @@ function render() {
     const p = products.get(it.productId);
     return `
     <div class="q-item" data-testid="quote-item" data-i="${i}">
-      <div><div class="q-model" dir="ltr"><a href="product.html?id=${encodeURIComponent(it.productId)}">${esc(it.model)}</a></div><div class="q-variant" dir="ltr">${esc(it.variant)}</div></div>
+      <div><div class="q-model"><a href="product.html?id=${encodeURIComponent(it.productId)}${it.sku ? `&sku=${it.sku}` : ''}">${esc(it.model)}</a></div><div class="q-variant">${it.variant ? `${esc(it.variant)} · ` : ''}${it.sku ? `<span dir="ltr">${t('מק"ט', 'SKU')} ${esc(it.sku)}</span>` : ''}</div></div>
       <div class="q-qty">
         <button type="button" data-d="-1" aria-label="הפחת כמות">−</button>
         <input type="number" min="1" inputmode="numeric" value="${it.qty}" aria-label="כמות ${esc(it.model)}">
         <button type="button" data-d="1" aria-label="הוסף כמות">+</button>
       </div>
       <button type="button" class="q-remove" data-rm aria-label="הסר ${esc(it.model)}">${t('הסר', 'Remove')}</button>
-      ${p ? `<div class="q-pack" data-testid="pack-hint">${packHint(p, it.qty)}</div>` : ''}
+      ${(h => (h ? `<div class="q-pack" data-testid="pack-hint">${h}</div>` : ''))(p ? packHint(p, it.qty) : '')}
     </div>`;
   }).join('');
 }
@@ -66,6 +66,7 @@ document.getElementById('forget-me').addEventListener('click', () => {
 });
 form.addEventListener('input', () => saveDraft(formValues(form)));
 liveValidate(form, REQUIRED);
+form.dataset.ready = '';
 
 // ── submit ──
 form.addEventListener('submit', async e => {
@@ -85,7 +86,7 @@ form.addEventListener('submit', async e => {
     const req = await db.createQuoteRequest({
       customer: { name: v.name, company: v.company, phone: normalizePhone(v.phone), email: v.email.toLowerCase(), notes: v.notes },
       project: { type: v.projectType, annualQty: v.annualQty, timeline: v.timeline },
-      items: items.map(({ productId, model, variant, qty }) => ({ productId, model, variant, qty })),
+      items: items.map(({ productId, model, variant, sku, qty }) => ({ productId, model, variant, sku: sku || '', qty })),
       lang: document.documentElement.lang,
       source: 'website',
     });
@@ -107,7 +108,7 @@ function showDone(req) {
   const done = document.getElementById('quote-done');
   document.getElementById('done-number').textContent = req.number;
   document.getElementById('done-items').innerHTML = req.items
-    .map(i => `<li dir="ltr"><strong>${esc(i.model)}</strong>${i.variant ? ` <span>· ${esc(i.variant)}</span>` : ''} × ${i.qty}</li>`).join('');
+    .map(i => `<li><strong>${esc(i.model)}</strong>${i.variant ? ` <span>· ${esc(i.variant)}</span>` : ''}${i.sku ? ` <span dir="ltr">· ${esc(i.sku)}</span>` : ''} × ${i.qty}</li>`).join('');
   document.getElementById('demo-note').hidden = emailEnabled;
   done.hidden = false;
   done.focus();

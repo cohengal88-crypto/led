@@ -22,7 +22,7 @@ export async function notifyByEmail({ subject, fields }) {
 
 export function quoteEmail(req) {
   const c = req.customer, p = req.project || {};
-  const lines = req.items.map(i => `• ${i.model}${i.variant ? ` (${i.variant})` : ''} × ${i.qty}`).join('\n');
+  const lines = req.items.map(i => `• ${i.sku ? `[${i.sku}] ` : ''}${i.model}${i.variant ? ` (${i.variant})` : ''} × ${i.qty}`).join('\n');
   return {
     subject: `בקשת הצעת מחיר ${req.number} – ${c.company || c.name}`,
     fields: {

@@ -4,13 +4,15 @@ const PKEY = 'led_demo_products';
 const QKEY = 'led_demo_quotes';
 const MKEY = 'led_demo_messages';
 
-async function seed() {
-  const res = await fetch(`${import.meta.env.BASE_URL}data/products.json`);
-  return res.ok ? res.json() : [];
+let seedPromise;
+function seed() {
+  seedPromise ??= fetch(`${import.meta.env.BASE_URL}data/products.json`)
+    .then(r => (r.ok ? r.json() : { categories: [], products: [] }));
+  return seedPromise;
 }
 async function allProducts() {
   try { const v = JSON.parse(localStorage.getItem(PKEY) || 'null'); if (Array.isArray(v)) return v; } catch {}
-  return seed();
+  return (await seed()).products;
 }
 const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
 
@@ -20,6 +22,7 @@ export default {
     const list = await allProducts();
     return list.filter(p => includeHidden || p.published !== false).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   },
+  async listCategories() { return (await seed()).categories; },
   async getProduct(id) { return (await allProducts()).find(p => p.id === id) || null; },
   async saveProduct(p) {
     const list = await allProducts();

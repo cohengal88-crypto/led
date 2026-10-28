@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 
 test('quote page: change quantity, type quantity, remove', async ({ page }) => {
-  await page.goto('/product.html?id=mfw8g5d');
-  await page.locator('.buy-box [data-qty]').fill('2');
-  await page.locator('.buy-box [data-add]').click();
+  await page.goto('/product.html?id=controllers-15102');
+  await page.locator('#pd-qty').fill('2');
+  await page.locator('.pd [data-add]').click();
 
   await page.goto('/');
   await expect(page.locator('.quote-nav-btn [data-quote-count]')).toHaveText('2');

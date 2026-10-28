@@ -16,27 +16,36 @@
   <header class="cat-hero">
     <h1><span class="he-text t-in">קטלוג מוצרים</span><span class="en-text t-in">Product Catalog</span> <span class="accent">LED IT BE</span></h1>
     <p>
-      <span class="he-text">מודולי LED לשילוט ולתיבות אור. בחרו מוצרים, גרסה וכמות, ושלחו בקשה להצעת מחיר.</span>
-      <span class="en-text">LED modules for signage and lightboxes. Pick products, variant and quantity, and request a quote.</span>
+      <span class="he-text">מודולים, סרטי לד, ניאון, לד נעיצה, בקרים ואביזרים. בחרו גרסה וכמות, ושלחו בקשה להצעת מחיר.</span>
+      <span class="en-text">Modules, LED strips, neon, pixel LEDs, controllers and accessories. Pick a variant and quantity, and request a quote.</span>
     </p>
     <div class="hero-badges">
-      <span class="hb">✓ UL / CE / RoHS</span>
-      <span class="hb">✓ IP65–IP68</span>
-      <span class="hb">✓ <span class="he-text t-in">אחריות 3–5 שנים</span><span class="en-text t-in">3–5 yr warranty</span></span>
-      <span class="hb">✓ DC 12/24V · AC 110/220V</span>
-      <span class="hb">✓ <span data-count-total>–</span> <span class="he-text t-in">דגמים</span><span class="en-text t-in">models</span></span>
+      <span class="hb"><span data-count-products>–</span> <span class="he-text t-in">מוצרים</span><span class="en-text t-in">products</span></span>
+      <span class="hb"><span data-count-skus>–</span> <span class="he-text t-in">מק"טים</span><span class="en-text t-in">SKUs</span></span>
+      <span class="hb">12V · 24V</span>
+      <span class="hb">IP20 – IP68</span>
     </div>
   </header>
 
   <div class="search-bar">
     <div class="search-inner">
-      <input class="search-input" id="search" type="search" placeholder="חיפוש דגם / Search model (6616B, MFW8A3D…)" dir="ltr" aria-label="חיפוש מוצר">
-      <div class="filters" id="filters" role="group" aria-label="סינון"></div>
-      <span class="results" id="results-lbl" aria-live="polite"></span>
+      <label for="search" class="sr-only">חיפוש לפי שם או מק"ט / Search by name or SKU</label>
+      <input class="search-input" id="search" type="search" placeholder='חיפוש לפי שם או מק"ט (למשל 15201, ניאון 6×12)' autocomplete="off">
+      <label for="sort" class="sr-only">מיון / Sort</label>
+      <select id="sort" class="sort-select">
+        <option value="sku">מיון: לפי מק"ט</option>
+        <option value="name">מיון: לפי שם</option>
+        <option value="variants">מיון: הכי הרבה גרסאות</option>
+      </select>
     </div>
+    <div class="filters" id="filters" role="group" aria-label="קטגוריות / Categories"></div>
   </div>
 
-  <div class="catalog" id="catalog" aria-busy="true"></div>
+  <div class="catalog-wrap">
+    <p class="results" id="results-lbl" role="status" aria-live="polite"></p>
+    <div class="catalog" id="catalog" aria-busy="true"></div>
+    <div class="more-wrap"><button type="button" class="btn-more" id="more" hidden></button></div>
+  </div>
 </main>
 
 <!-- @include footer.html -->

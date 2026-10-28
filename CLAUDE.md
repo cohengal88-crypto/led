@@ -11,7 +11,8 @@
 ## מבנה
 - עמודים בשורש: `index.html`, `catalog.html`, `product.html`, `quote.html`. כל עמוד טוען את `src/pages/<page>.js`.
 - כותרת ופוטר משותפים: `src/partials/nav.html` ו-`footer.html`, נכללים עם `<!-- @include nav.html -->` (תוסף ב-`vite.config.js`). עמוד חדש צריך להירשם ב-`build.rollupOptions.input`.
-- מוצרים: `public/data/products.json` (מצב demo). התצוגה נבנית ב-`src/components/product-sheet.js`.
+- מוצרים: `public/data/products.json` נוצר מאינדקס הפריטים (xlsx) עם `python3 scripts/import-products.py <file.xlsx>`, ודורש `pip install openpyxl`. לא עורכים את ה-JSON ידנית: מתקנים את הסקריפט ומריצים אותו שוב. כרטיס: `src/components/product-card.js`, איור: `product-art.js`, עזרים: `src/lib/products.js`.
+- נגישות: `tests/e2e/a11y.spec.js` (axe-core, WCAG 2.1 AA) חייב לעבור. כל שדה מקבל label, ולא מעבירים מידע רק באמצעות צבע.
 - טקסט דו-לשוני בתוך שורה: `t(he, en)` מ-`src/lib/html.js`, וכל טקסט שמגיע מהנתונים עובר `esc()`.
 - `src/lib/quote-cart.js` – הסל, שמור ב-localStorage ומשותף לכל העמודים.
 - `src/lib/data/` – שכבת נתונים. עמודים מייבאים רק מ-`index.js`. בלי `.env.local` האתר רץ במצב demo.
