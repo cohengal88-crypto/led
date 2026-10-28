@@ -50,5 +50,5 @@ test('home shows every category with its product count', async ({ page }) => {
   const cards = page.locator('#cat-grid .cat-card:not(.cat-card--all)');
   await expect(cards).toHaveCount(7);
   await expect(cards.filter({ hasText: 'ניאון לד' })).toContainText('13');
-  await expect(page.locator('.hero [data-count-skus]')).toHaveText('671');
+  await expect(page.locator('.facts [data-count-skus]')).toHaveText('671');
 });

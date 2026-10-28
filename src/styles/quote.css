@@ -1,47 +1,47 @@
 /* Quote list + request form (light design) */
 .quote-page { padding: 40px 0 72px; min-height: 60vh; }
 .quote-page ~ .cta-strip { display: none; }
-.quote-title { font-weight: 500; font-size: 40px; letter-spacing: -.01em; margin-bottom: 6px; }
+.quote-title { font-weight: 500; font-size: 36px; color: var(--ink); letter-spacing: -.01em; margin-bottom: 6px; }
 .quote-sub { color: #22262b; margin-bottom: 32px; }
 .quote-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 440px); gap: 48px; align-items: start; }
-.quote-list { display: grid; border-top: 1px solid var(--line); }
-.q-item { display: grid; grid-template-columns: 1fr auto auto; gap: 8px 16px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--line); }
-.q-model { font-weight: 600; }
+.quote-list { display: grid; border-top: 1px solid var(--rule); }
+.q-item { display: grid; grid-template-columns: 1fr auto auto; gap: 8px 16px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--rule); }
+.q-model { font-weight: 600; color: var(--ink); }
 .q-model a:hover { text-decoration: underline; }
 .q-variant { font-size: 14px; color: var(--muted); margin-top: 2px; }
-.q-qty { display: inline-flex; align-items: center; border: 1px solid #a9aeb2; border-radius: var(--radius); overflow: hidden; background: #fff; }
-.q-qty button { width: 38px; height: 38px; background: var(--soft); border: 0; font-size: 18px; cursor: pointer; }
-.q-qty button:hover { background: var(--mint); }
+.q-qty { display: inline-flex; align-items: center; border: 1px solid var(--field); border-radius: var(--radius); overflow: hidden; background: #fff; }
+.q-qty button { width: 38px; height: 38px; background: var(--surface); border: 0; font-size: 18px; cursor: pointer; }
+.q-qty button:hover { background: var(--surface); }
 .q-qty input { width: 64px; height: 38px; border: 0; text-align: center; font-weight: 600; -moz-appearance: textfield; }
 .q-qty input::-webkit-inner-spin-button { -webkit-appearance: none; }
 .q-remove { background: none; border: 0; color: #b42318; cursor: pointer; font-size: 14px; padding: 8px; text-decoration: underline; }
 .q-pack { grid-column: 1 / -1; font-size: 13px; color: var(--muted); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-.pack-round { background: #fff; color: var(--accent-d); border: 1px solid var(--accent); border-radius: var(--radius); padding: 3px 10px; font-size: 13px; font-weight: 600; cursor: pointer; }
-.q-empty { border: 1px dashed #b7bdc2; padding: 40px; text-align: center; color: var(--muted); }
+.pack-round { background: #fff; color: var(--blue); border: 1px solid var(--blue); border-radius: var(--radius); padding: 3px 10px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.q-empty { border: 1px dashed var(--field); padding: 40px; text-align: center; color: var(--muted); }
 .q-empty a { color: var(--ink); font-weight: 600; text-decoration: underline; }
 .quote-actions { margin-top: 20px; }
 
-.quote-form { background: var(--mint); padding: 28px; position: sticky; top: 16px; }
+.quote-form { background: var(--surface); border: 1px solid var(--rule); padding: 28px; position: sticky; top: 16px; }
 .quote-form h2 { font-weight: 500; font-size: 22px; margin-bottom: 16px; }
 .f-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .quote-form > .f-field { margin-bottom: 14px; }
 .opt { font-weight: 400; color: var(--muted); font-size: 13px; }
-.f-project { border: 0; border-top: 1px solid #d3dcdc; margin: 20px 0 14px; padding: 16px 0 0; }
+.f-project { border: 0; border-top: 1px solid var(--rule); margin: 20px 0 14px; padding: 16px 0 0; }
 .f-project legend { padding-inline-end: 8px; margin-bottom: 10px; }
 .f-project .f-field:first-child { grid-column: 1 / -1; }
 .f-privacy { font-size: 13px; color: var(--muted); margin: 4px 0 14px; }
-.form-remembered { background: #fff; border: 1px solid var(--line); border-inline-start: 3px solid var(--accent); padding: 8px 12px; font-size: 14px; margin-bottom: 16px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.form-remembered { background: #fff; border: 1px solid var(--rule); border-inline-start: 3px solid var(--blue); padding: 8px 12px; font-size: 14px; margin-bottom: 16px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .form-remembered[hidden] { display: none; }
 .link-btn { background: none; border: 0; padding: 0; font-weight: 600; cursor: pointer; text-decoration: underline; }
 .btn-submit { width: 100%; padding-block: 13px; font-size: 16px; }
 
-.quote-done { max-width: 640px; margin: 0 auto; text-align: center; border: 1px solid var(--line); padding: 40px 28px; }
+.quote-done { max-width: 640px; margin: 0 auto; text-align: center; border: 1px solid var(--rule); padding: 40px 28px; }
 .quote-done:focus { outline: none; }
 .quote-done h1 { font-weight: 500; font-size: 32px; margin-bottom: 10px; }
 .done-number { font-size: 17px; margin-bottom: 8px; }
 .done-number strong { font-size: 19px; letter-spacing: .5px; }
 .done-text { color: #22262b; margin-bottom: 20px; }
-.done-items { list-style: none; text-align: start; border-top: 1px solid var(--line); padding-top: 16px; margin-bottom: 24px; display: grid; gap: 6px; font-size: 15px; }
+.done-items { list-style: none; text-align: start; border-top: 1px solid var(--rule); padding-top: 16px; margin-bottom: 24px; display: grid; gap: 6px; font-size: 15px; }
 .done-items li span { color: var(--muted); }
 .demo-note { background: #fff8e6; border: 1px solid #ecd28a; color: #6b4d00; padding: 8px 12px; font-size: 14px; margin-bottom: 20px; }
 .done-cta { min-width: 220px; }

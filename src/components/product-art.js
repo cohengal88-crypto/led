@@ -1,61 +1,119 @@
-// Illustration per product type, tinted with the variant's LED colour.
-// Decorative (aria-hidden): the product name/variant is always given as text next to it.
+// Technical line drawings per product type (datasheet style). Only the LED emitters carry colour.
+// Decorative (aria-hidden): the product name and variant are always given as text next to it.
+const INK = '#2b3036', PART = '#eef0f2', WIRE = '#8a9096', CL = '#b9bec4';
 const RGB = ['#ff3b30', '#30d158', '#0a84ff'];
-
-function fills(hex) {
-  if (!hex) return ['#dfe6ef'];
-  if (hex === 'rgb' || hex === 'rgbw') return RGB;
-  if (hex === 'multi') return ['#ff3b30', '#ffd60a', '#30d158', '#0a84ff', '#fbfbf2'];
-  return [hex];
-}
-const pick = (arr, i) => arr[i % arr.length];
-let uid = 0;
-
-const SHAPES = {
-  modules: c => `
-    <rect x="18" y="52" width="164" height="6" rx="3" fill="#b4bfcc"/>
-    ${[40, 100, 160].map((x, i) => `
-      <rect x="${x - 22}" y="34" width="44" height="42" rx="8" fill="#f2f5f9" stroke="#c9d3df"/>
-      <circle cx="${x}" cy="55" r="12" fill="${pick(c, i)}" opacity=".9"/>
-      <circle cx="${x}" cy="55" r="18" fill="${pick(c, i)}" opacity=".18"/>`).join('')}`,
-  bars: c => `
-    <rect x="10" y="44" width="180" height="22" rx="4" fill="#e8edf3" stroke="#c9d3df"/>
-    ${Array.from({ length: 9 }, (_, i) => `<circle cx="${22 + i * 19.5}" cy="55" r="5" fill="${pick(c, i)}"/>`).join('')}
-    <rect x="10" y="40" width="180" height="30" rx="6" fill="${c[0]}" opacity=".12"/>`,
-  strips: c => `
-    <path d="M10 70 C 60 70, 70 40, 120 40 S 180 55, 190 40" stroke="#f2f5f9" stroke-width="16" fill="none" stroke-linecap="round"/>
-    <path d="M10 70 C 60 70, 70 40, 120 40 S 180 55, 190 40" stroke="#c9d3df" stroke-width="16" fill="none" stroke-linecap="round" opacity=".5"/>
-    ${[[22, 69], [44, 66], [64, 58], [82, 48], [102, 41], [124, 40], [146, 44], [166, 48], [184, 43]]
-      .map(([x, y], i) => `<rect x="${x - 4}" y="${y - 4}" width="8" height="8" rx="1.5" fill="${pick(c, i)}"/>`).join('')}`,
-  neon: c => `
-    <path d="M18 72 C 50 20, 90 20, 100 55 S 160 90, 182 34" stroke="${c[0]}" stroke-width="22" fill="none" stroke-linecap="round" opacity=".2"/>
-    <path d="M18 72 C 50 20, 90 20, 100 55 S 160 90, 182 34" stroke="${c[0]}" stroke-width="11" fill="none" stroke-linecap="round"/>
-    ${c.length > 1 ? `<path d="M18 72 C 50 20, 90 20, 100 55 S 160 90, 182 34" stroke="url(#GID)" stroke-width="11" fill="none" stroke-linecap="round"/>` : ''}`,
-  pixel: c => `
-    ${[0, 1, 2, 3, 4].map(i => `
-      <circle cx="${30 + i * 35}" cy="55" r="15" fill="#b4bfcc"/>
-      <circle cx="${30 + i * 35}" cy="55" r="10" fill="${pick(c, i)}"/>
-      <circle cx="${30 + i * 35}" cy="55" r="17" fill="${pick(c, i)}" opacity=".2"/>`).join('')}
-    <path d="M10 82 H190" stroke="#b4bfcc" stroke-width="2"/>`,
-  controllers: () => `
-    <rect x="45" y="25" width="110" height="60" rx="8" fill="#eef2f6" stroke="#b4bfcc" stroke-width="2"/>
-    <rect x="58" y="38" width="44" height="14" rx="3" fill="#00c8e0" opacity=".85"/>
-    <circle cx="128" cy="45" r="6" fill="#ff3b30"/><circle cx="142" cy="45" r="6" fill="#30d158"/><circle cx="135" cy="62" r="6" fill="#0a84ff"/>
-    <path d="M45 70 H20 M155 70 H180" stroke="#9aa6b4" stroke-width="4" stroke-linecap="round"/>`,
-  accessories: () => `
-    <rect x="30" y="45" width="70" height="20" rx="4" fill="#c9d3df"/>
-    <rect x="100" y="40" width="40" height="30" rx="5" fill="#b4bfcc"/>
-    <path d="M140 50 H178 M140 60 H178" stroke="#ff3b30" stroke-width="4" stroke-linecap="round"/>
-    <path d="M140 60 H178" stroke="#6b7684" stroke-width="4" stroke-linecap="round"/>`,
+const colors = hex => !hex ? ['#ffc94d'] : (hex === 'rgb' || hex === 'rgbw') ? RGB
+  : hex === 'multi' ? ['#ff3b30', '#ffd60a', '#30d158', '#0a84ff'] : [hex];
+const pick = (c, i) => c[i % c.length];
+const emitter = (x, y, r, fill) =>
+  `<circle cx="${x}" cy="${y}" r="${r * 2}" fill="${fill}" opacity=".22"/><circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="${INK}" stroke-width=".8"/>`;
+const breakLine = (x, y1, y2) => {
+  const h = (y2 - y1) / 4;
+  return `<polyline points="${x},${y1 - 3} ${x},${y1 + h} ${x - 4},${y1 + 1.5 * h} ${x + 4},${y1 + 2.5 * h} ${x},${y1 + 3 * h} ${x},${y2 + 3}" fill="none" stroke="${INK}" stroke-width="1"/>`;
 };
 
-export function productArt(type, hex) {
-  const c = fills(hex);
+const SHAPES = {
+  modules: c => {
+    let s = `<line x1="8" y1="70" x2="232" y2="70" stroke="${CL}" stroke-width=".8" stroke-dasharray="6 3 1.5 3"/>`;
+    [48, 120, 192].forEach((x, i) => {
+      if (i < 2) s += `<path d="M${x + 26} 62 H${x + 46} M${x + 26} 78 H${x + 46}" stroke="${WIRE}" stroke-width="2.2"/>`;
+    });
+    s += `<path d="M4 62 H22 M4 78 H22 M218 62 H236 M218 78 H236" stroke="${WIRE}" stroke-width="2.2"/>`;
+    [48, 120, 192].forEach((x, i) => {
+      s += `<rect x="${x - 26}" y="47" width="52" height="46" rx="6" fill="#fff" stroke="${INK}" stroke-width="1.1"/>
+        <rect x="${x - 20}" y="53" width="40" height="34" rx="3" fill="${PART}" stroke="${INK}" stroke-width=".6"/>
+        ${emitter(x - 9, 70, 4.2, pick(c, i))}${emitter(x + 9, 70, 4.2, pick(c, i))}
+        <circle cx="${x}" cy="44" r="2.6" fill="#fff" stroke="${INK}" stroke-width=".8"/>`;
+    });
+    return s;
+  },
+  strips: c => {
+    let s = `<rect x="14" y="54" width="212" height="32" fill="#fff" stroke="${INK}" stroke-width="1.1"/>`;
+    s += `<line x1="14" y1="70" x2="226" y2="70" stroke="${CL}" stroke-width=".6" stroke-dasharray="6 3 1.5 3"/>`;
+    for (const k of [1, 2, 3]) {
+      const x = 14 + k * 53;
+      s += `<rect x="${x - 6}" y="57" width="4" height="6" fill="#e3c08a" stroke="${INK}" stroke-width=".5"/><rect x="${x + 2}" y="57" width="4" height="6" fill="#e3c08a" stroke="${INK}" stroke-width=".5"/>
+        <line x1="${x}" y1="50" x2="${x}" y2="90" stroke="${INK}" stroke-width=".8" stroke-dasharray="3 2"/>`;
+    }
+    for (let i = 0; i < 8; i++) {
+      const x = 27 + i * 26.5;
+      s += `<rect x="${x + 9}" y="77" width="6" height="3" fill="${CL}"/>
+        <rect x="${x - 5.5}" y="64.5" width="11" height="11" fill="#fff" stroke="${INK}" stroke-width=".8"/>${emitter(x, 70, 3.2, pick(c, i))}`;
+    }
+    return s + breakLine(14, 54, 86) + breakLine(226, 54, 86);
+  },
+  neon: c => `
+    <rect x="22" y="38" width="30" height="62" rx="11" fill="#fff" stroke="${INK}" stroke-width="1.1"/>
+    <rect x="29" y="45" width="16" height="36" rx="6" fill="${c[0]}" opacity=".35" stroke="${INK}" stroke-width=".6"/>
+    <rect x="31" y="84" width="12" height="4" fill="${INK}"/>
+    <line x1="37" y1="30" x2="37" y2="108" stroke="${CL}" stroke-width=".6" stroke-dasharray="6 3 1.5 3"/>
+    <path d="M74 96 C100 30, 140 30, 158 70 S205 112, 226 48" fill="none" stroke="${INK}" stroke-width="15" stroke-linecap="round"/>
+    <path d="M74 96 C100 30, 140 30, 158 70 S205 112, 226 48" fill="none" stroke="#fff" stroke-width="12.6" stroke-linecap="round"/>
+    <path d="M74 96 C100 30, 140 30, 158 70 S205 112, 226 48" fill="none" stroke="${c.length > 1 ? 'url(#GID)' : c[0]}" stroke-width="6" stroke-linecap="round" opacity=".9"/>`,
+  pixel: c => {
+    let s = `<path d="M6 100 H234 M6 106 H234" stroke="${WIRE}" stroke-width="2"/>`;
+    [30, 75, 120, 165, 210].forEach((x, i) => {
+      s += `<path d="M${x} 90 V103" stroke="${INK}" stroke-width="1"/>
+        <rect x="${x - 13}" y="82" width="26" height="6" rx="1.5" fill="${PART}" stroke="${INK}" stroke-width="1"/>
+        <rect x="${x - 9}" y="56" width="18" height="26" fill="#fff" stroke="${INK}" stroke-width="1.1"/>
+        <path d="M${x - 9} 56 A9 9 0 0 1 ${x + 9} 56 Z" fill="${pick(c, i)}" stroke="${INK}" stroke-width="1"/>
+        <circle cx="${x}" cy="52" r="16" fill="${pick(c, i)}" opacity=".18"/>`;
+    });
+    return s;
+  },
+  bars: c => {
+    let s = `<rect x="12" y="50" width="216" height="40" rx="3" fill="${PART}" stroke="${INK}" stroke-width="1.1"/>
+      <rect x="22" y="58" width="196" height="24" fill="#fff" stroke="${INK}" stroke-width=".7"/>
+      <circle cx="17" cy="70" r="2.6" fill="#fff" stroke="${INK}" stroke-width=".8"/><circle cx="223" cy="70" r="2.6" fill="#fff" stroke="${INK}" stroke-width=".8"/>
+      <line x1="6" y1="70" x2="234" y2="70" stroke="${CL}" stroke-width=".6" stroke-dasharray="6 3 1.5 3"/>`;
+    for (let i = 0; i < 9; i++) s += emitter(36 + i * 21, 70, 3.6, pick(c, i));
+    return s;
+  },
+  controllers: c => {
+    const term = x => `<rect x="${x}" y="50" width="18" height="40" fill="${PART}" stroke="${INK}" stroke-width="1"/>` +
+      [58, 70, 82].map(y => `<circle cx="${x + 9}" cy="${y}" r="3.6" fill="#fff" stroke="${INK}" stroke-width=".8"/><line x1="${x + 6.5}" y1="${y + 2.5}" x2="${x + 11.5}" y2="${y - 2.5}" stroke="${INK}" stroke-width=".8"/>`).join('');
+    const dots = (c.length > 1 ? c : RGB).slice(0, 3);
+    return `<path d="M10 58 H42 M10 70 H42 M10 82 H42 M198 58 H230 M198 70 H230 M198 82 H230" stroke="${WIRE}" stroke-width="2"/>
+      <rect x="60" y="34" width="120" height="72" rx="4" fill="#fff" stroke="${INK}" stroke-width="1.1"/>
+      <rect x="72" y="46" width="62" height="16" fill="${PART}" stroke="${INK}" stroke-width=".6"/>
+      <path d="M78 54 H120" stroke="${CL}" stroke-width="2"/>
+      ${dots.map((d, i) => `<circle cx="${150 + i * 10}" cy="54" r="3" fill="${d}" stroke="${INK}" stroke-width=".6"/>`).join('')}
+      <rect x="72" y="74" width="96" height="20" fill="none" stroke="${INK}" stroke-width=".6" stroke-dasharray="2 2"/>
+      ${term(42)}${term(180)}`;
+  },
+  accessories: () => `
+    <path d="M8 62 H86" stroke="#d0453a" stroke-width="2"/><path d="M8 74 H86" stroke="${INK}" stroke-width="2"/>
+    <rect x="124" y="56" width="104" height="24" fill="#fff" stroke="${INK}" stroke-width="1.1"/>
+    <rect x="132" y="62" width="10" height="10" fill="#fff" stroke="${INK}" stroke-width=".7"/>
+    <rect x="164" y="62" width="10" height="10" fill="#fff" stroke="${INK}" stroke-width=".7"/>
+    <rect x="196" y="62" width="10" height="10" fill="#fff" stroke="${INK}" stroke-width=".7"/>
+    <rect x="84" y="50" width="46" height="36" rx="3" fill="${PART}" stroke="${INK}" stroke-width="1.1"/>
+    <rect x="92" y="44" width="30" height="6" fill="#fff" stroke="${INK}" stroke-width=".9"/>
+    <path d="M90 60 H124 M90 76 H124" stroke="${INK}" stroke-width=".6"/>
+    ${breakLine(228, 56, 80)}`,
+};
+
+let uid = 0;
+const label = (x, y, he, en) =>
+  `<text x="${x}" y="${y}" direction="rtl" text-anchor="end" class="he-text">${he}</text><text x="${x}" y="${y}" direction="ltr" text-anchor="start" class="en-text">${en}</text>`;
+
+/** callouts: labelled leader lines (used for the large drawing on the home page). */
+export function productArt(type, hex, { callouts = false } = {}) {
+  const c = colors(hex);
   const gid = `pa${++uid}`;
-  const shape = (SHAPES[type] || SHAPES.accessories)(c).replaceAll('GID', gid);
-  return `<svg class="p-art" viewBox="0 0 200 110" aria-hidden="true" focusable="false">
+  const body = (SHAPES[type] || SHAPES.accessories)(c).replaceAll('GID', gid);
+  const co = callouts && type === 'strips' ? `
+    <g font-size="6.4" fill="${INK}" class="art-callouts">
+      <path d="M27 64 L27 30 H40" fill="none" stroke="${INK}" stroke-width=".6"/><circle cx="27" cy="64" r="1.2" fill="${INK}"/>
+      ${label(42, 32, 'שבב LED', 'LED chip')}
+      <path d="M120 50 L120 22 H134" fill="none" stroke="${INK}" stroke-width=".6"/><circle cx="120" cy="50" r="1.2" fill="${INK}"/>
+      ${label(136, 24, 'נקודת חיתוך', 'Cut point')}
+      <path d="M71 60 L71 118 H86" fill="none" stroke="${INK}" stroke-width=".6"/><circle cx="71" cy="60" r="1.2" fill="${INK}"/>
+      ${label(88, 120, 'פדים להלחמה', 'Solder pads')}
+    </g>` : '';
+  return `<svg class="p-art" viewBox="0 0 240 140" aria-hidden="true" focusable="false">
     <defs><linearGradient id="${gid}"><stop offset="0" stop-color="#ff3b30"/><stop offset=".5" stop-color="#30d158"/><stop offset="1" stop-color="#0a84ff"/></linearGradient></defs>
-    ${shape}</svg>`;
+    ${body}${co}</svg>`;
 }
 
 /** Small colour dot for a variant (decorative; label is always shown/announced). */

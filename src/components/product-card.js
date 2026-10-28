@@ -23,9 +23,8 @@ export function productCard(p, selected = null) {
     <div class="p-card-body">
       <h2 class="p-card-name" id="pc-${esc(p.id)}"><a href="${url}" data-link>${name(p)}</a></h2>
       <div class="p-card-sku"><span class="he-text t-in">מק"ט</span><span class="en-text t-in">SKU</span> <span data-sku dir="ltr">${many && selected == null ? esc(skuRange(p)) : esc(v.sku)}</span></div>
-      ${specs.length ? `<ul class="p-card-specs" aria-label="מפרט עיקרי">${specs.map(s => `<li dir="ltr">${esc(s.value)}</li>`).join('')}</ul>` : ''}
-      ${many && hasColors ? `<div class="p-card-sw" aria-hidden="true">${p.variants.slice(0, MAX_SW).map(x => swatch(x.hex)).join('')}${p.variants.length > MAX_SW ? `<span class="sw-more">+${p.variants.length - MAX_SW}</span>` : ''}</div>
-        <div class="p-card-count">${p.variants.length} ${t('גרסאות', 'variants')}</div>` : ''}
+      ${specs.length ? `<table class="p-card-specs"><caption class="sr-only">${t('מפרט עיקרי', 'Key specs')}</caption><tbody>${specs.map(s => `<tr><th scope="row">${t(esc(s.he), esc(s.en))}</th><td dir="ltr">${esc(s.value)}</td></tr>`).join('')}</tbody></table>` : ''}
+      ${many && hasColors ? `<div class="p-card-sw"><span class="sw-dots" aria-hidden="true">${p.variants.slice(0, MAX_SW).map(x => swatch(x.hex)).join('')}${p.variants.length > MAX_SW ? `<span class="sw-more">+${p.variants.length - MAX_SW}</span>` : ''}</span><span class="p-card-count">${p.variants.length} ${t('גרסאות', 'variants')}</span></div>` : ''}
     </div>
     <div class="p-card-actions">
       ${many ? `<label class="sr-only" for="v-${esc(p.id)}">${t('בחירת גרסה', 'Choose variant')} – ${esc(p.name.he)}</label>
@@ -33,7 +32,7 @@ export function productCard(p, selected = null) {
       <div class="p-buy">
         <label class="sr-only" for="q-${esc(p.id)}">${t('כמות', 'Quantity')} – ${esc(p.name.he)}</label>
         <input id="q-${esc(p.id)}" class="p-qty" type="number" min="1" value="1" inputmode="numeric" data-qty>
-        <button type="button" class="p-add" data-add>${t('+ להצעת מחיר', '+ Add to quote')}</button>
+        <button type="button" class="p-add" data-add>${t('הוספה להצעת מחיר', 'Add to quote')}</button>
       </div>
     </div>
   </article>`;

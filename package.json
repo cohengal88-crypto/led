@@ -15,6 +15,6 @@
     "vite": "^7.1.0"
   },
   "dependencies": {
-    "@fontsource/heebo": "^5.3.0"
+    "@fontsource/ibm-plex-sans-hebrew": "^5.3.0"
   }
 }
