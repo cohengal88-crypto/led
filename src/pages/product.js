@@ -5,7 +5,8 @@ import { initHeader } from '../components/header.js';
 import { data } from '../lib/data/index.js';
 import { full } from '../components/product-sheet.js';
 import { bindAddToQuote } from '../components/add-to-quote.js';
-import { esc, t } from '../lib/html.js';
+import { t } from '../lib/html.js';
+import { packHint } from '../components/pack-hint.js';
 
 const root = document.getElementById('product');
 const id = new URLSearchParams(location.search).get('id');
@@ -37,4 +38,13 @@ if (!p || p.published === false) {
     r.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(i); } });
   });
   select?.addEventListener('change', () => choose(Number(select.value)));
+
+  // packaging hint follows the quantity field
+  const qty = root.querySelector('.buy-box [data-qty]');
+  const pack = root.querySelector('[data-pack]');
+  const renderPack = () => { pack.innerHTML = packHint(p, Math.max(1, Number(qty.value) || 1)); };
+  qty.addEventListener('input', renderPack);
+  pack.addEventListener('click', e => { const r = e.target.closest('[data-round]'); if (r) { qty.value = r.dataset.round; renderPack(); } });
+  root.addEventListener('click', e => { if (e.target.closest('[data-add]')) setTimeout(renderPack); });
+  renderPack();
 }

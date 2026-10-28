@@ -14,17 +14,114 @@
 
 <main class="quote-page" id="main">
   <div class="container">
-    <h1 class="quote-title">
-      <span class="he-text">סל הצעת מחיר</span><span class="en-text" style="display:none">Quote Request</span>
-    </h1>
-    <p class="quote-sub">
-      <span class="he-text">המוצרים שבחרתם. בשלב הבא נוסיף כאן טופס פרטים ושליחה.</span>
-      <span class="en-text" style="display:none">Your selected products. The request form arrives in the next stage.</span>
-    </p>
-    <div id="quote-list" class="quote-list" aria-live="polite"></div>
-    <div class="quote-actions">
-      <a href="catalog.html" class="btn-ghost-dark"><span class="he-text">← המשך לבחור מוצרים</span><span class="en-text" style="display:none">Continue browsing →</span></a>
-    </div>
+    <section id="quote-build" aria-labelledby="quote-h1">
+      <h1 class="quote-title" id="quote-h1">
+        <span class="he-text t-in">סל הצעת מחיר</span><span class="en-text t-in">Quote Request</span>
+      </h1>
+      <p class="quote-sub">
+        <span class="he-text t-in">בדקו את המוצרים והכמויות, מלאו פרטים ונחזור אליכם עם הצעת מחיר.</span>
+        <span class="en-text t-in">Review products and quantities, fill in your details and we'll get back to you with a quote.</span>
+      </p>
+
+      <div class="quote-layout">
+        <div class="quote-items-col">
+          <div id="quote-list" class="quote-list" aria-live="polite"></div>
+          <div class="quote-actions">
+            <a href="catalog.html" class="btn-ghost-dark"><span class="he-text t-in">← המשך לבחור מוצרים</span><span class="en-text t-in">Continue browsing →</span></a>
+          </div>
+        </div>
+
+        <form id="quote-form" class="quote-form" novalidate aria-labelledby="form-h2">
+          <h2 id="form-h2"><span class="he-text t-in">פרטים לשליחה</span><span class="en-text t-in">Your details</span></h2>
+          <p class="form-remembered" id="form-remembered" hidden>
+            <span class="he-text t-in">מילאנו את הפרטים מהפעם הקודמת.</span><span class="en-text t-in">We filled in your details from last time.</span>
+            <button type="button" class="link-btn" id="forget-me"><span class="he-text t-in">לא אתם? נקו פרטים</span><span class="en-text t-in">Not you? Clear</span></button>
+          </p>
+
+          <div class="f-grid">
+            <div class="f-field">
+              <label for="f-name"><span class="he-text t-in">שם מלא</span><span class="en-text t-in">Full name</span> <span class="req" aria-hidden="true">*</span></label>
+              <input id="f-name" name="name" autocomplete="name" required aria-describedby="e-name">
+              <span class="f-error" id="e-name" data-error-for="name" aria-live="polite"></span>
+            </div>
+            <div class="f-field">
+              <label for="f-company"><span class="he-text t-in">חברה</span><span class="en-text t-in">Company</span></label>
+              <input id="f-company" name="company" autocomplete="organization">
+            </div>
+            <div class="f-field">
+              <label for="f-phone"><span class="he-text t-in">טלפון</span><span class="en-text t-in">Phone</span> <span class="req" aria-hidden="true">*</span></label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" dir="ltr" required aria-describedby="e-phone">
+              <span class="f-error" id="e-phone" data-error-for="phone" aria-live="polite"></span>
+            </div>
+            <div class="f-field">
+              <label for="f-email"><span class="he-text t-in">מייל</span><span class="en-text t-in">Email</span> <span class="req" aria-hidden="true">*</span></label>
+              <input id="f-email" name="email" type="email" autocomplete="email" dir="ltr" required aria-describedby="e-email">
+              <span class="f-error" id="e-email" data-error-for="email" aria-live="polite"></span>
+            </div>
+          </div>
+
+          <fieldset class="f-project">
+            <legend><span class="he-text t-in">על הפרויקט</span><span class="en-text t-in">About the project</span> <span class="opt"><span class="he-text t-in">(לא חובה, עוזר לנו לתמחר מהר)</span><span class="en-text t-in">(optional, helps us price faster)</span></span></legend>
+            <div class="f-grid">
+              <div class="f-field">
+                <label for="f-type"><span class="he-text t-in">סוג פרויקט</span><span class="en-text t-in">Project type</span></label>
+                <select id="f-type" name="projectType">
+                  <option value="">—</option>
+                  <option value="channel-letters">שילוט / אותיות מוארות · Channel letters</option>
+                  <option value="lightbox">תיבת אור · Lightbox</option>
+                  <option value="edge">תאורת קצה · Edge-lit</option>
+                  <option value="other">אחר · Other</option>
+                </select>
+              </div>
+              <div class="f-field">
+                <label for="f-annual"><span class="he-text t-in">כמות שנתית משוערת</span><span class="en-text t-in">Est. annual quantity</span></label>
+                <input id="f-annual" name="annualQty" inputmode="numeric" placeholder="10,000">
+              </div>
+              <div class="f-field">
+                <label for="f-timeline"><span class="he-text t-in">מתי צריך את הסחורה?</span><span class="en-text t-in">When do you need it?</span></label>
+                <select id="f-timeline" name="timeline">
+                  <option value="">—</option>
+                  <option value="asap">מיידי · ASAP</option>
+                  <option value="1m">תוך חודש · Within a month</option>
+                  <option value="1-3m">1–3 חודשים · 1–3 months</option>
+                  <option value="future">פרויקט עתידי · Future project</option>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="f-field">
+            <label for="f-notes"><span class="he-text t-in">הערות</span><span class="en-text t-in">Notes</span></label>
+            <textarea id="f-notes" name="notes" rows="3"></textarea>
+          </div>
+
+          <!-- spam trap: hidden from people, bots fill it -->
+          <div class="hp" aria-hidden="true"><label for="f-website">Website</label><input id="f-website" name="website" tabindex="-1" autocomplete="off" data-no-restore></div>
+
+          <p class="f-privacy">
+            <span class="he-text t-in">הפרטים משמשים רק למתן הצעת המחיר ולחזרה אליכם.</span>
+            <span class="en-text t-in">Your details are used only to prepare your quote and contact you.</span>
+          </p>
+          <button type="submit" class="btn-submit" id="submit-btn">
+            <span class="he-text t-in">שליחת בקשה להצעת מחיר</span><span class="en-text t-in">Send quote request</span>
+          </button>
+          <p class="f-error f-form-error" id="form-error" role="alert"></p>
+        </form>
+      </div>
+    </section>
+
+    <section id="quote-done" class="quote-done" hidden tabindex="-1" aria-labelledby="done-h1" data-testid="quote-done">
+      <div class="done-icon" aria-hidden="true">✓</div>
+      <h1 id="done-h1"><span class="he-text t-in">הבקשה התקבלה!</span><span class="en-text t-in">Request received!</span></h1>
+      <p class="done-number"><span class="he-text t-in">מספר בקשה:</span><span class="en-text t-in">Request no.:</span> <strong id="done-number" dir="ltr"></strong></p>
+      <p class="done-text">
+        <span class="he-text t-in">נחזור אליכם עם הצעת מחיר בהקדם. כדאי לשמור את מספר הבקשה.</span>
+        <span class="en-text t-in">We'll get back to you with a quote shortly. Keep your request number for reference.</span>
+      </p>
+      <ul class="done-items" id="done-items"></ul>
+      <p class="demo-note" id="demo-note" hidden>מצב דמו: הבקשה נשמרה, אבל לא נשלח מייל (Web3Forms עוד לא מחובר).</p>
+      <a href="catalog.html" class="btn-submit done-cta"><span class="he-text t-in">חזרה לקטלוג</span><span class="en-text t-in">Back to catalog</span></a>
+    </section>
   </div>
 </main>
 

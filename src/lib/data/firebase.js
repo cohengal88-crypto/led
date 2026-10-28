@@ -8,4 +8,6 @@ export default {
   async deleteProduct() { throw new Error('Firebase adapter not implemented yet (stage 4)'); },
   async createQuoteRequest() { throw new Error('Firebase adapter not implemented yet (stage 4)'); },
   async listQuoteRequests() { throw new Error('Firebase adapter not implemented yet (stage 4)'); },
+  async createContactMessage() { throw new Error('Firebase adapter not implemented yet (stage 4)'); },
+  async listContactMessages() { throw new Error('Firebase adapter not implemented yet (stage 4)'); },
 };

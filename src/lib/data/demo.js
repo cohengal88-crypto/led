@@ -2,6 +2,7 @@
 // Used for local development, previews and tests until Firebase is connected (stage 4).
 const PKEY = 'led_demo_products';
 const QKEY = 'led_demo_quotes';
+const MKEY = 'led_demo_messages';
 
 async function seed() {
   const res = await fetch(`${import.meta.env.BASE_URL}data/products.json`);
@@ -37,4 +38,11 @@ export default {
     return doc;
   },
   async listQuoteRequests() { return JSON.parse(localStorage.getItem(QKEY) || '[]').reverse(); },
+  async createContactMessage(msg) {
+    const list = JSON.parse(localStorage.getItem(MKEY) || '[]');
+    const doc = { ...msg, id: crypto.randomUUID(), status: 'new', createdAt: new Date().toISOString() };
+    list.push(doc); save(MKEY, list);
+    return doc;
+  },
+  async listContactMessages() { return JSON.parse(localStorage.getItem(MKEY) || '[]').reverse(); },
 };

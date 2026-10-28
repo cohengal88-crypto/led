@@ -34,3 +34,28 @@ html[lang="he"] .en-text { display: none !important; }
 .ui-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 .ui-toast a { color: var(--accent); font-weight: 700; text-decoration: none; white-space: nowrap; }
 @media (prefers-reduced-motion: reduce) { .ui-toast { transition: none; } }
+
+/* Contact form (home #contact, dark section) */
+.contact-form { max-width: 640px; margin: 0 auto; text-align: start; }
+.cf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .85rem 1rem; }
+.cf-wide { grid-column: 1 / -1; }
+.contact-form .f-field { display: flex; flex-direction: column; gap: .3rem; }
+.contact-form label { font-size: .82rem; font-weight: 600; color: rgba(255,255,255,.8); }
+.contact-form input, .contact-form textarea {
+  font: inherit; font-size: .95rem; padding: .65rem .8rem; border-radius: 8px; width: 100%;
+  background: rgba(255,255,255,.06); border: 1.5px solid rgba(255,255,255,.16); color: #fff;
+}
+.contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,200,224,.2); }
+.contact-form [aria-invalid="true"] { border-color: #ff6b5e; }
+.contact-form input[dir="ltr"] { text-align: right; }
+html[lang="en"] .contact-form input[dir="ltr"] { text-align: left; }
+.contact-form .f-error { font-size: .76rem; color: #ff8a80; }
+.contact-form .req { color: #ff8a80; }
+.cf-submit { margin-top: 1.1rem; width: 100%; }
+.cf-submit:disabled { opacity: .6; cursor: progress; }
+.hp { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; opacity: 0; pointer-events: none; }
+.contact-done { max-width: 480px; margin: 0 auto; color: #fff; }
+.contact-done:focus { outline: none; }
+.contact-done p { color: rgba(255,255,255,.75); margin: .3rem auto; }
+.contact-done .done-icon { width: 56px; height: 56px; border-radius: 50%; background: rgba(0,200,224,.15); color: var(--accent); font-size: 1.7rem; font-weight: 700; display: grid; place-items: center; margin: 0 auto .8rem; }
+@media (max-width: 600px) { .cf-grid { grid-template-columns: 1fr; } }

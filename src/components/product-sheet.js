@@ -70,6 +70,7 @@ export function full(p) {
       ${variantSelect(p)}
       <input class="q-qty-input" type="number" min="1" value="1" inputmode="numeric" data-qty aria-label="כמות / Quantity">
       <button type="button" class="btn-add" data-add>${t('הוסף לסל הצעת מחיר', 'Add to quote request')}</button>
+      <div class="q-pack buy-pack" data-pack data-testid="pack-hint"></div>
       ${p.datasheetUrl ? `<a class="btn-datasheet" href="${esc(p.datasheetUrl)}" target="_blank" rel="noopener">📄 Datasheet</a>` : ''}
     </div>
   </article>`;

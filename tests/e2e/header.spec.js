@@ -27,3 +27,14 @@ test('mobile menu opens and closes', async ({ page, isMobile }) => {
   await page.keyboard.press('Escape');
   await expect(menu).not.toHaveClass(/open/);
 });
+
+test('English nav: Contact button text is visible (not dark on dark)', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'desktop nav only');
+  await page.addInitScript(() => localStorage.setItem('led_lang', 'en'));
+  await page.goto('/');
+  const btn = page.locator('.en-flex a[href$="#contact"]');
+  await expect(btn).toBeVisible();
+  const color = await btn.evaluate(el => getComputedStyle(el).color);
+  const [r, g, b] = color.match(/\d+/g).map(Number);
+  expect((r + g + b) / 3).toBeGreaterThan(150);
+});

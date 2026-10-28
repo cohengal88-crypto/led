@@ -354,9 +354,41 @@
   <div class="container" style="position:relative;z-index:1">
     <h2><span class="he-text">מוכן לפתרון שנבנה בשבילך?</span><span class="en-text" style="display:none">Ready for a Solution Built for You?</span></h2>
     <p><span class="he-text">צור קשר עם הצוות הטכני שלנו לייעוץ חינם ולמידה על האפשרויות לפרויקט שלך.</span><span class="en-text" style="display:none">Contact our technical team for a free consultation to learn about options for your project.</span></p>
-    <div class="cta-btns">
-      <button class="btn-primary" onclick="window.location.href='mailto:info@leditbe.co.il?subject=ייעוץ טכני – LED IT BE'"><span class="he-text">דבר עם מהנדס</span><span class="en-text" style="display:none">Talk to an Engineer</span></button>
-      <button class="btn-ghost" onclick="window.location.href='mailto:info@leditbe.co.il?subject=שליחת מפרט טכני'"><span class="he-text">שלח מפרט טכני</span><span class="en-text" style="display:none">Submit Technical Spec</span></button>
+    <form id="contact-form" class="contact-form" novalidate aria-label="טופס יצירת קשר">
+      <div class="cf-grid">
+        <div class="f-field">
+          <label for="c-name"><span class="he-text t-in">שם</span><span class="en-text t-in">Name</span> <span class="req" aria-hidden="true">*</span></label>
+          <input id="c-name" name="name" autocomplete="name" required aria-describedby="ce-name">
+          <span class="f-error" id="ce-name" data-error-for="name" aria-live="polite"></span>
+        </div>
+        <div class="f-field">
+          <label for="c-phone"><span class="he-text t-in">טלפון</span><span class="en-text t-in">Phone</span> <span class="req" aria-hidden="true">*</span></label>
+          <input id="c-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" dir="ltr" required aria-describedby="ce-phone">
+          <span class="f-error" id="ce-phone" data-error-for="phone" aria-live="polite"></span>
+        </div>
+        <div class="f-field">
+          <label for="c-email"><span class="he-text t-in">מייל</span><span class="en-text t-in">Email</span> <span class="req" aria-hidden="true">*</span></label>
+          <input id="c-email" name="email" type="email" autocomplete="email" dir="ltr" required aria-describedby="ce-email">
+          <span class="f-error" id="ce-email" data-error-for="email" aria-live="polite"></span>
+        </div>
+        <div class="f-field">
+          <label for="c-company"><span class="he-text t-in">חברה</span><span class="en-text t-in">Company</span></label>
+          <input id="c-company" name="company" autocomplete="organization">
+        </div>
+        <div class="f-field cf-wide">
+          <label for="c-message"><span class="he-text t-in">במה נוכל לעזור?</span><span class="en-text t-in">How can we help?</span> <span class="req" aria-hidden="true">*</span></label>
+          <textarea id="c-message" name="message" rows="3" required aria-describedby="ce-message"></textarea>
+          <span class="f-error" id="ce-message" data-error-for="message" aria-live="polite"></span>
+        </div>
+      </div>
+      <div class="hp" aria-hidden="true"><label for="c-website">Website</label><input id="c-website" name="website" tabindex="-1" autocomplete="off" data-no-restore></div>
+      <button type="submit" class="btn-primary cf-submit" id="c-submit"><span class="he-text t-in">שלחו פנייה למהנדס</span><span class="en-text t-in">Send to an engineer</span></button>
+      <p class="f-error f-form-error" id="c-error" role="alert"></p>
+    </form>
+    <div class="contact-done" id="contact-done" hidden tabindex="-1" data-testid="contact-done">
+      <div class="done-icon" aria-hidden="true">✓</div>
+      <p><strong><span class="he-text t-in">תודה! הפנייה התקבלה.</span><span class="en-text t-in">Thanks! We got your message.</span></strong></p>
+      <p><span class="he-text t-in">מהנדס מהצוות יחזור אליכם בהקדם.</span><span class="en-text t-in">An engineer will get back to you shortly.</span></p>
     </div>
     <p style="margin-top:2rem; font-size:0.82rem; color:rgba(255,255,255,0.35)">
       <span class="he-text">📧 info@leditbe.co.il · 📞 03-1234567 · 📍 רחוב הטכנולוגיה 1, תל אביב</span>
