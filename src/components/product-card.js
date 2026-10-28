@@ -1,7 +1,7 @@
 // Compact catalog card: art, name, SKU, key specs, colour swatches, variant + qty + add.
 import { esc, t } from '../lib/html.js';
 import { name, skuRange } from '../lib/products.js';
-import { productArt, swatch } from './product-art.js';
+import { productVisual, swatch } from './product-art.js';
 
 const KEY_SPECS = ['Voltage', 'Power', 'Ingress protection', 'Profile (mm)', 'LEDs per meter'];
 const MAX_SW = 12;
@@ -19,7 +19,7 @@ export function productCard(p, selected = null) {
   const hasColors = p.variants.some(x => x.hex);
   return `
   <article class="p-card" data-id="${esc(p.id)}" data-testid="product-card" aria-labelledby="pc-${esc(p.id)}">
-    <a class="p-card-art" href="${url}" tabindex="-1" aria-hidden="true" data-art>${productArt(p.type, v.hex)}</a>
+    <a class="p-card-art" href="${url}" tabindex="-1" aria-hidden="true">${productVisual(p.type, v.hex)}</a>
     <div class="p-card-body">
       <h2 class="p-card-name" id="pc-${esc(p.id)}"><a href="${url}" data-link>${name(p)}</a></h2>
       <div class="p-card-sku"><span class="he-text t-in">מק"ט</span><span class="en-text t-in">SKU</span> <span data-sku dir="ltr">${many && selected == null ? esc(skuRange(p)) : esc(v.sku)}</span></div>

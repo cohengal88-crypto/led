@@ -118,3 +118,16 @@
 /* packaging hint (product page) */
 .pd .q-pack:empty{display:none}
 .pack-round{background:#e6f9fc;color:#006b7a;border:1px solid #b3ebf3;border-radius:999px;padding:.2rem .7rem;font:inherit;font-size:.75rem;font-weight:700;cursor:pointer}
+
+/* illustration photo per type */
+.pv{position:relative;margin:0;aspect-ratio:800/440;overflow:hidden;border-radius:6px;background:#0f2038}
+.pv img{width:100%;height:100%;object-fit:cover;display:block}
+.pv-fallback{display:block;height:100%}
+.pv-fallback[hidden]{display:none}
+.pv-note{position:absolute;inset-block-end:.4rem;inset-inline-start:.4rem;background:rgba(10,22,40,.82);color:#fff;font-size:.68rem;font-weight:600;padding:.12rem .45rem;border-radius:4px;line-height:1.4}
+.pv-chip{position:absolute;inset-block-start:.45rem;inset-inline-end:.45rem;background:rgba(255,255,255,.92);border-radius:999px;padding:.22rem;display:flex;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.pv-chip[hidden]{display:none}
+.pv-chip .sw{width:16px;height:16px}
+.pd-art .pv{border-radius:8px}
+.pd-art .pv-chip .sw{width:22px;height:22px}
+.p-card-art{padding:0}

@@ -90,3 +90,22 @@ test('add to quote from a card keeps the SKU', async ({ page }) => {
   const cart = await page.evaluate(() => JSON.parse(localStorage.getItem('led_quote_v1')));
   expect(cart).toEqual([expect.objectContaining({ sku: '15204', qty: 3, variant: 'אדום' })]);
 });
+
+test('illustration images: one per product type, loaded, labelled as illustration', async ({ page, request }) => {
+  for (const c of data.categories) {
+    const res = await request.get(`/images/types/${c.id}.webp`);
+    expect(res.status(), c.id).toBe(200);
+  }
+  await page.goto('/catalog.html');
+  const first = page.getByTestId('product-card').first();
+  await expect(first.locator('.pv img')).toBeVisible();
+  expect(await first.locator('.pv img').evaluate(i => i.complete && i.naturalWidth > 0)).toBe(true);
+  await expect(first.locator('.pv-note')).toHaveText(/תמונה להמחשה/);
+});
+
+test('if an image fails to load, the drawn illustration is shown instead', async ({ page }) => {
+  await page.route('**/images/types/*.webp', r => r.abort());
+  await page.goto('/catalog.html');
+  const first = page.getByTestId('product-card').first();
+  await expect(first.locator('.pv-fallback svg')).toBeVisible();
+});

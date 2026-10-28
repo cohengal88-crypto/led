@@ -4,7 +4,7 @@ import '../styles/catalog.css';
 import { initHeader } from '../components/header.js';
 import { data } from '../lib/data/index.js';
 import { productCard } from '../components/product-card.js';
-import { productArt } from '../components/product-art.js';
+import { updateChip } from '../components/product-art.js';
 import { bindAddToQuote } from '../components/add-to-quote.js';
 import { t } from '../lib/html.js';
 import { norm, searchText, skuVariantIndex } from '../lib/products.js';
@@ -95,7 +95,7 @@ grid.addEventListener('change', e => {
   const card = e.target.closest('[data-id]');
   const p = products.find(x => x.id === card.dataset.id);
   const v = p.variants[Number(e.target.value)];
-  card.querySelector('[data-art]').innerHTML = productArt(p.type, v.hex);
+  updateChip(card, v.hex);
   card.querySelector('[data-sku]').textContent = v.sku;
   const url = `product.html?id=${encodeURIComponent(p.id)}&sku=${v.sku}`;
   card.querySelectorAll('a[href^="product.html"]').forEach(a => { a.href = url; });

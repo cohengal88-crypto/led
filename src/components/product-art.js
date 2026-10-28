@@ -64,3 +64,31 @@ export function swatch(hex) {
     : hex === 'multi' ? 'conic-gradient(#ff3b30,#ffd60a,#30d158,#0a84ff,#fbfbf2,#ff3b30)' : hex;
   return `<span class="sw" style="background:${bg}" aria-hidden="true"></span>`;
 }
+
+/** Colour chip for the selected variant (decorative; the variant name is always shown as text). */
+export function colorChip(hex) {
+  return hex ? `<span class="pv-chip" data-chip aria-hidden="true">${swatch(hex)}</span>` : '<span class="pv-chip" data-chip hidden></span>';
+}
+
+/**
+ * Illustration photo per product type (public-domain/CC0, see public/images/types/CREDITS.md),
+ * labelled "for illustration only", with a chip in the variant's colour.
+ * Falls back to the drawn SVG if the image can't load.
+ */
+export function productVisual(type, hex, { eager = false } = {}) {
+  const src = `${import.meta.env.BASE_URL}images/types/${type}.webp`;
+  return `<figure class="pv" data-visual>
+    <img src="${src}" alt="" width="800" height="440" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"
+      onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+    <span class="pv-fallback" hidden>${productArt(type, hex)}</span>
+    <figcaption class="pv-note"><span class="he-text t-in">תמונה להמחשה</span><span class="en-text t-in">Illustration</span></figcaption>
+    ${colorChip(hex)}
+  </figure>`;
+}
+
+export function updateChip(root, hex) {
+  const chip = root.querySelector('[data-chip]');
+  if (!chip) return;
+  chip.hidden = !hex;
+  chip.innerHTML = hex ? swatch(hex) : '';
+}
