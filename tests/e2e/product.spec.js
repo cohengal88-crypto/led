@@ -56,3 +56,23 @@ test('unknown product shows a friendly not-found', async ({ page }) => {
   await page.getByTestId('not-found').getByRole('link').click();
   await expect(page).toHaveURL(/catalog\.html/);
 });
+
+test('product page suggests similar products and matching controllers', async ({ page }) => {
+  await page.goto('/product.html?id=strips-15189&sku=15204');
+  const similar = page.getByTestId('rel-similar').getByTestId('related-item');
+  await expect(similar).toHaveCount(4);
+  for (const href of await similar.evaluateAll(as => as.map(a => a.getAttribute('href')))) expect(href).toMatch(/id=strips-/);
+  const ctrl = page.getByTestId('rel-controllers').getByTestId('related-item');
+  expect(await ctrl.count()).toBeGreaterThan(0);
+  for (const href of await ctrl.evaluateAll(as => as.map(a => a.getAttribute('href')))) expect(href).toMatch(/id=controllers-/);
+  await similar.first().click();
+  await expect(page.getByTestId('product-detail')).toBeVisible();
+});
+
+test('pixel LEDs suggest pixel controllers; controllers get no controller suggestions', async ({ page }) => {
+  await page.goto('/product.html?id=pixel-12001');
+  await expect(page.getByTestId('rel-controllers')).toContainText('נעיצה');
+  await page.goto('/product.html?id=controllers-15102');
+  await expect(page.getByTestId('rel-similar')).toBeVisible();
+  await expect(page.getByTestId('rel-controllers')).toHaveCount(0);
+});

@@ -126,3 +126,30 @@ test('no packaging hint when the product has no bag/box data', async ({ page }) 
   await openQuote(page);
   await expect(page.getByTestId('pack-hint')).toHaveCount(0);
 });
+
+test('quote list can be printed / saved as PDF, before and after sending', async ({ page }) => {
+  await page.addInitScript(() => { window.__printed = 0; window.print = () => { window.__printed++; }; });
+  await addProduct(page, 'pixel-12001', 250, '12004');
+  await addProduct(page, 'controllers-15102', 2);
+  await openQuote(page);
+  await page.fill('#f-name', 'דנה לוי');
+  await page.click('#print-list');
+  expect(await page.evaluate(() => window.__printed)).toBe(1);
+  const sheet = page.getByTestId('print-sheet');
+  await expect(sheet.locator('tbody tr')).toHaveCount(2);
+  await expect(sheet).toContainText('12004');
+  await expect(sheet).toContainText('דנה לוי');
+  await page.emulateMedia({ media: 'print' });
+  await expect(sheet).toBeVisible();
+  await expect(page.locator('#quote-form')).toBeHidden();
+  await page.emulateMedia({ media: 'screen' });
+  await expect(sheet).toBeHidden();
+
+  await page.fill('#f-phone', '0501234567');
+  await page.fill('#f-email', 'dana@example.com');
+  await page.click('#submit-btn');
+  await expect(page.getByTestId('quote-done')).toBeVisible();
+  await page.click('#print-done');
+  await expect(sheet).toContainText(/Q-\d{4}-0001/);
+  await expect(sheet.locator('tbody tr')).toHaveCount(2);
+});

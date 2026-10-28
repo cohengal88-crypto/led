@@ -3,9 +3,10 @@ import '../styles/catalog.css';
 import { initHeader } from '../components/header.js';
 import { data } from '../lib/data/index.js';
 import { bindAddToQuote } from '../components/add-to-quote.js';
-import { productVisual, updateVisual, swatch } from '../components/product-art.js';
+import { productArt, productVisual, updateVisual, swatch } from '../components/product-art.js';
+import { similarProducts, suggestedControllers } from '../lib/related.js';
 import { esc, t } from '../lib/html.js';
-import { name, plainName, variantName } from '../lib/products.js';
+import { name, plainName, variantName, skuRange } from '../lib/products.js';
 
 const root = document.getElementById('product');
 const params = new URLSearchParams(location.search);
@@ -13,7 +14,7 @@ const id = params.get('id');
 
 initHeader();
 const db = await data();
-const [p, categories] = await Promise.all([id ? db.getProduct(id) : null, db.listCategories()]);
+const [p, categories, all] = await Promise.all([id ? db.getProduct(id) : null, db.listCategories(), db.listProducts()]);
 root.removeAttribute('aria-busy');
 
 function view(p) {
@@ -76,4 +77,30 @@ if (!p || p.published === false) {
     root.querySelector('[data-source]').textContent = v.source;
     const url = new URL(location.href); url.searchParams.set('sku', v.sku); history.replaceState(null, '', url);
   });
+
+  renderRelated(p);
+}
+
+function relatedCard(q) {
+  return `<a class="rel-card" href="product.html?id=${encodeURIComponent(q.id)}" data-testid="related-item">
+    <span class="rel-art" aria-hidden="true">${productArt(q.type, q.variants[0]?.hex || null)}</span>
+    <span class="rel-name">${name(q)}</span>
+    <span class="rel-sku">${t('מק"ט', 'SKU')} <span dir="ltr">${esc(skuRange(q))}</span></span>
+  </a>`;
+}
+
+function relatedSection(id, title, note, list) {
+  if (!list.length) return '';
+  return `<section class="related" aria-labelledby="${id}" data-testid="${id}">
+    <div class="related-head"><h2 id="${id}">${title}</h2>${note ? `<p>${note}</p>` : ''}</div>
+    <div class="rel-grid">${list.map(relatedCard).join('')}</div>
+  </section>`;
+}
+
+function renderRelated(p) {
+  const html = relatedSection('rel-similar', t('מוצרים דומים', 'Similar products'), '', similarProducts(p, all))
+    + relatedSection('rel-controllers', t('בקרים ודימרים לשימוש עם המוצר', 'Controllers and dimmers for this product'),
+      t('כדאי לוודא שההספק של הבקר מתאים לאורך ולהספק של המוצר. אפשר גם לשאול אותנו בבקשת המחיר.', 'Check that the controller rating suits the product length and power, or ask us in your quote request.'),
+      suggestedControllers(p, all));
+  root.insertAdjacentHTML('beforeend', html);
 }

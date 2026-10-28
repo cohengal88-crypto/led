@@ -58,3 +58,30 @@
   .quote-done { padding: 28px 18px; }
   .quote-done h1 { font-size: 26px; }
 }
+
+.quote-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.quote-actions [hidden] { display: none; }
+.done-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* print / save as PDF: only the request sheet is printed */
+.print-sheet { display: none; }
+@media print {
+  @page { size: A4; margin: 16mm 14mm; }
+  body { font-size: 11pt; color: #000; background: #fff; }
+  body > *:not(main), .skip-link, .quote-page > .container { display: none !important; }
+  .quote-page { padding: 0; min-height: 0; }
+  .print-sheet { display: block; }
+  .ps-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; padding-bottom: 10px; border-bottom: 1.5pt solid #000; }
+  .ps-brand { display: block; font-size: 16pt; font-weight: 600; letter-spacing: .02em; }
+  .ps-sub { font-size: 9pt; color: #444; }
+  .ps-meta { font-size: 10pt; text-align: end; }
+  .ps-title { font-size: 18pt; font-weight: 500; margin: 18px 0 6px; }
+  .ps-who { font-size: 10pt; margin-bottom: 12px; }
+  .ps-table { width: 100%; border-collapse: collapse; font-size: 10pt; }
+  .ps-table th { text-align: start; font-weight: 600; border-bottom: 1pt solid #000; padding: 6px 4px; }
+  .ps-table td { border-bottom: .5pt solid #bbb; padding: 6px 4px; vertical-align: top; }
+  .ps-table th:first-child, .ps-table td:first-child { width: 6%; }
+  .ps-table th:last-child, .ps-table td:last-child { width: 12%; text-align: end; }
+  .ps-table tr { break-inside: avoid; }
+  .ps-note { font-size: 9pt; color: #444; margin-top: 14px; }
+}

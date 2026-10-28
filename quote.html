@@ -25,7 +25,8 @@
         <div class="quote-items-col">
           <div id="quote-list" class="quote-list" aria-live="polite"></div>
           <div class="quote-actions">
-            <a href="catalog.html" class="button button--secondary"><span class="he-text t-in">← המשך לבחור מוצרים</span><span class="en-text t-in">Continue browsing →</span></a>
+            <a href="catalog.html" class="button button--secondary"><span class="he-text t-in">המשך לבחור מוצרים</span><span class="en-text t-in">Continue browsing</span></a>
+            <button type="button" class="button button--secondary" data-print id="print-list" hidden><span class="he-text t-in">הדפסה או שמירה כ-PDF</span><span class="en-text t-in">Print or save as PDF</span></button>
           </div>
         </div>
 
@@ -118,9 +119,13 @@
       </p>
       <ul class="done-items" id="done-items"></ul>
       <p class="demo-note" id="demo-note" hidden>מצב דמו: הבקשה נשמרה, אבל לא נשלח מייל (Web3Forms עוד לא מחובר).</p>
-      <a href="catalog.html" class="button button--primary done-cta"><span class="he-text t-in">חזרה לקטלוג</span><span class="en-text t-in">Back to catalog</span></a>
+      <div class="done-actions">
+        <a href="catalog.html" class="button button--primary done-cta"><span class="he-text t-in">חזרה לקטלוג</span><span class="en-text t-in">Back to catalog</span></a>
+        <button type="button" class="button button--secondary" data-print id="print-done"><span class="he-text t-in">הדפסה או שמירה כ-PDF</span><span class="en-text t-in">Print or save as PDF</span></button>
+      </div>
     </section>
   </div>
+  <div class="print-sheet" id="print-sheet" data-testid="print-sheet"></div>
 </main>
 
 <!-- @include footer.html -->
