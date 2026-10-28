@@ -1,45 +1,66 @@
-<!-- NAV -->
-<nav>
-  <div class="nav-inner">
-    <a href="./" class="logo">
-      <span class="logo-name">jacob <span>group</span></span>
-      <span class="logo-brand">LED IT BE</span>
-    </a>
-    <ul class="nav-links he-flex">
-      <li><a href="./#products">מוצרים</a></li>
-      <li><a href="./#process">תהליך</a></li>
-      <li><a href="./#industries">תעשיות</a></li>
-      <li><a href="./#why">למה אנחנו</a></li>
-      <li><a href="catalog.html" class="nav-cta" style="background:var(--accent)">📦 קטלוג מוצרים</a></li>
-      <li><a href="./#contact" class="nav-cta nav-cta-outline">צור קשר</a></li>
-    </ul>
-    <ul class="nav-links en-flex" style="display:none">
-      <li><a href="./#products">Products</a></li>
-      <li><a href="./#process">Process</a></li>
-      <li><a href="./#industries">Industries</a></li>
-      <li><a href="./#why">Why Us</a></li>
-      <li><a href="catalog.html" class="nav-cta" style="background:var(--accent)">📦 Catalog</a></li>
-      <li><a href="./#contact" class="nav-cta nav-cta-outline">Contact</a></li>
-    </ul>
-    <a href="quote.html" class="portal-nav-btn quote-nav-btn" data-testid="quote-nav" aria-label="סל הצעת מחיר">📋 <span class="he-text" style="display:inline">הצעת מחיר</span><span class="en-text" style="display:none">Quote</span> <span class="quote-count" data-quote-count>0</span></a>
-    <button class="lang-btn" id="lang-toggle" type="button">EN</button>
-    <button class="hamburger" id="hamburger" type="button" aria-label="פתח/סגור תפריט" aria-expanded="false" aria-controls="mobile-menu">
+<a class="skip-link" href="#main"><span class="he-text t-in">דלג לתוכן</span><span class="en-text t-in">Skip to content</span></a>
+<header class="site-header">
+  <div class="container top-bar">
+    <nav class="top-links" aria-label="קישורים עליונים / Top links">
+      <a href="./#process"><span class="he-text t-in">איך מזמינים</span><span class="en-text t-in">How to order</span></a>
+      <a href="./#about"><span class="he-text t-in">אודות</span><span class="en-text t-in">About</span></a>
+      <a href="./#contact"><span class="he-text t-in">צור קשר</span><span class="en-text t-in">Contact</span></a>
+    </nav>
+    <button class="lang-btn" id="lang-toggle" type="button" aria-label="English / עברית">EN</button>
+  </div>
+
+  <div class="container hdr">
+    <button class="hamburger" id="hamburger" type="button" aria-label="תפריט / Menu" aria-expanded="false" aria-controls="mobile-menu">
       <span></span><span></span><span></span>
     </button>
+    <a href="./" class="logo" aria-label="LED IT BE – jacob group">
+      <span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      <span class="logo-text"><b>LED <em>IT</em> BE</b><small>jacob group</small></span>
+    </a>
+    <form class="site-search" action="catalog.html" method="get" role="search">
+      <label for="site-q" class="sr-only">חיפוש מוצר לפי שם או מק"ט / Search by name or SKU</label>
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <input id="site-q" name="q" type="search" placeholder='מה אתם מחפשים? שם מוצר או מק"ט · Search' autocomplete="off">
+    </form>
+    <a href="quote.html" class="quote-nav-btn" data-testid="quote-nav">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg>
+      <span class="qn-label"><span class="he-text t-in">הצעת מחיר</span><span class="en-text t-in">Quote</span></span>
+      <span class="quote-count" data-quote-count>0</span>
+    </a>
   </div>
-</nav>
 
-<!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobile-menu" role="navigation" aria-label="תפריט מובייל">
-  <a href="./#products">📦 מוצרים</a>
-  <a href="./#process">🔄 תהליך העבודה</a>
-  <a href="./#industries">🏭 תעשיות</a>
-  <a href="./#why">⭐ למה אנחנו</a>
-  <a href="catalog.html">🔆 קטלוג מוצרים</a>
-  <a href="./#contact">✉️ צור קשר</a>
-  <a href="quote.html" class="mm-portal">📋 סל הצעת מחיר <span class="quote-count" data-quote-count>0</span></a>
-  <div class="mm-lang-row">
-    <span style="color:rgba(255,255,255,0.35);font-size:0.8rem">שפה:</span>
-    <button type="button" class="lang-btn" id="mm-lang-btn">EN</button>
+  <div class="container navrow">
+    <nav class="cat-nav" aria-label="קטגוריות / Categories">
+      <a href="catalog.html?cat=modules"><span class="he-text t-in">מודולי לד</span><span class="en-text t-in">Modules</span></a>
+      <a href="catalog.html?cat=strips"><span class="he-text t-in">סרטי לד</span><span class="en-text t-in">Strips</span></a>
+      <a href="catalog.html?cat=neon"><span class="he-text t-in">ניאון לד</span><span class="en-text t-in">Neon</span></a>
+      <a href="catalog.html?cat=pixel"><span class="he-text t-in">לד נעיצה</span><span class="en-text t-in">Pixel LEDs</span></a>
+      <a href="catalog.html?cat=bars"><span class="he-text t-in">פסים לתיבות אור</span><span class="en-text t-in">Lightbox bars</span></a>
+      <a href="catalog.html?cat=controllers"><span class="he-text t-in">בקרים ודימרים</span><span class="en-text t-in">Controllers</span></a>
+      <a href="catalog.html?cat=accessories"><span class="he-text t-in">אביזרים</span><span class="en-text t-in">Accessories</span></a>
+    </nav>
+    <a href="catalog.html" class="all-link"><span class="he-text t-in">כל הקטלוג</span><span class="en-text t-in">Full catalog</span></a>
   </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu" role="navigation" aria-label="תפריט / Menu">
+  <form class="site-search" action="catalog.html" method="get" role="search">
+    <label for="mm-q" class="sr-only">חיפוש מוצר / Search</label>
+    <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+    <input id="mm-q" name="q" type="search" placeholder='שם מוצר או מק"ט · Search' autocomplete="off">
+  </form>
+  <a href="catalog.html"><span class="he-text t-in">כל הקטלוג</span><span class="en-text t-in">Full catalog</span></a>
+  <a href="catalog.html?cat=modules"><span class="he-text t-in">מודולי לד</span><span class="en-text t-in">Modules</span></a>
+  <a href="catalog.html?cat=strips"><span class="he-text t-in">סרטי לד</span><span class="en-text t-in">Strips</span></a>
+  <a href="catalog.html?cat=neon"><span class="he-text t-in">ניאון לד</span><span class="en-text t-in">Neon</span></a>
+  <a href="catalog.html?cat=pixel"><span class="he-text t-in">לד נעיצה</span><span class="en-text t-in">Pixel LEDs</span></a>
+  <a href="catalog.html?cat=bars"><span class="he-text t-in">פסים לתיבות אור</span><span class="en-text t-in">Lightbox bars</span></a>
+  <a href="catalog.html?cat=controllers"><span class="he-text t-in">בקרים ודימרים</span><span class="en-text t-in">Controllers</span></a>
+  <a href="catalog.html?cat=accessories"><span class="he-text t-in">אביזרים</span><span class="en-text t-in">Accessories</span></a>
+  <hr>
+  <a href="./#process"><span class="he-text t-in">איך מזמינים</span><span class="en-text t-in">How to order</span></a>
+  <a href="./#about"><span class="he-text t-in">אודות</span><span class="en-text t-in">About</span></a>
+  <a href="./#contact"><span class="he-text t-in">צור קשר</span><span class="en-text t-in">Contact</span></a>
+  <a href="quote.html" class="mm-quote"><span class="he-text t-in">סל הצעת מחיר</span><span class="en-text t-in">Quote list</span> <span class="quote-count" data-quote-count>0</span></a>
+  <div class="mm-lang"><span class="he-text t-in">שפה:</span><span class="en-text t-in">Language:</span> <button type="button" class="lang-btn" id="mm-lang-btn">EN</button></div>
 </div>

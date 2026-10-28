@@ -1,10 +1,9 @@
-import '../styles/home.css';
-import '../styles/shared.css';
+import '../styles/site.css';
 import '../styles/catalog.css';
 import { initHeader } from '../components/header.js';
 import { data } from '../lib/data/index.js';
 import { bindAddToQuote } from '../components/add-to-quote.js';
-import { productVisual, updateChip, swatch } from '../components/product-art.js';
+import { productVisual, updateVisual, swatch } from '../components/product-art.js';
 import { esc, t } from '../lib/html.js';
 import { name, plainName, variantName } from '../lib/products.js';
 
@@ -24,7 +23,7 @@ function view(p) {
   const many = p.variants.length > 1;
   return `
   <article class="pd" data-id="${esc(p.id)}" data-testid="product-detail" aria-labelledby="pd-name">
-    <div class="pd-art">${productVisual(p.type, v.hex, { eager: true })}</div>
+    <div class="pd-art">${productVisual(p.type, v.hex)}</div>
     <div>
       ${cat ? `<div class="pd-cat"><a href="catalog.html?cat=${cat.id}">${t(esc(cat.he), esc(cat.en))}</a></div>` : ''}
       <h1 id="pd-name">${name(p)}</h1>
@@ -71,7 +70,7 @@ if (!p || p.published === false) {
   root.addEventListener('change', e => {
     if (!e.target.matches('[data-variant]')) return;
     const v = p.variants[Number(e.target.value)];
-    updateChip(root, v.hex);
+    updateVisual(root, p.type, v.hex);
     root.querySelector('[data-sku]').textContent = v.sku;
     const vl = root.querySelector('[data-vlabel]'); if (vl) vl.innerHTML = variantName(v);
     root.querySelector('[data-source]').textContent = v.source;

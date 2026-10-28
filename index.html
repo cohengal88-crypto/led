@@ -3,357 +3,77 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LED IT BE – פתרונות LED מתקדמים</title>
-<meta name="description" content="LED IT BE by jacob group – מודולי LED לשילוט ופתרונות תאורת LED מותאמים לתעשייה, רפואה, אבטחה וראייה ממוחשבת. קטלוג מוצרים ובקשת הצעת מחיר.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Assistant:wght@300;400;500;600;700&display=swap&font-display=swap" rel="stylesheet">
+<title>LED IT BE – רכיבי LED לשלטים ולתיבות אור</title>
+<meta name="description" content="LED IT BE by jacob group – מודולי לד, סרטי לד, ניאון לד, לד נעיצה, בקרים ואביזרים ליצרני שלטים. קטלוג לפי מק״ט ובקשת הצעת מחיר.">
 </head>
 <body>
 
 <!-- @include nav.html -->
 
-
-<!-- HERO -->
+<main id="main">
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid"></div>
-  <div class="hero-inner">
-    <div>
-      <div class="hero-badge">
-        <span class="he-text">פתרונות LED מתקדמים</span>
-        <span class="en-text" style="display:none">Advanced LED Solutions</span>
-      </div>
-      <h1>
-        <span class="he-text">תאורת LED<br><span class="accent">מותאמת אישית</span><br>לכל אתגר</span>
-        <span class="en-text" style="display:none">Custom LED Lighting<br><span class="accent">For Every Challenge</span></span>
-      </h1>
-      <p class="hero-sub">
-        <span class="he-text">אנו מתכננים ומייצרים פתרונות תאורת LED מתקדמים לייצור, רפואה, בטיחות וראייה ממוחשבת — מהגדרת המפרט ועד ייצור סדרתי.</span>
-        <span class="en-text" style="display:none">We design and manufacture advanced LED lighting solutions for industrial, medical, security, and machine vision applications — from specification to production.</span>
-      </p>
-      <div class="hero-actions">
-        <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
-          <span class="he-text">קבל ייעוץ חינם</span>
-          <span class="en-text" style="display:none">Get Free Consultation</span>
-        </button>
-        <button class="btn-ghost" onclick="window.location.href='catalog.html'">
-          <span class="he-text">צפה בקטלוג</span>
-          <span class="en-text" style="display:none">View Catalog</span>
-        </button>
-      </div>
+  <div class="hero-text">
+    <h1><span class="he-text t-in">תאורת LED לשלטים ולתיבות אור</span><span class="en-text t-in">LED lighting for signs and lightboxes</span></h1>
+    <p class="hero-sub"><span data-count-skus>671</span> <span class="he-text t-in">מק״טים במקום אחד</span><span class="en-text t-in">SKUs in one place</span></p>
+    <p><span class="he-text t-in">מודולי לד, סרטי לד, ניאון סיליקון ולד נעיצה ליצרני שלטים. בוחרים מהקטלוג ושולחים בקשה אחת להצעת מחיר.</span><span class="en-text t-in">LED modules, strips, silicone neon and pixel LEDs for sign makers. Pick from the catalog and send one quote request.</span></p>
+    <a href="catalog.html" class="button button--primary"><span class="he-text t-in">לקטלוג המוצרים</span><span class="en-text t-in">Browse the catalog</span></a>
+  </div>
+  <div class="hero-art" data-art="strips" data-hex="#ffd27a"></div>
+</section>
 
-      <a href="catalog.html" class="portal-hero-strip">
-        <span class="portal-hero-dot"></span>
-        <span class="he-text" style="display:inline">בחרו מוצרים מהקטלוג וקבלו הצעת מחיר <b style="color:var(--accent);font-weight:700">←</b></span>
-        <span class="en-text" style="display:none">Pick products from the catalog and get a quote <b style="color:var(--accent);font-weight:700">→</b></span>
-      </a>
+<section class="blk container" id="products" aria-labelledby="products-h">
+  <h2 class="blk-title" id="products-h"><span class="he-text t-in">המוצרים שלנו</span><span class="en-text t-in">Our products</span></h2>
+  <div class="cat-grid" id="cat-grid"></div>
+  <div class="center"><a href="catalog.html" class="button button--secondary"><span class="he-text t-in">לכל הקטלוג</span><span class="en-text t-in">Full catalog</span></a></div>
+</section>
 
-      <div class="hero-stats">
-        <div class="hero-stat"><div class="num">+20</div><div class="lbl"><span class="he-text">שנות ניסיון</span><span class="en-text" style="display:none">Years Experience</span></div></div>
-        <div class="hero-stat"><div class="num">500+</div><div class="lbl"><span class="he-text">פרויקטים</span><span class="en-text" style="display:none">Projects</span></div></div>
-        <div class="hero-stat"><div class="num">ISO</div><div class="lbl"><span class="he-text">מוסמך</span><span class="en-text" style="display:none">Certified</span></div></div>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <div class="led-showcase">
-        <div class="led-orb">
-          <div class="led-ring"></div>
-          <div class="led-ring-2"></div>
-        </div>
-        <div class="led-showcase-title">
-          <span class="he-text">LED מותאם אישית COB</span>
-          <span class="en-text" style="display:none">Custom COB LED Array</span>
-        </div>
-        <div class="led-showcase-sub">
-          <span class="he-text">עצימות גבוהה · אחידות מקסימלית</span>
-          <span class="en-text" style="display:none">High intensity · Maximum uniformity</span>
-        </div>
-        <div class="spec-chips">
-          <span class="chip">UV 365nm</span>
-          <span class="chip">IR 850nm</span>
-          <span class="chip">White 5700K</span>
-          <span class="chip">RGB</span>
-        </div>
-      </div>
-      <div class="mini-cards">
-        <div class="mini-card"><div class="icon">🔆</div><div class="mc-title"><span class="he-text">עצימות גבוהה</span><span class="en-text" style="display:none">High Intensity</span></div><div class="mc-sub">up to 50,000 lux</div></div>
-        <div class="mini-card"><div class="icon">🌡️</div><div class="mc-title"><span class="he-text">ניהול תרמי</span><span class="en-text" style="display:none">Thermal Mgmt</span></div><div class="mc-sub"><span class="he-text">פתרון מקיף</span><span class="en-text" style="display:none">Full solution</span></div></div>
-        <div class="mini-card"><div class="icon">⚡</div><div class="mc-title"><span class="he-text">בקרה אלקטרונית</span><span class="en-text" style="display:none">Electronics</span></div><div class="mc-sub">PWM / Analog</div></div>
-        <div class="mini-card"><div class="icon">🔩</div><div class="mc-title"><span class="he-text">תכן מכני</span><span class="en-text" style="display:none">Mechanical</span></div><div class="mc-sub">IP67 / IP68</div></div>
-      </div>
-    </div>
+<section class="half half--soft">
+  <div class="half-art" data-art="neon" data-hex="#ff6a3d"></div>
+  <div class="half-text">
+    <h2><span class="he-text t-in">ניאון לד לשילוט</span><span class="en-text t-in">LED neon for signage</span></h2>
+    <p><span class="he-text t-in">ניאון סיליקון גמיש שמחליף את ניאון הזכוכית: צריכת חשמל נמוכה, עמיד למים, ונחתך לפי מידה.</span><span class="en-text t-in">Flexible silicone neon that replaces glass neon: low power, waterproof, and cut to size.</span></p>
+    <p><span class="he-text t-in">זמין בגוונים לבן, חם וצבעוני, בחתך עליון ובחתך צד.</span><span class="en-text t-in">Available in white, warm and colours, top-bend and side-bend.</span></p>
+    <a href="catalog.html?cat=neon" class="button button--secondary"><span class="he-text t-in">לניאון לד</span><span class="en-text t-in">LED neon</span></a>
   </div>
 </section>
 
-<!-- MARQUEE -->
-<div class="marquee-section">
-  <div class="marquee-track">
-    <span class="marquee-item">Machine Vision</span>
-    <span class="marquee-item">UV Curing</span>
-    <span class="marquee-item">Medical Imaging</span>
-    <span class="marquee-item">Security & ANPR</span>
-    <span class="marquee-item">3D Printing</span>
-    <span class="marquee-item">Food Inspection</span>
-    <span class="marquee-item">Hyperspectral Imaging</span>
-    <span class="marquee-item">Autonomous Vehicles</span>
-    <span class="marquee-item">COB Technology</span>
-    <span class="marquee-item">Custom OEM</span>
-    <span class="marquee-item">Machine Vision</span>
-    <span class="marquee-item">UV Curing</span>
-    <span class="marquee-item">Medical Imaging</span>
-    <span class="marquee-item">Security & ANPR</span>
-    <span class="marquee-item">3D Printing</span>
-    <span class="marquee-item">Food Inspection</span>
-    <span class="marquee-item">Hyperspectral Imaging</span>
-    <span class="marquee-item">Autonomous Vehicles</span>
-    <span class="marquee-item">COB Technology</span>
-    <span class="marquee-item">Custom OEM</span>
+<section class="half half--mint">
+  <div class="half-text">
+    <h2><span class="he-text t-in">בקרים ושליטה</span><span class="en-text t-in">Controllers</span></h2>
+    <p><span class="he-text t-in">בקרי RGB ו-RGBW, מגברים ודימרים לשליטה מלאה בתאורה, מותאמים לסרטים ולמודולים מהקטלוג, ב-12V וב-24V.</span><span class="en-text t-in">RGB and RGBW controllers, amplifiers and dimmers for full control, matched to the strips and modules in the catalog, 12V and 24V.</span></p>
+    <a href="catalog.html?cat=controllers" class="button button--secondary"><span class="he-text t-in">לבקרים</span><span class="en-text t-in">Controllers</span></a>
   </div>
-</div>
-
-<!-- CATALOG BANNER -->
-<section style="background:var(--navy);padding:3rem 0;border-top:1px solid rgba(0,200,224,0.15);border-bottom:1px solid rgba(0,200,224,0.15)">
-  <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap">
-    <div>
-      <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--accent);margin-bottom:0.5rem">חדש • קטלוג מוצרים</div>
-      <h2 style="color:#fff;font-size:1.6rem;font-weight:700;margin-bottom:0.5rem">מודולי LED לשילוט – <span style="color:var(--accent)">Talent Electronics 2024</span></h2>
-      <p style="color:rgba(255,255,255,0.55);font-size:0.9rem">14 דגמים מלאים עם מפרטים טכניים, מדריך הזמנה ומערכת בקשת הצעת מחיר ישירה</p>
-    </div>
-    <a href="catalog.html" style="background:var(--accent);color:var(--navy);padding:0.9rem 2rem;border-radius:8px;font-weight:700;font-size:0.95rem;white-space:nowrap;display:inline-block;text-decoration:none;transition:opacity 0.2s" onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">📦 כניסה לקטלוג המוצרים ←</a>
-  </div>
+  <div class="half-art" data-art="controllers"></div>
 </section>
 
-<!-- PRODUCTS -->
-<section class="products-section" id="products">
-  <div class="container">
-    <div class="text-center">
-      <div class="section-label"><span class="he-text">מוצרים ופתרונות</span><span class="en-text" style="display:none">Products & Solutions</span></div>
-      <h2 class="section-title"><span class="he-text">פתרונות תאורה לכל צורך</span><span class="en-text" style="display:none">Lighting Solutions for Every Need</span></h2>
-      <p class="section-sub"><span class="he-text">ממוצרים סטנדרטיים ועד פתרונות מותאמים לחלוטין — אנו בונים את הפתרון הנכון לאפליקציה שלך.</span><span class="en-text" style="display:none">From standard products to fully custom solutions — we build the right solution for your application.</span></p>
-    </div>
-    <div class="products-grid">
-      <div class="product-card">
-        <div class="product-icon">💡</div>
-        <h3><span class="he-text">LED מותאם אישית</span><span class="en-text" style="display:none">Custom LED Solutions</span></h3>
-        <p><span class="he-text">תכנון מקיף של מערכות תאורה מתקדמות בהתאם לדרישות ייחודיות: גל, עצימות, גיאומטריה ואלקטרוניקה.</span><span class="en-text" style="display:none">Comprehensive design of advanced lighting systems tailored to unique requirements: wavelength, intensity, geometry, and electronics.</span></p>
-        <div class="product-specs">
-          <span class="spec-tag">Multi-wavelength</span><span class="spec-tag">High Power</span><span class="spec-tag">COB</span><span class="spec-tag">Custom Form Factor</span>
-        </div>
-        <a class="card-link" href="#contact"><span class="he-text">פרטים נוספים ←</span><span class="en-text" style="display:none">Learn more →</span></a>
-      </div>
-      <div class="product-card">
-        <div class="product-icon">🔵</div>
-        <h3><span class="he-text">תאורה לראייה ממוחשבת</span><span class="en-text" style="display:none">Machine Vision Lighting</span></h3>
-        <p><span class="he-text">גופי תאורה בעלי אחידות גבוהה לסריקה ובדיקה. קווי אור, רינג, ספוט — בכל אורכי גל לפי הצורך.</span><span class="en-text" style="display:none">High-uniformity lighting for scanning and inspection. Line lights, rings, spots — in any wavelength as needed.</span></p>
-        <div class="product-specs">
-          <span class="spec-tag">Line Lights</span><span class="spec-tag">Ring Lights</span><span class="spec-tag">Spot Lights</span><span class="spec-tag">Strobe</span>
-        </div>
-        <a class="card-link" href="#contact"><span class="he-text">פרטים נוספים ←</span><span class="en-text" style="display:none">Learn more →</span></a>
-      </div>
-      <div class="product-card">
-        <div class="product-icon">☀️</div>
-        <h3><span class="he-text">מערכות UV LED לריפוי</span><span class="en-text" style="display:none">UV LED Curing Systems</span></h3>
-        <p><span class="he-text">מערכות UV להדבקה, ציפוי ואוטומציה תעשייתית. ריפוי מהיר, ידידותי לסביבה וחסכוני באנרגיה.</span><span class="en-text" style="display:none">UV systems for bonding, coating, and industrial automation. Fast curing, environmentally friendly, and energy efficient.</span></p>
-        <div class="product-specs">
-          <span class="spec-tag">365nm / 385nm / 405nm</span><span class="spec-tag">High Irradiance</span><span class="spec-tag">Configurable</span>
-        </div>
-        <a class="card-link" href="#contact"><span class="he-text">פרטים נוספים ←</span><span class="en-text" style="display:none">Learn more →</span></a>
-      </div>
-      <div class="product-card">
-        <div class="product-icon">🔬</div>
-        <h3><span class="he-text">תאורה רפואית ומדעית</span><span class="en-text" style="display:none">Medical & Scientific Lighting</span></h3>
-        <p><span class="he-text">פתרונות LED מיוחדים לציוד רפואי, מעבדות ומכשור מדעי — עמידה בתקנות מחמירות ואמינות גבוהה.</span><span class="en-text" style="display:none">Specialized LED solutions for medical equipment, labs, and scientific instruments — meeting strict regulations with high reliability.</span></p>
-        <div class="product-specs">
-          <span class="spec-tag">FDA Compliant</span><span class="spec-tag">Biocompatible</span><span class="spec-tag">Low EMI</span>
-        </div>
-        <a class="card-link" href="#contact"><span class="he-text">פרטים נוספים ←</span><span class="en-text" style="display:none">Learn more →</span></a>
-      </div>
-      <div class="product-card">
-        <div class="product-icon">🛡️</div>
-        <h3><span class="he-text">תאורת אבטחה ומעקב</span><span class="en-text" style="display:none">Security & Surveillance Lighting</span></h3>
-        <p><span class="he-text">תאורת IR עוצמתית ל-ANPR, מצלמות ומערכות מעקב. זמינה בספקטרום רחב: 760nm עד 1550nm.</span><span class="en-text" style="display:none">High-power IR illumination for ANPR, cameras, and surveillance systems. Available in a wide spectrum: 760nm to 1550nm.</span></p>
-        <div class="product-specs">
-          <span class="spec-tag">IR Spotlights</span><span class="spec-tag">ANPR</span><span class="spec-tag">IP67</span><span class="spec-tag">940nm Covert</span>
-        </div>
-        <a class="card-link" href="#contact"><span class="he-text">פרטים נוספים ←</span><span class="en-text" style="display:none">Learn more →</span></a>
-      </div>
-      <div class="product-card">
-        <div class="product-icon">🧬</div>
-        <h3><span class="he-text">מערכות UVC לחיטוי</span><span class="en-text" style="display:none">UVC Disinfection Systems</span></h3>
-        <p><span class="he-text">מערכות LED לחיטוי מים, משטחים ואוויר. פתרון בטיח ויעיל לתעשיית המזון, רפואה ואריזה.</span><span class="en-text" style="display:none">LED systems for water, surface, and air disinfection. Safe and effective solution for food, medical, and packaging industries.</span></p>
-        <div class="product-specs">
-          <span class="spec-tag">UVC 265nm</span><span class="spec-tag">Water Treatment</span><span class="spec-tag">Surface</span>
-        </div>
-        <a class="card-link" href="#contact"><span class="he-text">פרטים נוספים ←</span><span class="en-text" style="display:none">Learn more →</span></a>
-      </div>
-    </div>
-  </div>
+<section class="ctext container" id="about" aria-labelledby="about-h">
+  <h2 id="about-h"><span class="he-text t-in">מגוון רחב של מוצרים</span><span class="en-text t-in">A wide product range</span></h2>
+  <p><span class="he-text t-in">הקטלוג כולל <span data-count-products>171</span> מוצרים ו-<span data-count-skus>671</span> מק״טים, עם מק״ט נפרד לכל גוון וגרסה. LED IT BE מבית ג׳ייקוב גרופ מייבאת ומשווקת רכיבי LED ליצרני שלטים, אותיות מוארות ותיבות אור.</span><span class="en-text t-in">The catalog has <span data-count-products>171</span> products and <span data-count-skus>671</span> SKUs, with a separate SKU for every colour and version. LED IT BE by jacob group imports and supplies LED components to makers of signs, channel letters and lightboxes.</span></p>
+  <a href="catalog.html" class="button button--secondary"><span class="he-text t-in">לקטלוג</span><span class="en-text t-in">Catalog</span></a>
 </section>
 
-<!-- PROCESS -->
-<section class="process-section" id="process">
-  <div class="container">
-    <div class="text-center">
-      <div class="section-label"><span class="he-text">תהליך העבודה שלנו</span><span class="en-text" style="display:none">Our Process</span></div>
-      <h2 class="section-title"><span class="he-text">מהגדרת הצורך עד לייצור</span><span class="en-text" style="display:none">From Requirements to Production</span></h2>
-      <p class="section-sub"><span class="he-text">תהליך מובנה ושיתופי המבטיח שהפתרון הסופי עונה בדיוק על הצרכים שלך.</span><span class="en-text" style="display:none">A structured, collaborative process that ensures the final solution meets your exact needs.</span></p>
-    </div>
-    <div class="process-steps">
-      <div class="process-step">
-        <div class="step-num">01</div>
-        <h4><span class="he-text">הגדרת דרישות</span><span class="en-text" style="display:none">Requirements</span></h4>
-        <p><span class="he-text">נגדיר יחד את האתגר הטכני, המפרט ויעדי הביצועים.</span><span class="en-text" style="display:none">We define together the technical challenge, spec, and performance targets.</span></p>
-      </div>
-      <div class="process-step">
-        <div class="step-num">02</div>
-        <h4><span class="he-text">תכנון קונספט</span><span class="en-text" style="display:none">Concept Design</span></h4>
-        <p><span class="he-text">מהנדסי אופטיקה, אלקטרוניקה ומכניקה עובדים יחד על הפתרון.</span><span class="en-text" style="display:none">Optical, electronic, and mechanical engineers work together on the solution.</span></p>
-      </div>
-      <div class="process-step">
-        <div class="step-num">03</div>
-        <h4><span class="he-text">פרוטוטייפ ובדיקות</span><span class="en-text" style="display:none">Prototype & Test</span></h4>
-        <p><span class="he-text">בניית אב-טיפוס, בדיקת ביצועים ואימות המפרט בסביבה ריאלית.</span><span class="en-text" style="display:none">Prototype building, performance testing, and spec validation in real conditions.</span></p>
-      </div>
-      <div class="process-step">
-        <div class="step-num">04</div>
-        <h4><span class="he-text">ייצור ואספקה</span><span class="en-text" style="display:none">Production & Delivery</span></h4>
-        <p><span class="he-text">ייצור בסביבה מוסמכת ISO עם בקרת איכות מחמירה בכל שלב.</span><span class="en-text" style="display:none">Manufacturing in ISO-certified facility with strict quality control at every stage.</span></p>
-      </div>
-      <div class="process-step">
-        <div class="step-num">05</div>
-        <h4><span class="he-text">תמיכה שוטפת</span><span class="en-text" style="display:none">Ongoing Support</span></h4>
-        <p><span class="he-text">ליווי מלא לאורך מחזור חיי המוצר, כולל דורות מוצר עתידיים.</span><span class="en-text" style="display:none">Full support throughout the product lifecycle, including future product generations.</span></p>
-      </div>
-    </div>
+<section class="steps" id="process" aria-labelledby="process-h">
+  <div class="steps-text">
+    <h2 id="process-h"><span class="he-text t-in">איך מזמינים</span><span class="en-text t-in">How to order</span></h2>
+    <ol>
+      <li><b><span class="he-text t-in">בוחרים מוצרים וגוונים</span><span class="en-text t-in">Pick products and colours</span></b><span><span class="he-text t-in">מחפשים לפי שם או מק״ט, בוחרים גרסה וכמות ומוסיפים לסל הצעת המחיר.</span><span class="en-text t-in">Search by name or SKU, choose a version and quantity, and add to your quote list.</span></span></li>
+      <li><b><span class="he-text t-in">שולחים בקשה אחת</span><span class="en-text t-in">Send one request</span></b><span><span class="he-text t-in">ממלאים פרטים ופרטי פרויקט, ושולחים את כל הרשימה בבת אחת.</span><span class="en-text t-in">Add your details and project info, and send the whole list at once.</span></span></li>
+      <li><b><span class="he-text t-in">מקבלים הצעת מחיר</span><span class="en-text t-in">Get a quote</span></b><span><span class="he-text t-in">הצעה מסודרת לפי מק״ט חוזרת אליכם במייל, עם זמני אספקה.</span><span class="en-text t-in">A quote by SKU comes back to you by email, with delivery times.</span></span></li>
+    </ol>
   </div>
+  <div class="steps-motif" aria-hidden="true" data-motif></div>
 </section>
 
-<!-- INDUSTRIES -->
-<section class="industries-section" id="industries">
-  <div class="container">
-    <div class="text-center">
-      <div class="section-label" style="color:var(--accent)"><span class="he-text">תעשיות</span><span class="en-text" style="display:none">Industries</span></div>
-      <h2 class="section-title"><span class="he-text">פתרונות בכל ענף</span><span class="en-text" style="display:none">Solutions Across Industries</span></h2>
-      <p class="section-sub"><span class="he-text">ניסיון רב שנים בתאורה מתקדמת למגוון רחב של אפליקציות תעשייתיות ומדעיות.</span><span class="en-text" style="display:none">Years of experience in advanced lighting for a wide range of industrial and scientific applications.</span></p>
-    </div>
-    <div class="industries-grid">
-      <div class="industry-card"><div class="industry-icon">🏭</div><h4><span class="he-text">ייצור תעשייתי</span><span class="en-text" style="display:none">Industrial Mfg.</span></h4><p>Machine Vision</p></div>
-      <div class="industry-card"><div class="industry-icon">🏥</div><h4><span class="he-text">רפואה</span><span class="en-text" style="display:none">Medical</span></h4><p>Imaging & Diagnostics</p></div>
-      <div class="industry-card"><div class="industry-icon">🔐</div><h4><span class="he-text">אבטחה</span><span class="en-text" style="display:none">Security</span></h4><p>ANPR & Surveillance</p></div>
-      <div class="industry-card"><div class="industry-icon">🍎</div><h4><span class="he-text">מזון ומשקאות</span><span class="en-text" style="display:none">Food & Beverage</span></h4><p>Quality Inspection</p></div>
-      <div class="industry-card"><div class="industry-icon">🚗</div><h4><span class="he-text">רכב אוטונומי</span><span class="en-text" style="display:none">Autonomous Vehicles</span></h4><p>LiDAR & Sensing</p></div>
-      <div class="industry-card"><div class="industry-icon">🖨️</div><h4><span class="he-text">הדפסה</span><span class="en-text" style="display:none">Printing</span></h4><p>UV Curing & Inspection</p></div>
-      <div class="industry-card"><div class="industry-icon">🔬</div><h4><span class="he-text">מדע ומחקר</span><span class="en-text" style="display:none">Science & Research</span></h4><p>Spectroscopy</p></div>
-      <div class="industry-card"><div class="industry-icon">📦</div><h4><span class="he-text">אריזה</span><span class="en-text" style="display:none">Packaging</span></h4><p>Defect Detection</p></div>
-    </div>
+<section class="contact container" id="contact" aria-labelledby="contact-h">
+  <div class="contact-intro">
+    <h2 id="contact-h"><span class="he-text t-in">צור קשר</span><span class="en-text t-in">Contact us</span></h2>
+    <p><span class="he-text t-in">שאלה על מוצר, התאמה לפרויקט או הזמנה גדולה? כתבו לנו ונחזור אליכם.</span><span class="en-text t-in">A product question, project fit or a large order? Write to us and we'll get back to you.</span></p>
+    <ul class="contact-lines">
+      <li><a href="mailto:info@leditbe.co.il">info@leditbe.co.il</a></li>
+      <li><a href="tel:+97231234567" dir="ltr">03-1234567</a></li>
+    </ul>
   </div>
-</section>
-
-<!-- WHY US -->
-<section class="why-section" id="why">
-  <div class="container">
-    <div class="why-grid">
-      <div>
-        <div class="section-label"><span class="he-text">היתרון שלנו</span><span class="en-text" style="display:none">Our Advantage</span></div>
-        <h2 class="section-title"><span class="he-text">למה LED IT BE?</span><span class="en-text" style="display:none">Why LED IT BE?</span></h2>
-        <p class="section-sub" style="margin-bottom:2rem"><span class="he-text">אנו לא סתם ספק — אנו שותפים אמיתיים להנדסה ולייצור שלך.</span><span class="en-text" style="display:none">We're not just a supplier — we're your true engineering and manufacturing partner.</span></p>
-        <div class="why-list">
-          <div class="why-item">
-            <div class="why-icon">🏗️</div>
-            <div>
-              <h4><span class="he-text">פיתוח פנימי מלא</span><span class="en-text" style="display:none">Full In-House Development</span></h4>
-              <p><span class="he-text">כל ההנדסה — אופטית, אלקטרונית ומכנית — מתבצעת אצלנו. שליטה מוחלטת בלוחות זמנים ובאיכות.</span><span class="en-text" style="display:none">All engineering — optical, electronic, and mechanical — is done in-house. Complete control over timelines and quality.</span></p>
-            </div>
-          </div>
-          <div class="why-item">
-            <div class="why-icon">🤝</div>
-            <div>
-              <h4><span class="he-text">שותפות לאורך זמן</span><span class="en-text" style="display:none">Long-term Partnership</span></h4>
-              <p><span class="he-text">אנחנו נשארים לצדך גם לאחר המשלוח — תמיכה טכנית מלאה ושיתוף פעולה לדורות מוצר עתידיים.</span><span class="en-text" style="display:none">We stay by your side after delivery — full technical support and collaboration for future product generations.</span></p>
-            </div>
-          </div>
-          <div class="why-item">
-            <div class="why-icon">⚙️</div>
-            <div>
-              <h4><span class="he-text">גמישות מלאה</span><span class="en-text" style="display:none">Full Flexibility</span></h4>
-              <p><span class="he-text">מייצור נמוך-נפח לסדרתי, מפרוטוטייפ לייצור המוני — מותאם לצרכים שלך בכל שלב.</span><span class="en-text" style="display:none">From low-volume to serial production, from prototype to mass production — adapted to your needs at every stage.</span></p>
-            </div>
-          </div>
-          <div class="why-item">
-            <div class="why-icon">📐</div>
-            <div>
-              <h4><span class="he-text">בנק עיצוב עשיר</span><span class="en-text" style="display:none">Rich Design Bank</span></h4>
-              <p><span class="he-text">שנים של ידע מצטבר מאות פרויקטים. לא מתחילים מאפס — מביאים ניסיון אמיתי לפרויקט שלך.</span><span class="en-text" style="display:none">Years of accumulated knowledge from hundreds of projects. We don't start from scratch — we bring real experience to your project.</span></p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="why-visual">
-        <div class="why-visual-bg"></div>
-        <div class="certs">
-          <div class="cert-row">
-            <div class="cert-badge">ISO 9001</div>
-            <div class="cert-info"><h5><span class="he-text">ניהול איכות</span><span class="en-text" style="display:none">Quality Management</span></h5><p><span class="he-text">מתקני ייצור מוסמכים</span><span class="en-text" style="display:none">Certified manufacturing</span></p></div>
-          </div>
-          <div class="cert-row">
-            <div class="cert-badge">RoHS</div>
-            <div class="cert-info"><h5><span class="he-text">עמידה בתקני גוש אירופי</span><span class="en-text" style="display:none">EU Compliance</span></h5><p><span class="he-text">ידידותי לסביבה</span><span class="en-text" style="display:none">Environmentally friendly</span></p></div>
-          </div>
-          <div class="cert-row">
-            <div class="cert-badge">CE / UL</div>
-            <div class="cert-info"><h5><span class="he-text">הסמכות בינלאומיות</span><span class="en-text" style="display:none">International Certifications</span></h5><p><span class="he-text">כניסה לשווקים גלובליים</span><span class="en-text" style="display:none">Access to global markets</span></p></div>
-          </div>
-          <div class="cert-row">
-            <div class="cert-badge">IP67/68</div>
-            <div class="cert-info"><h5><span class="he-text">הגנה סביבתית</span><span class="en-text" style="display:none">Environmental Protection</span></h5><p><span class="he-text">עמידות בתנאים קשים</span><span class="en-text" style="display:none">Harsh environment rated</span></p></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TESTIMONIALS -->
-<section class="testimonials-section">
-  <div class="container">
-    <div class="text-center">
-      <div class="section-label"><span class="he-text">לקוחות מספרים</span><span class="en-text" style="display:none">Client Testimonials</span></div>
-      <h2 class="section-title"><span class="he-text">מה אומרים עלינו</span><span class="en-text" style="display:none">What Our Clients Say</span></h2>
-    </div>
-    <div class="testimonials-grid">
-      <div class="testimonial-card">
-        <div class="stars">★★★★★</div>
-        <blockquote><span class="he-text">"הצוות של LED IT BE הפגין מקצועיות יוצאת דופן. הם הבינו את הצורך שלנו במדויק ופיתחו פתרון שמעולה לא היה קיים בשוק."</span><span class="en-text" style="display:none">"The LED IT BE team demonstrated exceptional professionalism. They understood our need precisely and developed a solution that didn't exist on the market."</span></blockquote>
-        <div class="testimonial-author">
-          <div class="author-avatar">YK</div>
-          <div><div class="author-name"><span class="he-text">יובל כהן</span><span class="en-text" style="display:none">Yuval Cohen</span></div><div class="author-role"><span class="he-text">מנהל הנדסה, CogniSight</span><span class="en-text" style="display:none">Engineering Manager, CogniSight</span></div></div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="stars">★★★★★</div>
-        <blockquote><span class="he-text">"לוחות הזמנים התקצרו ב-40% בזכות הניסיון שהביאו מפרויקטים קודמים. לא התחלנו מאפס — קיבלנו ידע אמיתי."</span><span class="en-text" style="display:none">"Timelines shortened by 40% thanks to experience brought from previous projects. We didn't start from scratch — we got real knowledge."</span></blockquote>
-        <div class="testimonial-author">
-          <div class="author-avatar">SR</div>
-          <div><div class="author-name"><span class="he-text">שרה רוזן</span><span class="en-text" style="display:none">Sara Rosen</span></div><div class="author-role"><span class="he-text">CTO, MediScan Systems</span><span class="en-text" style="display:none">CTO, MediScan Systems</span></div></div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="stars">★★★★★</div>
-        <blockquote><span class="he-text">"פתרון ה-UV LED שפיתחו עבורנו הגדיל את תפוקת הייצור ב-60% וחסך עלויות תפעול משמעותיות לאורך שנה ראשונה."</span><span class="en-text" style="display:none">"The UV LED solution they developed for us increased production throughput by 60% and saved significant operational costs over the first year."</span></blockquote>
-        <div class="testimonial-author">
-          <div class="author-avatar">AM</div>
-          <div><div class="author-name"><span class="he-text">אביחי מנדל</span><span class="en-text" style="display:none">Avichai Mandel</span></div><div class="author-role"><span class="he-text">מנהל ייצור, PrintVision</span><span class="en-text" style="display:none">Production Manager, PrintVision</span></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta-section" id="contact">
-  <div class="container" style="position:relative;z-index:1">
-    <h2><span class="he-text">מוכן לפתרון שנבנה בשבילך?</span><span class="en-text" style="display:none">Ready for a Solution Built for You?</span></h2>
-    <p><span class="he-text">צור קשר עם הצוות הטכני שלנו לייעוץ חינם ולמידה על האפשרויות לפרויקט שלך.</span><span class="en-text" style="display:none">Contact our technical team for a free consultation to learn about options for your project.</span></p>
+  <div class="contact-box">
     <form id="contact-form" class="contact-form" novalidate onsubmit="event.preventDefault()" aria-label="טופס יצירת קשר">
       <div class="cf-grid">
         <div class="f-field">
@@ -382,24 +102,19 @@
         </div>
       </div>
       <div class="hp" aria-hidden="true"><label for="c-website">Website</label><input id="c-website" name="website" tabindex="-1" autocomplete="off" data-no-restore></div>
-      <button type="submit" class="btn-primary cf-submit" id="c-submit"><span class="he-text t-in">שלחו פנייה למהנדס</span><span class="en-text t-in">Send to an engineer</span></button>
+      <button type="submit" class="button button--primary cf-submit" id="c-submit"><span class="he-text t-in">שליחת פנייה</span><span class="en-text t-in">Send message</span></button>
       <p class="f-error f-form-error" id="c-error" role="alert"></p>
     </form>
     <div class="contact-done" id="contact-done" hidden tabindex="-1" data-testid="contact-done">
       <div class="done-icon" aria-hidden="true">✓</div>
       <p><strong><span class="he-text t-in">תודה! הפנייה התקבלה.</span><span class="en-text t-in">Thanks! We got your message.</span></strong></p>
-      <p><span class="he-text t-in">מהנדס מהצוות יחזור אליכם בהקדם.</span><span class="en-text t-in">An engineer will get back to you shortly.</span></p>
+      <p><span class="he-text t-in">נחזור אליכם בהקדם.</span><span class="en-text t-in">We'll get back to you shortly.</span></p>
     </div>
-    <p style="margin-top:2rem; font-size:0.82rem; color:rgba(255,255,255,0.35)">
-      <span class="he-text">📧 info@leditbe.co.il · 📞 03-1234567 · 📍 רחוב הטכנולוגיה 1, תל אביב</span>
-      <span class="en-text" style="display:none">📧 info@leditbe.co.il · 📞 +972-3-1234567 · 📍 1 Technology St., Tel Aviv</span>
-    </p>
   </div>
 </section>
+</main>
 
-<!-- FOOTER -->
 <!-- @include footer.html -->
 <script type="module" src="/src/pages/home.js"></script>
 </body>
 </html>
-<!-- SHOP PAGE - injected as separate section, toggled via JS -->

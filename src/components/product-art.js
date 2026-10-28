@@ -13,7 +13,7 @@ let uid = 0;
 
 const SHAPES = {
   modules: c => `
-    <rect x="18" y="52" width="164" height="6" rx="3" fill="#2b3a4f"/>
+    <rect x="18" y="52" width="164" height="6" rx="3" fill="#b4bfcc"/>
     ${[40, 100, 160].map((x, i) => `
       <rect x="${x - 22}" y="34" width="44" height="42" rx="8" fill="#f2f5f9" stroke="#c9d3df"/>
       <circle cx="${x}" cy="55" r="12" fill="${pick(c, i)}" opacity=".9"/>
@@ -33,20 +33,20 @@ const SHAPES = {
     ${c.length > 1 ? `<path d="M18 72 C 50 20, 90 20, 100 55 S 160 90, 182 34" stroke="url(#GID)" stroke-width="11" fill="none" stroke-linecap="round"/>` : ''}`,
   pixel: c => `
     ${[0, 1, 2, 3, 4].map(i => `
-      <circle cx="${30 + i * 35}" cy="55" r="15" fill="#2b3a4f"/>
+      <circle cx="${30 + i * 35}" cy="55" r="15" fill="#b4bfcc"/>
       <circle cx="${30 + i * 35}" cy="55" r="10" fill="${pick(c, i)}"/>
       <circle cx="${30 + i * 35}" cy="55" r="17" fill="${pick(c, i)}" opacity=".2"/>`).join('')}
-    <path d="M10 82 H190" stroke="#2b3a4f" stroke-width="2"/>`,
+    <path d="M10 82 H190" stroke="#b4bfcc" stroke-width="2"/>`,
   controllers: () => `
-    <rect x="45" y="25" width="110" height="60" rx="8" fill="#2b3a4f"/>
+    <rect x="45" y="25" width="110" height="60" rx="8" fill="#eef2f6" stroke="#b4bfcc" stroke-width="2"/>
     <rect x="58" y="38" width="44" height="14" rx="3" fill="#00c8e0" opacity=".85"/>
     <circle cx="128" cy="45" r="6" fill="#ff3b30"/><circle cx="142" cy="45" r="6" fill="#30d158"/><circle cx="135" cy="62" r="6" fill="#0a84ff"/>
-    <path d="M45 70 H20 M155 70 H180" stroke="#8a97a8" stroke-width="4" stroke-linecap="round"/>`,
+    <path d="M45 70 H20 M155 70 H180" stroke="#9aa6b4" stroke-width="4" stroke-linecap="round"/>`,
   accessories: () => `
     <rect x="30" y="45" width="70" height="20" rx="4" fill="#c9d3df"/>
-    <rect x="100" y="40" width="40" height="30" rx="5" fill="#2b3a4f"/>
+    <rect x="100" y="40" width="40" height="30" rx="5" fill="#b4bfcc"/>
     <path d="M140 50 H178 M140 60 H178" stroke="#ff3b30" stroke-width="4" stroke-linecap="round"/>
-    <path d="M140 60 H178" stroke="#1d2735" stroke-width="4" stroke-linecap="round"/>`,
+    <path d="M140 60 H178" stroke="#6b7684" stroke-width="4" stroke-linecap="round"/>`,
 };
 
 export function productArt(type, hex) {
@@ -70,20 +70,9 @@ export function colorChip(hex) {
   return hex ? `<span class="pv-chip" data-chip aria-hidden="true">${swatch(hex)}</span>` : '<span class="pv-chip" data-chip hidden></span>';
 }
 
-/**
- * Illustration photo per product type (public-domain/CC0, see public/images/types/CREDITS.md),
- * labelled "for illustration only", with a chip in the variant's colour.
- * Falls back to the drawn SVG if the image can't load.
- */
-export function productVisual(type, hex, { eager = false } = {}) {
-  const src = `${import.meta.env.BASE_URL}images/types/${type}.webp`;
-  return `<figure class="pv" data-visual>
-    <img src="${src}" alt="" width="800" height="440" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"
-      onerror="this.hidden=true;this.nextElementSibling.hidden=false">
-    <span class="pv-fallback" hidden>${productArt(type, hex)}</span>
-    <figcaption class="pv-note"><span class="he-text t-in">תמונה להמחשה</span><span class="en-text t-in">Illustration</span></figcaption>
-    ${colorChip(hex)}
-  </figure>`;
+/** Drawn illustration per product type with a chip in the variant's colour (decorative). */
+export function productVisual(type, hex) {
+  return `<figure class="pv" data-visual>${productArt(type, hex)}${colorChip(hex)}</figure>`;
 }
 
 export function updateChip(root, hex) {
@@ -91,4 +80,10 @@ export function updateChip(root, hex) {
   if (!chip) return;
   chip.hidden = !hex;
   chip.innerHTML = hex ? swatch(hex) : '';
+}
+
+/** Re-tint the illustration and chip inside root for a newly selected variant. */
+export function updateVisual(root, type, hex) {
+  const fig = root.querySelector('[data-visual]');
+  if (fig) fig.outerHTML = productVisual(type, hex);
 }

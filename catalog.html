@@ -5,46 +5,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>קטלוג מוצרים – LED IT BE</title>
 <meta name="description" content="קטלוג מוצרי LED: מודולים, סרטי לד, ניאון, לד נעיצה, בקרים ואביזרים. חיפוש לפי מק״ט ובקשת הצעת מחיר.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Assistant:wght@300;400;500;600;700&display=swap&font-display=swap" rel="stylesheet">
 </head>
 <body>
 
 <!-- @include nav.html -->
 
-<main class="catalog-page" id="main">
-  <header class="cat-hero">
-    <h1><span class="he-text t-in">קטלוג מוצרים</span><span class="en-text t-in">Product Catalog</span> <span class="accent">LED IT BE</span></h1>
-    <p>
-      <span class="he-text">מודולים, סרטי לד, ניאון, לד נעיצה, בקרים ואביזרים. בחרו גרסה וכמות, ושלחו בקשה להצעת מחיר.</span>
-      <span class="en-text">Modules, LED strips, neon, pixel LEDs, controllers and accessories. Pick a variant and quantity, and request a quote.</span>
-    </p>
-    <div class="hero-badges">
-      <span class="hb"><span data-count-products>–</span> <span class="he-text t-in">מוצרים</span><span class="en-text t-in">products</span></span>
-      <span class="hb"><span data-count-skus>–</span> <span class="he-text t-in">מק"טים</span><span class="en-text t-in">SKUs</span></span>
-      <span class="hb">12V · 24V</span>
-      <span class="hb">IP20 – IP68</span>
-    </div>
-  </header>
-
-  <div class="search-bar">
-    <div class="search-inner">
-      <label for="search" class="sr-only">חיפוש לפי שם או מק"ט / Search by name or SKU</label>
-      <input class="search-input" id="search" type="search" placeholder='חיפוש לפי שם או מק"ט (למשל 15201, ניאון 6×12)' autocomplete="off">
-      <label for="sort" class="sr-only">מיון / Sort</label>
-      <select id="sort" class="sort-select">
-        <option value="sku">מיון: לפי מק"ט</option>
-        <option value="name">מיון: לפי שם</option>
-        <option value="variants">מיון: הכי הרבה גרסאות</option>
-      </select>
-    </div>
-    <div class="filters" id="filters" role="group" aria-label="קטגוריות / Categories"></div>
+<main class="catalog-page container" id="main">
+  <div class="crumbs" role="navigation" aria-label="breadcrumb">
+    <a href="./"><span class="he-text t-in">בית</span><span class="en-text t-in">Home</span></a> /
+    <span aria-current="page"><span class="he-text t-in">קטלוג</span><span class="en-text t-in">Catalog</span></span>
   </div>
+  <h1 class="page-title"><span class="he-text t-in">קטלוג מוצרים</span><span class="en-text t-in">Product catalog</span></h1>
+  <p class="page-intro">
+    <span data-count-products>–</span> <span class="he-text t-in">מוצרים ו-</span><span class="en-text t-in">products and </span><span data-count-skus>–</span> <span class="he-text t-in">מק״טים: מודולים, סרטי לד, ניאון, לד נעיצה, בקרים ואביזרים. בחרו גרסה וכמות ושלחו בקשה להצעת מחיר.</span><span class="en-text t-in">SKUs: modules, strips, neon, pixel LEDs, controllers and accessories. Pick a variant and quantity, and request a quote.</span>
+  </p>
 
-  <div class="catalog-wrap">
-    <p class="results" id="results-lbl" role="status" aria-live="polite"></p>
-    <div class="catalog" id="catalog" aria-busy="true"></div>
-    <div class="more-wrap"><button type="button" class="btn-more" id="more" hidden></button></div>
+  <div class="cat-layout">
+    <aside class="cat-side">
+      <h2 class="side-h" id="filters-h"><span class="he-text t-in">קטגוריה</span><span class="en-text t-in">Category</span></h2>
+      <div class="filters" id="filters" role="group" aria-labelledby="filters-h"></div>
+    </aside>
+    <div class="cat-main">
+      <div class="toolbar">
+        <div class="tb-search">
+          <label for="search" class="sr-only">חיפוש לפי שם או מק"ט / Search by name or SKU</label>
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+          <input id="search" type="search" placeholder='סינון לפי שם או מק"ט (למשל 15201, ניאון 6×12)' autocomplete="off">
+        </div>
+        <label for="sort" class="sr-only">מיון / Sort</label>
+        <select id="sort" class="sort-select">
+          <option value="sku">מיון: לפי מק"ט</option>
+          <option value="name">מיון: לפי שם</option>
+          <option value="variants">מיון: הכי הרבה גרסאות</option>
+        </select>
+      </div>
+      <p class="results" id="results-lbl" role="status" aria-live="polite"></p>
+      <div class="catalog" id="catalog" aria-busy="true"></div>
+      <div class="more-wrap"><button type="button" class="button button--secondary" id="more" hidden></button></div>
+    </div>
   </div>
 </main>
 

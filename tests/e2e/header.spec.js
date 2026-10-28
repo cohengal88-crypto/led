@@ -28,13 +28,27 @@ test('mobile menu opens and closes', async ({ page, isMobile }) => {
   await expect(menu).not.toHaveClass(/open/);
 });
 
-test('English nav: Contact button text is visible (not dark on dark)', async ({ page, isMobile }) => {
-  test.skip(isMobile, 'desktop nav only');
+test('English header: top links and categories are shown in English', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'desktop header only');
   await page.addInitScript(() => localStorage.setItem('led_lang', 'en'));
   await page.goto('/');
-  const btn = page.locator('.en-flex a[href$="#contact"]');
-  await expect(btn).toBeVisible();
-  const color = await btn.evaluate(el => getComputedStyle(el).color);
-  const [r, g, b] = color.match(/\d+/g).map(Number);
-  expect((r + g + b) / 3).toBeGreaterThan(150);
+  await expect(page.locator('.top-links a[href$="#contact"]')).toHaveText('Contact', { useInnerText: true });
+  await expect(page.locator('.cat-nav a[href$="cat=neon"]')).toHaveText('Neon', { useInnerText: true });
+});
+
+test('header search goes to the catalog with the query', async ({ page, isMobile }) => {
+  await page.goto('/');
+  if (isMobile) { await page.click('#hamburger'); await page.fill('#mm-q', '15204'); await page.press('#mm-q', 'Enter'); }
+  else { await page.fill('#site-q', '15204'); await page.press('#site-q', 'Enter'); }
+  await expect(page).toHaveURL(/catalog\.html\?q=15204/);
+  await expect(page.locator('#search')).toHaveValue('15204');
+  await expect(page.getByTestId('product-card')).toHaveCount(1);
+});
+
+test('home shows every category with its product count', async ({ page }) => {
+  await page.goto('/');
+  const cards = page.locator('#cat-grid .cat-card:not(.cat-card--all)');
+  await expect(cards).toHaveCount(7);
+  await expect(cards.filter({ hasText: 'ניאון לד' })).toContainText('13');
+  await expect(page.locator('.hero [data-count-skus]')).toHaveText('671');
 });

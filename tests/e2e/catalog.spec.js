@@ -91,21 +91,13 @@ test('add to quote from a card keeps the SKU', async ({ page }) => {
   expect(cart).toEqual([expect.objectContaining({ sku: '15204', qty: 3, variant: 'אדום' })]);
 });
 
-test('illustration images: one per product type, loaded, labelled as illustration', async ({ page, request }) => {
-  for (const c of data.categories) {
-    const res = await request.get(`/images/types/${c.id}.webp`);
-    expect(res.status(), c.id).toBe(200);
-  }
-  await page.goto('/catalog.html');
-  const first = page.getByTestId('product-card').first();
-  await expect(first.locator('.pv img')).toBeVisible();
-  expect(await first.locator('.pv img').evaluate(i => i.complete && i.naturalWidth > 0)).toBe(true);
-  await expect(first.locator('.pv-note')).toHaveText(/תמונה להמחשה/);
-});
-
-test('if an image fails to load, the drawn illustration is shown instead', async ({ page }) => {
-  await page.route('**/images/types/*.webp', r => r.abort());
-  await page.goto('/catalog.html');
-  const first = page.getByTestId('product-card').first();
-  await expect(first.locator('.pv-fallback svg')).toBeVisible();
+test('each card shows a drawn illustration that follows the selected colour', async ({ page }) => {
+  await page.goto('/catalog.html?q=' + encodeURIComponent('לד נעיצה 9'));
+  const card = cards(page).filter({ hasText: '12V' }).first();
+  await expect(card.locator('.pv svg.p-art')).toBeVisible();
+  await expect(card.locator('img')).toHaveCount(0);
+  const art = () => card.locator('.pv svg').innerHTML().then(h => h.replace(/pa\d+/g, ''));
+  const before = await art();
+  await card.locator('select[data-variant]').selectOption({ index: 3 });
+  await expect.poll(art).not.toBe(before);
 });

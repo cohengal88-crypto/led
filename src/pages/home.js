@@ -1,13 +1,25 @@
-import '../styles/home.css';
-import '../styles/shared.css';
+import '../styles/site.css';
 import { initHeader } from '../components/header.js';
+import { productArt } from '../components/product-art.js';
 import { data } from '../lib/data/index.js';
 import { validateForm, liveValidate, normalizePhone } from '../lib/validate.js';
 import { getCustomer, saveCustomer } from '../lib/customer-memory.js';
 import { notifyByEmail } from '../lib/notify.js';
-import { t } from '../lib/html.js';
+import { esc, t } from '../lib/html.js';
 
 initHeader();
+
+// ── illustrations + motif ──
+document.querySelectorAll('[data-art]').forEach(el => { el.innerHTML = productArt(el.dataset.art, el.dataset.hex || null); });
+const motif = document.querySelector('[data-motif]');
+if (motif) {
+  let dots = '';
+  for (let r = 40; r <= 250; r += 30) for (let a = 0; a < 36; a++) {
+    const x = 260 + r * Math.cos(a * Math.PI / 18), y = 260 + r * Math.sin(a * Math.PI / 18);
+    dots += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(2 + r / 60).toFixed(1)}" fill="#c2410c" opacity="${(1 - r / 290).toFixed(2)}"/>`;
+  }
+  motif.innerHTML = `<svg viewBox="0 0 520 520" focusable="false">${dots}</svg>`;
+}
 
 // ── contact form ──
 const form = document.getElementById('contact-form');
@@ -42,3 +54,19 @@ form.addEventListener('submit', async e => {
     btn.disabled = false;
   }
 });
+
+// ── categories + counts from the data ──
+const db = await data();
+const [products, categories] = await Promise.all([db.listProducts(), db.listCategories()]);
+document.querySelectorAll('[data-count-products]').forEach(el => { el.textContent = products.length; });
+document.querySelectorAll('[data-count-skus]').forEach(el => { el.textContent = products.reduce((n, p) => n + p.variants.length, 0); });
+const SAMPLE_HEX = { modules: '#f4f8ff', bars: '#e8f4ff', strips: '#ffd27a', neon: '#ff6a3d', pixel: 'rgb' };
+document.getElementById('cat-grid').innerHTML = categories.map(c => {
+  const skus = products.filter(p => p.type === c.id).flatMap(p => p.skus).sort();
+  const range = !skus.length ? '' : skus.length === 1 ? skus[0] : `${skus[0]}–${skus.at(-1)}`;
+  return `<a class="cat-card" href="catalog.html?cat=${encodeURIComponent(c.id)}">
+    <span class="cat-art" aria-hidden="true">${productArt(c.id, SAMPLE_HEX[c.id] || null)}</span>
+    <h3>${t(esc(c.he), esc(c.en))}</h3>
+    <p>${c.count} ${t('מוצרים', 'products')}${range ? ` · ${t('מק״ט', 'SKU')} <span dir="ltr">${esc(range)}</span>` : ''}</p>
+  </a>`;
+}).join('') + `<a class="cat-card cat-card--all" href="catalog.html"><span class="cat-art"><span>${t('לכל', 'All')} ${products.length} ${t('המוצרים', 'products')} <span aria-hidden="true">${t('←', '→')}</span></span></span></a>`;

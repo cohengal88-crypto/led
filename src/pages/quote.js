@@ -1,5 +1,4 @@
-import '../styles/home.css';
-import '../styles/shared.css';
+import '../styles/site.css';
 import '../styles/quote.css';
 import { initHeader } from '../components/header.js';
 import * as quote from '../lib/quote-cart.js';

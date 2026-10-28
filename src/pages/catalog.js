@@ -1,10 +1,9 @@
-import '../styles/home.css';
-import '../styles/shared.css';
+import '../styles/site.css';
 import '../styles/catalog.css';
 import { initHeader } from '../components/header.js';
 import { data } from '../lib/data/index.js';
 import { productCard } from '../components/product-card.js';
-import { updateChip } from '../components/product-art.js';
+import { updateVisual } from '../components/product-art.js';
 import { bindAddToQuote } from '../components/add-to-quote.js';
 import { t } from '../lib/html.js';
 import { norm, searchText, skuVariantIndex } from '../lib/products.js';
@@ -72,6 +71,9 @@ function render({ append = false } = {}) {
   search.value ? url.searchParams.set('q', search.value) : url.searchParams.delete('q');
   sort.value === 'sku' ? url.searchParams.delete('sort') : url.searchParams.set('sort', sort.value);
   history.replaceState(null, '', url);
+  document.querySelectorAll('.cat-nav a').forEach(a => {
+    if (new URL(a.href).searchParams.get('cat') === filter) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+  });
 }
 
 const reset = () => { shown = PAGE; render(); };
@@ -95,7 +97,7 @@ grid.addEventListener('change', e => {
   const card = e.target.closest('[data-id]');
   const p = products.find(x => x.id === card.dataset.id);
   const v = p.variants[Number(e.target.value)];
-  updateChip(card, v.hex);
+  updateVisual(card, p.type, v.hex);
   card.querySelector('[data-sku]').textContent = v.sku;
   const url = `product.html?id=${encodeURIComponent(p.id)}&sku=${v.sku}`;
   card.querySelectorAll('a[href^="product.html"]').forEach(a => { a.href = url; });
